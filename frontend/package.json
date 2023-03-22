@@ -19,6 +19,7 @@
     "@angular/platform-browser-dynamic": "^15.1.0",
     "@angular/router": "^15.1.0",
     "@aws-amplify/ui-angular": "^3.2.10",
+    "@aws-cdk/aws-ec2": "^1.197.0",
     "aws-amplify": "^5.0.20",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
