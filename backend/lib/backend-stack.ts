@@ -74,9 +74,6 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       value: instance.secret?.secretName!,
     });
 
-    
-    /** FormationGET */
-
     //create a lambda function to connect to the database and run Select query
     const FormationGet = new NodejsFunction(this, 'FormationGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
@@ -213,7 +210,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
 
     //create a lambda function to connect to the database and run Select query
     const ResponsableFormationGet = new NodejsFunction(this, 'ResponsableFormationGet', {
-      entry: join(__dirname, '../lambdas/Get-RSP.ts'),
+      entry: join(__dirname, '../lambdas/GetIdUSR.ts'),
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -241,11 +238,10 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const ResponsableFormationGetIntegration = new apigateway.LambdaIntegration(ResponsableFormationGet);
     responsableFormation.addMethod('GET', ResponsableFormationGetIntegration);
 
-    /** FormationUeGet */
 
-    //create a lambda function to connect to the database and run Select query
-    const FormationUeGet = new NodejsFunction(this, 'FormationUeGet', {
-      entry: join(__dirname, '../lambdas/Get-FORM.ts'),
+    /** UeFormationGet */
+    const FormationUeGet = new NodejsFunction(this, 'UeFormationGet', {
+      entry: join(__dirname, '../lambdas/GetIdFORM.ts'),
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -261,7 +257,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       memorySize:128,
       timeout: cdk.Duration.seconds(3),
     });
-
+    
     //grant lambda function to access the database
     instance.connections.allowDefaultPortFrom(FormationUeGet);
     instance.grantConnect(FormationUeGet);
@@ -271,13 +267,11 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const formationUe = api.root.addResource('formationUe');
     //Create a new method
     const FormationUeGetIntegration = new apigateway.LambdaIntegration(FormationUeGet);
-    formationUe.addMethod('GET', FormationUeGetIntegration);    
+    formationUe.addMethod('GET', FormationUeGetIntegration);
 
     /** MatiereUeGet */
-
-    //create a lambda function to connect to the database and run Select query
-    const MatiereUeGet = new NodejsFunction(this, 'MatiereUeGet', {
-      entry: join(__dirname, '../lambdas/Get-MAT.ts'),
+    const UeMatiereGet = new NodejsFunction(this, 'MatiereUeGet', {
+      entry: join(__dirname, '../lambdas/GetIdMAT.ts'),
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -288,6 +282,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_USER:'admin',
         DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
         TABLE_NAME:"Matiere_UE",
+
       },
       vpc,
       memorySize:128,
@@ -295,21 +290,21 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     });
 
     //grant lambda function to access the database
-    instance.connections.allowDefaultPortFrom(MatiereUeGet);
-    instance.grantConnect(MatiereUeGet);
+    instance.connections.allowDefaultPortFrom(UeMatiereGet);
+    instance.grantConnect(UeMatiereGet);
     //add lambda function's security group to the database security group
-    instance.connections.allowFrom(MatiereUeGet.connections,ec2.Port.tcp(3306));
+    instance.connections.allowFrom(UeMatiereGet.connections,ec2.Port.tcp(3306));
     //Create a new resource
-    const matiereUe = api.root.addResource('matiereUe');
+    const ueMatiere = api.root.addResource('ueMatiere');
     //Create a new method
-    const MatiereUeGetIntegration = new apigateway.LambdaIntegration(MatiereUeGet);
-    matiereUe.addMethod('GET', MatiereUeGetIntegration);
+    const UeMatiereGetIntegration = new apigateway.LambdaIntegration(UeMatiereGet);
+    ueMatiere.addMethod('GET', UeMatiereGetIntegration);
 
-    /** UserGet */
+    
 
-    //create a lambda function to connect to the database and run Select query
-    const UserGet = new NodejsFunction(this, 'UserGet', {
-      entry: join(__dirname, '../lambdas/Get-USR.ts'),
+    /**Users GET */
+    const UsersGet = new NodejsFunction(this, 'UsersGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -320,6 +315,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_USER:'admin',
         DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
         TABLE_NAME:"users",
+
       },
       vpc,
       memorySize:128,
@@ -327,21 +323,19 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     });
 
     //grant lambda function to access the database
-    instance.connections.allowDefaultPortFrom(UserGet);
-    instance.grantConnect(UserGet);
+    instance.connections.allowDefaultPortFrom(UsersGet);
+    instance.grantConnect(UsersGet);
     //add lambda function's security group to the database security group
-    instance.connections.allowFrom(UserGet.connections,ec2.Port.tcp(3306));
+    instance.connections.allowFrom(UsersGet.connections,ec2.Port.tcp(3306));
     //Create a new resource
-    const user = api.root.addResource('user');
+    const users = api.root.addResource('users');
     //Create a new method
-    const UserGetIntegration = new apigateway.LambdaIntegration(UserGet);
-    user.addMethod('GET', UserGetIntegration);
+    const UsersGetIntegration = new apigateway.LambdaIntegration(UsersGet);
+    users.addMethod('GET', UsersGetIntegration);
 
-    /** AdminGet */
-
-    //create a lambda function to connect to the database and run Select query
+    /**Admin Get */
     const AdminGet = new NodejsFunction(this, 'AdminGet', {
-      entry: join(__dirname, '../lambdas/Get-ADM.ts'),
+      entry: join(__dirname, '../lambdas/Get.ts'),
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -352,6 +346,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_USER:'admin',
         DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
         TABLE_NAME:"admin",
+      
       },
       vpc,
       memorySize:128,
@@ -368,10 +363,8 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const AdminGetIntegration = new apigateway.LambdaIntegration(AdminGet);
     admin.addMethod('GET', AdminGetIntegration);
+  
   }
-
-  
-
-  
 }
   
+
