@@ -108,9 +108,37 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
     formation.addMethod('GET', formationGetIntegration);
+
     
+    //create a lambda function to connect to the database and run Select query
+    const ControleGet = new NodejsFunction(this, 'ControleGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Controle",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
 
-
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(ControleGet);
+    instance.grantConnect(ControleGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(ControleGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const controle = api.root.addResource('controle');
+    //Create a new method
+    const controleGetIntegration = new apigateway.LambdaIntegration(ControleGet);
+    controle.addMethod('GET', controleGetIntegration);
 
   }
 }
