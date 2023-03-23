@@ -28,6 +28,15 @@ const vpc = new ec2.Vpc(this, 'VPC', {
      },
    ],
  });
+ // creating a new security group for the database
+ const dbSecurityGroup = new ec2.SecurityGroup(this, 'DBSecurityGroup', {
+  vpc,
+  securityGroupName: 'DBSecurityGroup',
+  description: 'Allow inbound traffic to the database from anywhere',
+});
+
+dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow inbound traffic to the database from anywhere');
+
     const instance = new rds.DatabaseInstance(this, 'MyDatabase', {
       engine: rds.DatabaseInstanceEngine.mysql({
         version: rds.MysqlEngineVersion.VER_8_0_25,
@@ -38,7 +47,8 @@ const vpc = new ec2.Vpc(this, 'VPC', {
       ),
       vpc,
       vpcSubnets: {
-        subnetType: ec2.SubnetType.PRIVATE_ISOLATED,
+        subnetType: ec2.SubnetType.PUBLIC,
+        
       },
       allocatedStorage: 20,
       deletionProtection: false,
@@ -46,8 +56,10 @@ const vpc = new ec2.Vpc(this, 'VPC', {
       databaseName: 'FicheECTS',
       credentials: rds.Credentials.fromGeneratedSecret('admin'),
       multiAz: false,
-
+      instanceIdentifier: 'FicheECTS',
+      securityGroups: [dbSecurityGroup],
       port: 3306,
+      
     });
 
     new cdk.CfnOutput(this, 'dbEndpoint', {
