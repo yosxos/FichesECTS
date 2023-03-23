@@ -109,6 +109,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
     formation.addMethod('GET', formationGetIntegration);
 
+    /** ControleGET */
     
     //create a lambda function to connect to the database and run Select query
     const ControleGet = new NodejsFunction(this, 'ControleGet', {
@@ -139,6 +140,105 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const controleGetIntegration = new apigateway.LambdaIntegration(ControleGet);
     controle.addMethod('GET', controleGetIntegration);
+
+    /** UeGET */
+
+    //create a lambda function to connect to the database and run Select query
+    const UeGet = new NodejsFunction(this, 'UeGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Controle",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UeGet);
+    instance.grantConnect(UeGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UeGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const ue = api.root.addResource('ue');
+    //Create a new method
+    const UeGetIntegration = new apigateway.LambdaIntegration(UeGet);
+    ue.addMethod('GET', UeGetIntegration);
+  
+
+    /** MatiereGet */
+
+    //create a lambda function to connect to the database and run Select query
+    const MatiereGet = new NodejsFunction(this, 'MatiereGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Controle",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(MatiereGet);
+    instance.grantConnect(MatiereGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(MatiereGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const matiere = api.root.addResource('matiere');
+    //Create a new method
+    const MatiereGetIntegration = new apigateway.LambdaIntegration(MatiereGet);
+    matiere.addMethod('GET', MatiereGetIntegration);
+  
+    /** ResponsableFormationGet */
+
+    //create a lambda function to connect to the database and run Select query
+    const ResponsableFormationGet = new NodejsFunction(this, 'ResponsableFormationGet', {
+      entry: join(__dirname, '../lambdas/Get-RSP.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Controle",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(ResponsableFormationGet);
+    instance.grantConnect(ResponsableFormationGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(ResponsableFormationGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const responsableFormation = api.root.addResource('responsableFormation');
+    //Create a new method
+    const ResponsableFormationGetIntegration = new apigateway.LambdaIntegration(ResponsableFormationGet);
+    responsableFormation.addMethod('GET', ResponsableFormationGetIntegration);
+
+
 
   }
 }
