@@ -92,12 +92,36 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       memorySize:128,
       timeout: cdk.Duration.seconds(3),
     });
+    //create a lambda function to connect to the database and run edit query
+    const FormationEdit = new NodejsFunction(this, 'FormationEdit', {
+      entry: join(__dirname, '../lambdas/Edit_Formation.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Formation",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
 
     //grant lambda function to access the database
     instance.connections.allowDefaultPortFrom(FormationGet);
     instance.grantConnect(FormationGet);
+    instance.connections.allowDefaultPortFrom(FormationEdit);
+    instance.grantConnect(FormationEdit);
     //add lambda function's security group to the database security group
     instance.connections.allowFrom(FormationGet.connections,ec2.Port.tcp(3306));
+    instance.connections.allowFrom(FormationEdit.connections,ec2.Port.tcp(3306));
+
+  
     //Create a new API Gateway  
     const api = new apigateway.RestApi(this, 'FichesECTS', {
       restApiName: 'FichesECTS Service',
@@ -105,10 +129,15 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     });
     //Create a new resource
     const formation = api.root.addResource('formation');
+    const formationEdit = formation.addResource('edit');
     //Create a new method
     const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
     formation.addMethod('GET', formationGetIntegration);
-    
+    const formationEditIntegration = new apigateway.LambdaIntegration(FormationEdit);
+    formationEdit.addMethod('PUT', formationEditIntegration);
+    formationEdit.addMethod('POST', formationEditIntegration);
+    formationEdit.addMethod('DELETE', formationEditIntegration);
+
 
 
 
