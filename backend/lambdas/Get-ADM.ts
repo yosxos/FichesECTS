@@ -16,7 +16,7 @@ export const handler = async (event: any = {}): Promise<any> => {
 
     if (event.stringParameters && event.stringParameters.id) {
       // Run a SELECT query
-      const query = `SELECT * FROM ${TABLE_NAME} WHERE id_user = "${body.id}"`;
+      const query = `SELECT * FROM ${TABLE_NAME} WHERE id_admin = "${body.id}"`;
       const [rows] = await connection.execute(query);
       await connection.end();
       return {
