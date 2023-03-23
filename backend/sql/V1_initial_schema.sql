@@ -1,5 +1,5 @@
 CREATE TABLE users (
-  id INT NOT NULL,
+  id INT NOT NULL AUTO_INCREMENT,
   name VARCHAR(50) NOT NULL,
   prenom VARCHAR(50) NOT NULL,
   PRIMARY KEY (id)
@@ -11,7 +11,7 @@ CREATE TABLE admin (
 );
 
 CREATE TABLE Formation (
-  id int NOT NULL,
+  id int NOT NULL AUTO_INCREMENT,
   parcour VARCHAR(50) NOT NULL,
   année VARCHAR(50) NOT NULL,
   niveau VARCHAR(50) NOT NULL,
@@ -20,14 +20,14 @@ CREATE TABLE Formation (
 );
 
 CREATE TABLE Responsable_formation (
-  id_user INT NOT NULL,
+  id_user INT NOT NULL ,
   id_formation INT NOT NULL,
   FOREIGN KEY (id_user) REFERENCES users(id),
   FOREIGN KEY (id_formation) REFERENCES Formation(id)
 );
 
 CREATE TABLE UE (
-  id int NOT NULL,
+  id int NOT NULL AUTO_INCREMENT,
   semestre ENUM('semestre 1','semestre 2') NOT NULL,
   nom VARCHAR(50) NOT NULL,
   ects int NOT NULL,
@@ -35,7 +35,7 @@ CREATE TABLE UE (
 );
 
 CREATE TABLE Controle (
-  id int NOT NULL,
+  id int NOT NULL AUTO_INCREMENT,
   type_control ENUM('--','CC','ET') NOT NULL,
   type_epreuve ENUM('E','O','E et/ou O') NOT NULL,
   regle_particuliere VARCHAR(50) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE Controle (
 );
 
 CREATE TABLE Matiere (
-  id int NOT NULL,
+  id int NOT NULL AUTO_INCREMENT,
   nom VARCHAR(50) NOT NULL,
   ects int NOT NULL,
   cm int NOT NULL,
