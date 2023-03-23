@@ -1,0 +1,40 @@
+<!-- <div cdkDrag>Drag me around!</div>
+<div style="background-color: rgb(131, 131, 131);">UE1:
+  <div style="background-color: yellowgreen;" *ngFor="let item of newItems" cdkDrag>{{item}}</div>
+</div>
+
+<div style="background-color: rgb(155, 155, 155);">active items :
+  <div style="background-color: rgb(50, 200, 205);" *ngFor="let item of activeItems" cdkDrag>{{item}}</div>
+</div>
+
+<div style="background-color: rgb(131, 131, 131);">done items :
+  <div style="background-color: rgb(205, 112, 50);" *ngFor="let item of doneItems" cdkDrag>{{item}}</div>
+</div> -->
+
+
+<div class="board">
+  <div class="column">
+    <div style="background-color: rgb(131, 131, 131);">UE1:
+      <div cdkDrop #news="cdkDrop" [cdkDropData]="newItems" [cdkDropConnectedTo]="[active]"
+      (cdkDropDropped)="dropped($event)">
+      <div style="background-color: rgb(50, 200, 205);" *ngFor="let item of newItems" cdkDrag>{{ item }}</div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div style="background-color: rgb(155, 155, 155);">UE2 :
+      <div cdkDrop #active="cdkDrop" [cdkDropData]="activeItems" [cdkDropConnectedTo]="[news, done]"
+      (cdkDropDropped)="dropped($event)">
+      <div style="background-color: yellowgreen;" *ngFor="let item of activeItems" cdkDrag>{{ item }}</div>
+    </div>
+  </div>
+
+  <div class="column">
+    <div style="background-color: rgb(131, 131, 131);">UE3:
+
+    <div cdkDrop #done="cdkDrop" [cdkDropData]="doneItems" [cdkDropConnectedTo]="active"
+      (cdkDropDropped)="dropped($event)">
+      <div style="background-color: rgb(205, 112, 50);" *ngFor="let item of doneItems" cdkDrag>{{ item }}</div>
+    </div>
+  </div>
+</div>
