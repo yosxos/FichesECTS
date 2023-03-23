@@ -2,7 +2,10 @@ import * as cdk from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import * as rds from 'aws-cdk-lib/aws-rds';
 import * as ec2 from 'aws-cdk-lib/aws-ec2';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import * as lambda from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { join } from 'path';
+import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 
 export class BackendStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -71,13 +74,297 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       value: instance.secret?.secretName!,
     });
 
+    //create a lambda function to connect to the database and run Select query
+    const FormationGet = new NodejsFunction(this, 'FormationGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Formation",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(FormationGet);
+    instance.grantConnect(FormationGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(FormationGet.connections,ec2.Port.tcp(3306));
+    //Create a new API Gateway  
+    const api = new apigateway.RestApi(this, 'FichesECTS', {
+      restApiName: 'FichesECTS Service',
+      description: 'This service serves FichesECTS.',
+    });
+    //Create a new resource
+    const formation = api.root.addResource('formation');
+    //Create a new method
+    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
+    formation.addMethod('GET', formationGetIntegration);
+
+    /** ControleGET */
+    
+    //create a lambda function to connect to the database and run Select query
+    const ControleGet = new NodejsFunction(this, 'ControleGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Controle",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(ControleGet);
+    instance.grantConnect(ControleGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(ControleGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const controle = api.root.addResource('controle');
+    //Create a new method
+    const controleGetIntegration = new apigateway.LambdaIntegration(ControleGet);
+    controle.addMethod('GET', controleGetIntegration);
+
+    /** UeGET */
+
+    //create a lambda function to connect to the database and run Select query
+    const UeGet = new NodejsFunction(this, 'UeGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"UE",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UeGet);
+    instance.grantConnect(UeGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UeGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const ue = api.root.addResource('ue');
+    //Create a new method
+    const UeGetIntegration = new apigateway.LambdaIntegration(UeGet);
+    ue.addMethod('GET', UeGetIntegration);
+  
+
+    /** MatiereGet */
+
+    //create a lambda function to connect to the database and run Select query
+    const MatiereGet = new NodejsFunction(this, 'MatiereGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Matiere",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(MatiereGet);
+    instance.grantConnect(MatiereGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(MatiereGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const matiere = api.root.addResource('matiere');
+    //Create a new method
+    const MatiereGetIntegration = new apigateway.LambdaIntegration(MatiereGet);
+    matiere.addMethod('GET', MatiereGetIntegration);
+  
+    /** ResponsableFormationGet */
+
+    //create a lambda function to connect to the database and run Select query
+    const ResponsableFormationGet = new NodejsFunction(this, 'ResponsableFormationGet', {
+      entry: join(__dirname, '../lambdas/GetIdUSR.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Responsable_formation",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(ResponsableFormationGet);
+    instance.grantConnect(ResponsableFormationGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(ResponsableFormationGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const responsableFormation = api.root.addResource('responsableFormation');
+    //Create a new method
+    const ResponsableFormationGetIntegration = new apigateway.LambdaIntegration(ResponsableFormationGet);
+    responsableFormation.addMethod('GET', ResponsableFormationGetIntegration);
 
 
+    /** UeFormationGet */
+    const FormationUeGet = new NodejsFunction(this, 'UeFormationGet', {
+      entry: join(__dirname, '../lambdas/GetIdFORM.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Formation_UE",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+    
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(FormationUeGet);
+    instance.grantConnect(FormationUeGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(FormationUeGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const formationUe = api.root.addResource('formationUe');
+    //Create a new method
+    const FormationUeGetIntegration = new apigateway.LambdaIntegration(FormationUeGet);
+    formationUe.addMethod('GET', FormationUeGetIntegration);
 
+    /** MatiereUeGet */
+    const UeMatiereGet = new NodejsFunction(this, 'MatiereUeGet', {
+      entry: join(__dirname, '../lambdas/GetIdMAT.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Matiere_UE",
 
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
 
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UeMatiereGet);
+    instance.grantConnect(UeMatiereGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UeMatiereGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const ueMatiere = api.root.addResource('ueMatiere');
+    //Create a new method
+    const UeMatiereGetIntegration = new apigateway.LambdaIntegration(UeMatiereGet);
+    ueMatiere.addMethod('GET', UeMatiereGetIntegration);
 
+    
+
+    /**Users GET */
+    const UsersGet = new NodejsFunction(this, 'UsersGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"users",
+
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UsersGet);
+    instance.grantConnect(UsersGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UsersGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const users = api.root.addResource('users');
+    //Create a new method
+    const UsersGetIntegration = new apigateway.LambdaIntegration(UsersGet);
+    users.addMethod('GET', UsersGetIntegration);
+
+    /**Admin Get */
+    const AdminGet = new NodejsFunction(this, 'AdminGet', {
+      entry: join(__dirname, '../lambdas/Get.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"admin",
+      
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(AdminGet);
+    instance.grantConnect(AdminGet);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(AdminGet.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const admin = api.root.addResource('admin');
+    //Create a new method
+    const AdminGetIntegration = new apigateway.LambdaIntegration(AdminGet);
+    admin.addMethod('GET', AdminGetIntegration);
+  
   }
 }
-
+  
 
