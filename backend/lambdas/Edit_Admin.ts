@@ -24,18 +24,9 @@ export const handler = async (event: any = {}): Promise<any> => {
             statusCode: 200,
             body: JSON.stringify(rowsDel),
         };
-    case 'PUT':
-        // Run a UPDATE query
-        const queryUp = `UPDATE ${TABLE_NAME} SET parcour = "${body.parcour}",code = "${body.code}",année = "${body.année}",niveau = "${body.niveau}" WHERE id = ${body.id}`;
-        const [rowsUp] = await connection.execute(queryUp);
-        await connection.end();
-        return {
-            statusCode: 200,
-            body: JSON.stringify(rowsUp),
-        };
     case 'POST':
         // Run a INSERT query
-        const queryIns = `INSERT INTO ${TABLE_NAME} (parcour,code,année,niveau) VALUES ("${body.parcour}","${body.code}","${body.année}","${body.niveau}")`;
+        const queryIns = `INSERT INTO ${TABLE_NAME} (id) VALUES (${body.id})`;
         const [rowsIns] = await connection.execute(queryIns);
         await connection.end();
         return {

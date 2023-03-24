@@ -17,7 +17,7 @@ export const handler = async (event: any = {}): Promise<any> => {
    switch (method) {
     case 'DELETE':
         // Run a DELETE query
-        const queryDel = `DELETE FROM ${TABLE_NAME} WHERE id = ${body.id}`;
+        const queryDel = `DELETE FROM ${TABLE_NAME} WHERE id_user = ${body.id_user}`;
         const [rowsDel] = await connection.execute(queryDel);
         await connection.end();
         return {
@@ -26,7 +26,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         };
     case 'PUT':
         // Run a UPDATE query
-        const queryUp = `UPDATE ${TABLE_NAME} SET parcour = "${body.parcour}",code = "${body.code}",année = "${body.année}",niveau = "${body.niveau}" WHERE id = ${body.id}`;
+        const queryUp = `UPDATE ${TABLE_NAME} SET id_formation = ${body.id_formation} WHERE id_user = ${body.id_user}`;
         const [rowsUp] = await connection.execute(queryUp);
         await connection.end();
         return {
@@ -35,7 +35,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         };
     case 'POST':
         // Run a INSERT query
-        const queryIns = `INSERT INTO ${TABLE_NAME} (parcour,code,année,niveau) VALUES ("${body.parcour}","${body.code}","${body.année}","${body.niveau}")`;
+        const queryIns = `INSERT INTO ${TABLE_NAME} (id_user,id_formation) VALUES (${body.id_user},${body.id_formation})`;
         const [rowsIns] = await connection.execute(queryIns);
         await connection.end();
         return {

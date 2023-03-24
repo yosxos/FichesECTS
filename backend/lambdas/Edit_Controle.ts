@@ -26,7 +26,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         };
     case 'PUT':
         // Run a UPDATE query
-        const queryUp = `UPDATE ${TABLE_NAME} SET parcour = "${body.parcour}",code = "${body.code}",année = "${body.année}",niveau = "${body.niveau}" WHERE id = ${body.id}`;
+        const queryUp = `UPDATE ${TABLE_NAME} SET type_control = "${body.type_control}",type_epreuve = "${body.type_epreuve}",regle_particuliere = "${body.regle_particuliere}",regle_calcul = ${body.regle_calcul} WHERE id =${body.id}`;
         const [rowsUp] = await connection.execute(queryUp);
         await connection.end();
         return {
@@ -35,7 +35,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         };
     case 'POST':
         // Run a INSERT query
-        const queryIns = `INSERT INTO ${TABLE_NAME} (parcour,code,année,niveau) VALUES ("${body.parcour}","${body.code}","${body.année}","${body.niveau}")`;
+        const queryIns = `INSERT INTO ${TABLE_NAME} (type_control,type_epreuve,regle_particuliere,regle_calcul) VALUES ("${body.type_control}","${body.type_epreuve}","${body.regle_particuliere}",${body.regle_calcul})`;
         const [rowsIns] = await connection.execute(queryIns);
         await connection.end();
         return {
