@@ -92,12 +92,36 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       memorySize:128,
       timeout: cdk.Duration.seconds(3),
     });
+    //create a lambda function to connect to the database and run edit query
+    const FormationEdit = new NodejsFunction(this, 'FormationEdit', {
+      entry: join(__dirname, '../lambdas/Edit_Formation.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Formation",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
 
     //grant lambda function to access the database
     instance.connections.allowDefaultPortFrom(FormationGet);
     instance.grantConnect(FormationGet);
+    instance.connections.allowDefaultPortFrom(FormationEdit);
+    instance.grantConnect(FormationEdit);
     //add lambda function's security group to the database security group
     instance.connections.allowFrom(FormationGet.connections,ec2.Port.tcp(3306));
+    instance.connections.allowFrom(FormationEdit.connections,ec2.Port.tcp(3306));
+
+  
     //Create a new API Gateway  
     const api = new apigateway.RestApi(this, 'FichesECTS', {
       restApiName: 'FichesECTS Service',
@@ -105,9 +129,16 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     });
     //Create a new resource
     const formation = api.root.addResource('formation');
+    const formationEdit = formation.addResource('edit');
     //Create a new method
     const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
     formation.addMethod('GET', formationGetIntegration);
+    const formationEditIntegration = new apigateway.LambdaIntegration(FormationEdit);
+    formationEdit.addMethod('PUT', formationEditIntegration);
+    formationEdit.addMethod('POST', formationEditIntegration);
+    formationEdit.addMethod('DELETE', formationEditIntegration);
+
+
 
     /** ControleGET */
     
@@ -140,6 +171,41 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const controleGetIntegration = new apigateway.LambdaIntegration(ControleGet);
     controle.addMethod('GET', controleGetIntegration);
+    /** ControleEDIT */
+    //create a lambda function to connect to the database and run edit query
+    const ControleEdit = new NodejsFunction(this, 'ControleEdit', {
+      entry: join(__dirname, '../lambdas/Edit_Controle.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Controle",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(ControleEdit);
+    instance.grantConnect(ControleEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(ControleEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const controleEdit = controle.addResource('edit');
+    //Create a new method
+    const controleEditIntegration = new apigateway.LambdaIntegration(ControleEdit);
+    controleEdit.addMethod('PUT', controleEditIntegration);
+    controleEdit.addMethod('POST', controleEditIntegration);
+    controleEdit.addMethod('DELETE', controleEditIntegration);
+
+
+
 
     /** UeGET */
 
@@ -172,7 +238,40 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const UeGetIntegration = new apigateway.LambdaIntegration(UeGet);
     ue.addMethod('GET', UeGetIntegration);
-  
+    /** UeEDIT */
+    //create a lambda function to connect to the database and run edit query
+    const UeEdit = new NodejsFunction(this, 'UeEdit', {
+      entry: join(__dirname, '../lambdas/Edit_UE.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"UE",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UeEdit);
+    instance.grantConnect(UeEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UeEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const ueEdit = ue.addResource('edit');
+    //Create a new method
+    const ueEditIntegration = new apigateway.LambdaIntegration(UeEdit);
+    ueEdit.addMethod('PUT', ueEditIntegration);
+    ueEdit.addMethod('POST', ueEditIntegration);
+    ueEdit.addMethod('DELETE', ueEditIntegration);
+
+
 
     /** MatiereGet */
 
@@ -206,6 +305,42 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const MatiereGetIntegration = new apigateway.LambdaIntegration(MatiereGet);
     matiere.addMethod('GET', MatiereGetIntegration);
   
+    /** MatiereEDIT */
+    //create a lambda function to connect to the database and run edit query
+    const MatiereEdit = new NodejsFunction(this, 'MatiereEdit', {
+      entry: join(__dirname, '../lambdas/Edit_Matiere.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Matiere",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+
+    });
+    
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(MatiereEdit);
+    instance.grantConnect(MatiereEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(MatiereEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const matiereEdit = matiere.addResource('edit');
+    //Create a new method
+    const matiereEditIntegration = new apigateway.LambdaIntegration(MatiereEdit);
+    matiereEdit.addMethod('PUT', matiereEditIntegration);
+    matiereEdit.addMethod('POST', matiereEditIntegration);
+    matiereEdit.addMethod('DELETE', matiereEditIntegration);
+
+
+
     /** ResponsableFormationGet */
 
     //create a lambda function to connect to the database and run Select query
@@ -238,6 +373,38 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const ResponsableFormationGetIntegration = new apigateway.LambdaIntegration(ResponsableFormationGet);
     responsableFormation.addMethod('GET', ResponsableFormationGetIntegration);
 
+    /** ResponsableFormationEDIT */
+    //create a lambda function to connect to the database and run edit query
+    const ResponsableFormationEdit = new NodejsFunction(this, 'ResponsableFormationEdit', {
+      entry: join(__dirname, '../lambdas/Edit_RespForm.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Responsable_formation",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+      
+    });
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(ResponsableFormationEdit);
+    instance.grantConnect(ResponsableFormationEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(ResponsableFormationEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const responsableFormationEdit = responsableFormation.addResource('edit');
+    //Create a new method
+    const responsableFormationEditIntegration = new apigateway.LambdaIntegration(ResponsableFormationEdit);
+    responsableFormationEdit.addMethod('PUT', responsableFormationEditIntegration);
+    responsableFormationEdit.addMethod('POST', responsableFormationEditIntegration);
+    responsableFormationEdit.addMethod('DELETE', responsableFormationEditIntegration);
 
     /** UeFormationGet */
     const FormationUeGet = new NodejsFunction(this, 'UeFormationGet', {
@@ -269,6 +436,37 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const FormationUeGetIntegration = new apigateway.LambdaIntegration(FormationUeGet);
     formationUe.addMethod('GET', FormationUeGetIntegration);
 
+    /** UeFormationEdit */
+    const FormationUeEdit = new NodejsFunction(this, 'UeFormationEdit', {
+      entry: join(__dirname, '../lambdas/Edit_UeForm.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Formation_UE",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(FormationUeEdit);
+    instance.grantConnect(FormationUeEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(FormationUeEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const formationUeEdit = formationUe.addResource('edit');
+    //Create a new method 
+    const FormationUeEditIntegration = new apigateway.LambdaIntegration(FormationUeEdit);
+    formationUeEdit.addMethod('PUT', FormationUeEditIntegration);
+    formationUeEdit.addMethod('POST', FormationUeEditIntegration);
+    formationUeEdit.addMethod('DELETE', FormationUeEditIntegration);
+
     /** MatiereUeGet */
     const UeMatiereGet = new NodejsFunction(this, 'MatiereUeGet', {
       entry: join(__dirname, '../lambdas/GetIdMAT.ts'),
@@ -299,6 +497,37 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const UeMatiereGetIntegration = new apigateway.LambdaIntegration(UeMatiereGet);
     ueMatiere.addMethod('GET', UeMatiereGetIntegration);
+
+    /** MatiereUeEdit */
+    const UeMatiereEdit = new NodejsFunction(this, 'MatiereUeEdit', {
+      entry: join(__dirname, '../lambdas/Edit_MatiereUe.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"Matiere_UE",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UeMatiereEdit);
+    instance.grantConnect(UeMatiereEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UeMatiereEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const ueMatiereEdit = ueMatiere.addResource('edit');
+    //Create a new method
+    const UeMatiereEditIntegration = new apigateway.LambdaIntegration(UeMatiereEdit);
+    ueMatiereEdit.addMethod('PUT', UeMatiereEditIntegration);
+    ueMatiereEdit.addMethod('POST', UeMatiereEditIntegration);
+    ueMatiereEdit.addMethod('DELETE', UeMatiereEditIntegration);
 
     
 
@@ -333,6 +562,37 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const UsersGetIntegration = new apigateway.LambdaIntegration(UsersGet);
     users.addMethod('GET', UsersGetIntegration);
 
+    /**Users Edit */
+    const UsersEdit = new NodejsFunction(this, 'UsersEdit', {
+      entry: join(__dirname, '../lambdas/Edit_Users.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"users",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(UsersEdit);
+    instance.grantConnect(UsersEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(UsersEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const usersEdit = users.addResource('edit');
+    //Create a new method
+    const UsersEditIntegration = new apigateway.LambdaIntegration(UsersEdit);
+    usersEdit.addMethod('PUT', UsersEditIntegration);
+    usersEdit.addMethod('POST', UsersEditIntegration);
+    usersEdit.addMethod('DELETE', UsersEditIntegration);
+
     /**Admin Get */
     const AdminGet = new NodejsFunction(this, 'AdminGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
@@ -363,6 +623,38 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //Create a new method
     const AdminGetIntegration = new apigateway.LambdaIntegration(AdminGet);
     admin.addMethod('GET', AdminGetIntegration);
+
+    /**Admin Edit */
+    const AdminEdit = new NodejsFunction(this, 'AdminEdit', {
+      entry: join(__dirname, '../lambdas/Edit_Admin.ts'),
+      handler: 'handler',
+      bundling: {
+        externalModules: ['aws-sdk'],
+      },
+      environment: {
+        DB_NAME: 'FicheECTS',
+        RDS_HOST: instance.instanceEndpoint.hostname,
+        DB_USER:'admin',
+        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        TABLE_NAME:"admin",
+      },
+      vpc,
+      memorySize:128,
+      timeout: cdk.Duration.seconds(3),
+    });
+    //grant lambda function to access the database
+    instance.connections.allowDefaultPortFrom(AdminEdit);
+    instance.grantConnect(AdminEdit);
+    //add lambda function's security group to the database security group
+    instance.connections.allowFrom(AdminEdit.connections,ec2.Port.tcp(3306));
+    //Create a new resource
+    const adminEdit = admin.addResource('edit');
+    //Create a new method
+    const AdminEditIntegration = new apigateway.LambdaIntegration(AdminEdit);
+    adminEdit.addMethod('PUT', AdminEditIntegration);
+    adminEdit.addMethod('POST', AdminEditIntegration);
+    adminEdit.addMethod('DELETE', AdminEditIntegration);
+
   
   }
 }
