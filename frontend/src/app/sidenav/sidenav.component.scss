@@ -1,10 +1,43 @@
+@media (max-width: 600px) {
+    .sidenav{
+        width: 100vh;
+        height: 5rem;
+        // couleur du menu 
+        background: #2760ab;
+        transition: all .5s ease;
+        position: flex;
+        float: left;
+        z-index: 1;
+        top: 0;
+        margin: 0;
+    
+        //ombre entre le menu et la page 
+        box-shadow: 0.063rem 0 1.25rem 0 #8690a3;
+    
+        .logo-container {
+            display: flex;
+            align-items: center;
+            padding: 0.938rem 0.938rem 0 0.938rem;
+            width: 100%;
+    
+        }
+        .sidenav-nav-item {
+            width: 100%;
+            margin-bottom: 0.625rem;
+            display: inline-block;
+        }    
+    }
+  }
+@media (min-width: 600px) {
 .sidenav {
     // couleur du menu 
     background: #2760ab;
     transition: all .5s ease;
-    position: fixed;
+    position: flex;
+    float: left;
     z-index: 1;
     top: 0;
+    margin: 0;
     width: 5rem;
     height: 100vh;
     //ombre entre le menu et la page 
@@ -54,6 +87,7 @@
         }
     }
 }
+
 
 .sidenav-collapsed {
     width: 16.5625rem;
@@ -205,4 +239,6 @@
     scrollbar-color: #556268 transparent;
 }
 
+
+}
 

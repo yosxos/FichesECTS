@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AddFichesComponent } from './add-fiches/add-fiches.component';
-import { AnneeModule } from './annee/annee.module';
 import { ConnexionComponent } from './connexion/connexion.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 

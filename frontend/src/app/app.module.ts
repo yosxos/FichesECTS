@@ -6,7 +6,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DragComponent } from './drag/drag.component';
-import { BodyComponent } from './body/body.component';
 
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { SidenavComponent } from './sidenav/sidenav.component';
@@ -21,7 +20,6 @@ import { FormsModule } from '@angular/forms';
   declarations: [
     AppComponent,
     DragComponent,
-    BodyComponent,
     DashboardComponent,
     SidenavComponent,
     SublevelMenuComponent,
