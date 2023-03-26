@@ -1,0 +1,21 @@
+<form (ngSubmit)="onSubmit()">
+    <table>
+        <thead>
+            <tr>Connexion</tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Identifiant</td>
+                <input type="text" name="identifiant" [(ngModel)]="identifiant">
+            </tr>
+            <tr>
+    
+                <td>Mot de passe</td>
+                <td> <input type="password" name="motdepasse" [(ngModel)]="motdepasse"> </td>
+            </tr>
+    
+        </tbody>
+    </table>
+    <button type="submit">Se connecter</button>
+</form>
+

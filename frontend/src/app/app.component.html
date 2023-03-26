@@ -7,11 +7,11 @@
   <title>Document</title>
 </head>
 <body>
-  <table>
-    <thead><th>head1</th><th>head2</th></thead>
-    <tbody><tr><td>1</td><td>2</td></tr>
-      <tr><td>3</td><td>4</td>sdf</tr></tbody>
-  </table>
+  <app-sidenav (onToggleSideNav)="onToggleSideNav($event)"></app-sidenav>
+<app-body
+    [collapsed]="isSideNavCollapsed"
+    [screenWidth]="screenWidth"
+></app-body>
   <app-drag></app-drag>
 </body>
 </html>
