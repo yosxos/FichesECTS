@@ -22,6 +22,10 @@ export const handler = async (event: any = {}): Promise<any> => {
         await connection.end();
         return {
             statusCode: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*', // or set to a specific origin
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(rowsDel),
         };
     case 'POST':
@@ -31,6 +35,10 @@ export const handler = async (event: any = {}): Promise<any> => {
         await connection.end();
         return {
             statusCode: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*', // or set to a specific origin
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(rowsIns),
         };
    }
@@ -40,6 +48,10 @@ export const handler = async (event: any = {}): Promise<any> => {
     console.error(err);
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // or set to a specific origin
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ message: 'Internal server error' }),
     };
   }

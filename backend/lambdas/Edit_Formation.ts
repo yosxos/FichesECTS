@@ -22,24 +22,36 @@ export const handler = async (event: any = {}): Promise<any> => {
         await connection.end();
         return {
             statusCode: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*', // or set to a specific origin
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(rowsDel),
         };
     case 'PUT':
         // Run a UPDATE query
-        const queryUp = `UPDATE ${TABLE_NAME} SET parcour = "${body.parcour}",code = "${body.code}",année = "${body.année}",niveau = "${body.niveau}" WHERE id = ${body.id}`;
+        const queryUp = `UPDATE ${TABLE_NAME} SET parcour = "${body.parcour}",code = "${body.code}",annee = "${body.annee}",niveau = "${body.niveau}" WHERE id = ${body.id}`;
         const [rowsUp] = await connection.execute(queryUp);
         await connection.end();
         return {
             statusCode: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*', // or set to a specific origin
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(rowsUp),
         };
     case 'POST':
         // Run a INSERT query
-        const queryIns = `INSERT INTO ${TABLE_NAME} (parcour,code,année,niveau) VALUES ("${body.parcour}","${body.code}","${body.année}","${body.niveau}")`;
+        const queryIns = `INSERT INTO ${TABLE_NAME} (parcour,code,annee,niveau) VALUES ("${body.parcour}","${body.code}","${body.annee}","${body.niveau}")`;
         const [rowsIns] = await connection.execute(queryIns);
         await connection.end();
         return {
             statusCode: 200,
+            headers: {
+              'Access-Control-Allow-Origin': '*', // or set to a specific origin
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(rowsIns),
         };
    }
@@ -49,6 +61,10 @@ export const handler = async (event: any = {}): Promise<any> => {
     console.error(err);
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // or set to a specific origin
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ message: 'Internal server error' }),
     };
   }

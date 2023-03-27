@@ -6,6 +6,8 @@ import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction, NodejsFunctionProps } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { join } from 'path';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
+import * as cognito from 'aws-cdk-lib/aws-cognito';
+import { AllowedMethods } from 'aws-cdk-lib/aws-cloudfront';
 
 export class BackendStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -73,7 +75,31 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       // eslint-disable-next-line @typescript-eslint/no-non-null-asserted-optional-chain
       value: instance.secret?.secretName!,
     });
+    //Amazon Cognito user pool
+    const userPool = new cognito.UserPool(this, 'Users', {
+      userPoolName: 'PFE-Users',
+      selfSignUpEnabled: true,
+      signInAliases: {
+        email: true
+      }
+    });
+    //User pool client for the api
+    const userPoolClient = new cognito.UserPoolClient(this, 'UsersClient', {
+      userPool,
+      userPoolClientName: 'PFE-Users-client',
+      generateSecret: false,
+      authFlows: {
+        userPassword: true,
+      }
+    });
+    //Define the authorize for your apiGateway
+    const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'MyAuthorizer', {
+     cognitoUserPools: [userPool],
+      authorizerName: 'my-authorizer',
+      identitySource: 'method.request.header.Authorization',
+    
 
+    });
     //create a lambda function to connect to the database and run Select query
     const FormationGet = new NodejsFunction(this, 'FormationGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
@@ -85,7 +111,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Formation",
       },
       vpc,
@@ -103,7 +129,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Formation",
       },
       vpc,
@@ -121,23 +147,37 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     instance.connections.allowFrom(FormationGet.connections,ec2.Port.tcp(3306));
     instance.connections.allowFrom(FormationEdit.connections,ec2.Port.tcp(3306));
 
-  
-    //Create a new API Gateway  
+    //Create a new apiGateway
     const api = new apigateway.RestApi(this, 'FichesECTS', {
       restApiName: 'FichesECTS Service',
       description: 'This service serves FichesECTS.',
+      defaultCorsPreflightOptions: {
+        allowOrigins: ["*"],
+        allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: ["content-type", "Authorization","Access-C","Access-Control-Allow-Origin","Access-Control-Allow-Headers","Access-Control-Allow-Methods"]
+      },
     });
     //Create a new resource
     const formation = api.root.addResource('formation');
     const formationEdit = formation.addResource('edit');
     //Create a new method
-    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
+    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet,);
+    
     formation.addMethod('GET', formationGetIntegration);
+    
     const formationEditIntegration = new apigateway.LambdaIntegration(FormationEdit);
-    formationEdit.addMethod('PUT', formationEditIntegration);
-    formationEdit.addMethod('POST', formationEditIntegration);
-    formationEdit.addMethod('DELETE', formationEditIntegration);
-
+    formationEdit.addMethod('PUT', formationEditIntegration, {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+    });
+    formationEdit.addMethod('POST', formationEditIntegration, {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+    });
+    formationEdit.addMethod('DELETE', formationEditIntegration, {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+    });
 
 
     /** ControleGET */
@@ -153,7 +193,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Controle",
       },
       vpc,
@@ -183,7 +223,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Controle",
       },
       vpc,
@@ -200,9 +240,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const controleEdit = controle.addResource('edit');
     //Create a new method
     const controleEditIntegration = new apigateway.LambdaIntegration(ControleEdit);
-    controleEdit.addMethod('PUT', controleEditIntegration);
-    controleEdit.addMethod('POST', controleEditIntegration);
-    controleEdit.addMethod('DELETE', controleEditIntegration);
+    controleEdit.addMethod('PUT', controleEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    controleEdit.addMethod('POST', controleEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    controleEdit.addMethod('DELETE', controleEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
 
 
@@ -220,7 +269,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"UE",
       },
       vpc,
@@ -250,7 +299,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"UE",
       },
       vpc,
@@ -267,9 +316,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const ueEdit = ue.addResource('edit');
     //Create a new method
     const ueEditIntegration = new apigateway.LambdaIntegration(UeEdit);
-    ueEdit.addMethod('PUT', ueEditIntegration);
-    ueEdit.addMethod('POST', ueEditIntegration);
-    ueEdit.addMethod('DELETE', ueEditIntegration);
+    ueEdit.addMethod('PUT', ueEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    ueEdit.addMethod('POST', ueEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    ueEdit.addMethod('DELETE', ueEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
 
 
@@ -286,7 +344,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Matiere",
       },
       vpc,
@@ -317,7 +375,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Matiere",
       },
       vpc,
@@ -335,9 +393,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const matiereEdit = matiere.addResource('edit');
     //Create a new method
     const matiereEditIntegration = new apigateway.LambdaIntegration(MatiereEdit);
-    matiereEdit.addMethod('PUT', matiereEditIntegration);
-    matiereEdit.addMethod('POST', matiereEditIntegration);
-    matiereEdit.addMethod('DELETE', matiereEditIntegration);
+    matiereEdit.addMethod('PUT', matiereEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    matiereEdit.addMethod('POST', matiereEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    matiereEdit.addMethod('DELETE', matiereEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
 
 
@@ -354,7 +421,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Responsable_formation",
       },
       vpc,
@@ -385,7 +452,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Responsable_formation",
       },
       vpc,
@@ -402,9 +469,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const responsableFormationEdit = responsableFormation.addResource('edit');
     //Create a new method
     const responsableFormationEditIntegration = new apigateway.LambdaIntegration(ResponsableFormationEdit);
-    responsableFormationEdit.addMethod('PUT', responsableFormationEditIntegration);
-    responsableFormationEdit.addMethod('POST', responsableFormationEditIntegration);
-    responsableFormationEdit.addMethod('DELETE', responsableFormationEditIntegration);
+    responsableFormationEdit.addMethod('PUT', responsableFormationEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    responsableFormationEdit.addMethod('POST', responsableFormationEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    responsableFormationEdit.addMethod('DELETE', responsableFormationEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
     /** UeFormationGet */
     const FormationUeGet = new NodejsFunction(this, 'UeFormationGet', {
@@ -417,7 +493,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Formation_UE",
       },
       vpc,
@@ -447,7 +523,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Formation_UE",
       },
       vpc,
@@ -463,9 +539,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const formationUeEdit = formationUe.addResource('edit');
     //Create a new method 
     const FormationUeEditIntegration = new apigateway.LambdaIntegration(FormationUeEdit);
-    formationUeEdit.addMethod('PUT', FormationUeEditIntegration);
-    formationUeEdit.addMethod('POST', FormationUeEditIntegration);
-    formationUeEdit.addMethod('DELETE', FormationUeEditIntegration);
+    formationUeEdit.addMethod('PUT', FormationUeEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    formationUeEdit.addMethod('POST', FormationUeEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    formationUeEdit.addMethod('DELETE', FormationUeEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
     /** MatiereUeGet */
     const UeMatiereGet = new NodejsFunction(this, 'MatiereUeGet', {
@@ -478,7 +563,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Matiere_UE",
 
       },
@@ -509,7 +594,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"Matiere_UE",
       },
       vpc,
@@ -525,9 +610,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const ueMatiereEdit = ueMatiere.addResource('edit');
     //Create a new method
     const UeMatiereEditIntegration = new apigateway.LambdaIntegration(UeMatiereEdit);
-    ueMatiereEdit.addMethod('PUT', UeMatiereEditIntegration);
-    ueMatiereEdit.addMethod('POST', UeMatiereEditIntegration);
-    ueMatiereEdit.addMethod('DELETE', UeMatiereEditIntegration);
+    ueMatiereEdit.addMethod('PUT', UeMatiereEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    ueMatiereEdit.addMethod('POST', UeMatiereEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    ueMatiereEdit.addMethod('DELETE', UeMatiereEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
     
 
@@ -542,7 +636,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"users",
 
       },
@@ -573,7 +667,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"users",
       },
       vpc,
@@ -589,9 +683,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const usersEdit = users.addResource('edit');
     //Create a new method
     const UsersEditIntegration = new apigateway.LambdaIntegration(UsersEdit);
-    usersEdit.addMethod('PUT', UsersEditIntegration);
-    usersEdit.addMethod('POST', UsersEditIntegration);
-    usersEdit.addMethod('DELETE', UsersEditIntegration);
+    usersEdit.addMethod('PUT', UsersEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    usersEdit.addMethod('POST', UsersEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    usersEdit.addMethod('DELETE', UsersEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
     /**Admin Get */
     const AdminGet = new NodejsFunction(this, 'AdminGet', {
@@ -604,7 +707,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"admin",
       
       },
@@ -635,7 +738,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"4az0,=sVt1JH40sQZ1B4CpW4,_sYv3",
+        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
         TABLE_NAME:"admin",
       },
       vpc,
@@ -651,9 +754,18 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const adminEdit = admin.addResource('edit');
     //Create a new method
     const AdminEditIntegration = new apigateway.LambdaIntegration(AdminEdit);
-    adminEdit.addMethod('PUT', AdminEditIntegration);
-    adminEdit.addMethod('POST', AdminEditIntegration);
-    adminEdit.addMethod('DELETE', AdminEditIntegration);
+    adminEdit.addMethod('PUT', AdminEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    adminEdit.addMethod('POST', AdminEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
+    adminEdit.addMethod('DELETE', AdminEditIntegration    , {
+      authorizer,
+      authorizationType: apigateway.AuthorizationType.COGNITO,
+      });
 
   
   }
