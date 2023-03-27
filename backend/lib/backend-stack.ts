@@ -161,31 +161,9 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const formation = api.root.addResource('formation');
     const formationEdit = formation.addResource('edit');
     //Create a new method
-    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet, {
-      integrationResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
-            'method.response.header.Access-Control-Allow-Origin': "'*'",
-            'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE'"
-          }
-        }
-      ]
-    });
+    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet,);
     
-    formation.addMethod('GET', formationGetIntegration,{
-      methodResponses: [
-        {
-          statusCode: '200',
-          responseParameters: {
-            'method.response.header.Access-Control-Allow-Origin': true,
-            'method.response.header.Access-Control-Allow-Headers': true,
-            'method.response.header.Access-Control-Allow-Methods': true,
-          },
-        },
-      ],
-    });
+    formation.addMethod('GET', formationGetIntegration);
     
     const formationEditIntegration = new apigateway.LambdaIntegration(FormationEdit);
     formationEdit.addMethod('PUT', formationEditIntegration, {

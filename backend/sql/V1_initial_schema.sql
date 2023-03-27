@@ -13,7 +13,7 @@ CREATE TABLE admin (
 CREATE TABLE Formation (
   id int NOT NULL AUTO_INCREMENT,
   parcour VARCHAR(50) NOT NULL,
-  année VARCHAR(50) NOT NULL,
+  annee VARCHAR(50) NOT NULL,
   niveau VARCHAR(50) NOT NULL,
   code VARCHAR(50) NOT NULL,
   PRIMARY KEY (id)
