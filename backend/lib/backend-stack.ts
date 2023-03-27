@@ -96,7 +96,9 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const authorizer = new apigateway.CognitoUserPoolsAuthorizer(this, 'MyAuthorizer', {
      cognitoUserPools: [userPool],
       authorizerName: 'my-authorizer',
-      identitySource: 'method.request.header.Authorization'
+      identitySource: 'method.request.header.Authorization',
+    
+
     });
     //create a lambda function to connect to the database and run Select query
     const FormationGet = new NodejsFunction(this, 'FormationGet', {
@@ -145,40 +147,59 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     instance.connections.allowFrom(FormationGet.connections,ec2.Port.tcp(3306));
     instance.connections.allowFrom(FormationEdit.connections,ec2.Port.tcp(3306));
 
-  
-    //Create a new API Gateway  
+    //Create a new apiGateway
     const api = new apigateway.RestApi(this, 'FichesECTS', {
       restApiName: 'FichesECTS Service',
       description: 'This service serves FichesECTS.',
       defaultCorsPreflightOptions: {
-        allowOrigins: apigateway.Cors.ALL_ORIGINS,
+        allowOrigins: ["*"],
         allowMethods: apigateway.Cors.ALL_METHODS,
+        allowHeaders: ["content-type", "Authorization","Access-C","Access-Control-Allow-Origin","Access-Control-Allow-Headers","Access-Control-Allow-Methods"]
       },
     });
     //Create a new resource
     const formation = api.root.addResource('formation');
     const formationEdit = formation.addResource('edit');
     //Create a new method
-    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet);
+    const formationGetIntegration = new apigateway.LambdaIntegration(FormationGet, {
+      integrationResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Headers': "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'",
+            'method.response.header.Access-Control-Allow-Origin': "'*'",
+            'method.response.header.Access-Control-Allow-Methods': "'OPTIONS,GET,PUT,POST,DELETE'"
+          }
+        }
+      ]
+    });
     
-    formation.addMethod('GET', formationGetIntegration)
+    formation.addMethod('GET', formationGetIntegration,{
+      methodResponses: [
+        {
+          statusCode: '200',
+          responseParameters: {
+            'method.response.header.Access-Control-Allow-Origin': true,
+            'method.response.header.Access-Control-Allow-Headers': true,
+            'method.response.header.Access-Control-Allow-Methods': true,
+          },
+        },
+      ],
+    });
+    
     const formationEditIntegration = new apigateway.LambdaIntegration(FormationEdit);
-    formationEdit.addMethod('PUT', formationEditIntegration    , {
+    formationEdit.addMethod('PUT', formationEditIntegration, {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
-      });
-    formationEdit.addMethod('POST', formationEditIntegration
-    , {
+    });
+    formationEdit.addMethod('POST', formationEditIntegration, {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
-      }
-      );
-    formationEdit.addMethod('DELETE', formationEditIntegration    , {
+    });
+    formationEdit.addMethod('DELETE', formationEditIntegration, {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
-      });
-
-
+    });
 
 
     /** ControleGET */
