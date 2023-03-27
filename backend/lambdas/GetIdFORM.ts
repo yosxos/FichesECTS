@@ -13,10 +13,9 @@ export const handler = async (event: any = {}): Promise<any> => {
       database: process.env.DB_NAME,
     });
     const body = event.body ? JSON.parse(event.body) : null;
-
-    if (event.stringParameters && event.stringParameters.id) {
+    if (event.queryStringParameters && event.queryStringParameters.id) {
       // Run a SELECT query
-      const query = `SELECT * FROM ${TABLE_NAME} WHERE id_formation = "${body.id}"`;
+      const query = `SELECT * FROM ${TABLE_NAME} WHERE id_formation = ${event.queryStringParameters.id}`;
       const [rows] = await connection.execute(query);
       await connection.end();
       return {
