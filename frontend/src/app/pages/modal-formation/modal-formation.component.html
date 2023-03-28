@@ -1,0 +1,47 @@
+<section>
+
+    <div class="modal-dialog modal-fullscreen-sm-down">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">{{ data?.parcour }} - {{ data?.annee }} - {{ data?.niveau }}</h4>
+            <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h5>Code: {{ data?.code }}</h5>
+            <div *ngFor="let ue of data?.ue">
+              <h6>{{ ue.nom }} ({{ ue.semestre }} - {{ ue.ects }} ECTS)</h6>
+              <ul>
+                <li *ngFor="let matiere of ue.matiere">
+                  <strong>{{ matiere.nom }}</strong> ({{ matiere.ects }} ECTS)
+                  <ul>
+                    <li>CM: {{ matiere.cm }}</li>
+                    <li>TD: {{ matiere.td }}</li>
+                    <li>TP: {{ matiere.tp }}</li>
+                    <li>Pro: {{ matiere.Pro }}</li>
+                    <li>TPE: {{ matiere.TPE }}</li>
+                    <li>Département: {{ matiere.departement }}</li>
+                  </ul>
+                  <!--
+                  <h6>Session 1</h6>
+                  <ul *ngFor="let session1 of matiere.id_session1">
+                    <li>Type de contrôle: {{ session1.type_control }}</li>
+                    <li>Type d'épreuve: {{ session1.type_epreuve }}</li>
+                    <li>Règle particulière: {{ session1.regle_particuliere }}</li>
+                    <li>Règle de calcul: {{ session1.regle_calcul }}</li>
+                  </ul> 
+                  <h6>Session 2</h6>
+                  <ul *ngFor="let session2 of matiere.id_session2">
+                    <li>Type de contrôle: {{ session2.type_control }}</li>
+                    <li>Type d'épreuve: {{ session2.type_epreuve }}</li>
+                    <li>Règle particulière: {{ session2.regle_particuliere }}</li>
+                    <li>Règle de calcul: {{ session2.regle_calcul }}</li>
+                  </ul> -->
+                </li>
+                </ul> 
+            </div>
+        </div>
+        </div>
+        </div>
+</section>

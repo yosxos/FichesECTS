@@ -1,0 +1,103 @@
+<section class="bg-light">
+    <div class="container">
+      <div class="row align-items-center py-5">
+        <div class="col-lg-8">
+          <h2 class="mb-3">Titre de la fiche ECTS</h2>
+          <p class="lead mb-3">Présentation : Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque quis consectetur ligula. Sed aliquam nisl id urna.</p>
+          <p class="mb-3">Informations : Pellentesque vitae vestibulum lorem. Nulla facilisi. Integer pulvinar nunc a lacus bibendum, vel consequat turpis laoreet.</p>
+          <p class="mb-3">Description : Etiam sed nibh vitae metus tempor venenatis. Sed pellentesque enim ac consequat interdum. Integer tristique, libero vel scelerisque euismod, metus ligula.</p>
+          <div class="d-flex">
+            <a href="#" class="btn btn-primary mt-3">En savoir plus</a>
+          </div>
+        </div>
+        <div class="col-lg-4 d-none d-lg-block">
+          <img src="https://via.placeholder.com/300x400" alt="Fiche ECTS" class="img-fluid">
+        </div>
+      </div>
+    </div>
+</section>
+
+
+<!-- Section table de formation ! -->
+<section class="bg-light">
+    <div class="container">
+      <div class="row py-3">
+        <div class="col-lg-12">
+          <div class="d-flex justify-content-between">
+            <div>
+              <label for="filter-name" class="form-label">Nom</label>
+              <input type="text" id="filter-name" class="form-control" placeholder="Filtrer par nom">
+            </div>
+            <div>
+              <label for="filter-title" class="form-label">Titre</label>
+              <input type="text" id="filter-title" class="form-control" placeholder="Filtrer par titre">
+            </div>
+            <div>
+              <label for="filter-status" class="form-label">Statut</label>
+              <select id="filter-status" class="form-select">
+                <option selected>Tous</option>
+                <option value="Active">Actif</option>
+                <option value="Onboarding">Intégration</option>
+                <option value="Awaiting">En attente</option>
+              </select>
+            </div>
+            <div>
+              <label for="filter-position" class="form-label">Position</label>
+              <select id="filter-position" class="form-select">
+                <option selected>Toutes</option>
+                <option value="Senior">Senior</option>
+                <option value="Junior">Junior</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row py-2">
+        <div class="col-lg-12">
+            <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Id</th>
+                    <th>Parcours</th>
+                    <th>Année</th>
+                    <th>Niveau</th>
+                    <th>Code</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let f of formationService.listeFormations">
+                        <!-- ID -->
+                        <td>
+                          <div class="d-flex align-items-center">
+                            <div class="ms-3">
+                              <p class="fw-bold mb-1">{{f.id}}</p>
+                              <!--<p class="text-muted mb-0">john.doe@gmail.com</p>-->
+                            </div>
+                          </div>
+                        </td>
+                        <!-- Parcours -->
+                        <td>
+                          <p class="fw-normal mb-1">{{f.parcour}}</p>
+                          <!--<p class="text-muted mb-0">IT department</p>-->
+                        </td>
+                        <!-- Année -->
+                        <td>{{f.annee}}</td>
+                        <!-- Niveau -->
+                        <td>{{f.niveau}}</td>
+                        <!-- Code -->
+                        <td>{{f.code}}</td>
+                        <td>
+                          <button (click)="openModal()" type="button" class="btn btn-link btn-sm btn-rounded">
+                            View
+                          </button>
+                        </td>
+                      </tr>
+                </tbody>
+              </table>
+        </div>
+      </div>
+    </div>
+  </section>
+  
+  
