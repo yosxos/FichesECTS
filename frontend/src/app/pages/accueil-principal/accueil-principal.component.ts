@@ -6,7 +6,7 @@ import { ModalFormationComponent } from '../modal-formation/modal-formation.comp
 @Component({
   selector: 'app-accueil-principal',
   templateUrl: './accueil-principal.component.html',
-  styleUrls: ['./accueil-principal.component.css']
+  styleUrls: ['./accueil-principal.component.scss']
 })
 
 export class AccueilPrincipalComponent implements OnInit {

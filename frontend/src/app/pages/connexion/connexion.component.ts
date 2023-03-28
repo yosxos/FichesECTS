@@ -5,7 +5,7 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
 @Component({
   selector: 'app-connexion',
   templateUrl: './connexion.component.html',
-  styleUrls: ['./connexion.component.css']
+  styleUrls: ['./connexion.component.scss']
 })
 export class ConnexionComponent {
 
