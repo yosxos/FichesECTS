@@ -14,13 +14,17 @@ export const handler = async (event: any = {}): Promise<any> => {
     });
     const body = event.body ? JSON.parse(event.body) : null;
 
-    if (event.stringParameters && event.stringParameters.id) {
+    if (event.queryStringParameters && event.queryStringParameters.id) {
       // Run a SELECT query
-      const query = `SELECT * FROM ${TABLE_NAME} WHERE id_matiere = "${body.id}"`;
+      const query = `SELECT * FROM ${TABLE_NAME} WHERE id_matiere = ${event.queryStringParameters.id}`;
       const [rows] = await connection.execute(query);
       await connection.end();
       return {
         statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*', // or set to a specific origin
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(rows),
       };
     } else {
@@ -31,6 +35,10 @@ export const handler = async (event: any = {}): Promise<any> => {
       await connection.end();
       return {
         statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*', // or set to a specific origin
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(rows),
       };
     }
@@ -38,6 +46,10 @@ export const handler = async (event: any = {}): Promise<any> => {
     console.error(err);
     return {
       statusCode: 500,
+      headers: {
+        'Access-Control-Allow-Origin': '*', // or set to a specific origin
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({ message: 'Internal server error' }),
     };
   }
