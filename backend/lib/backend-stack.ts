@@ -76,15 +76,34 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       value: instance.secret?.secretName!,
     });
     //Amazon Cognito user pool
-    const userPool = new cognito.UserPool(this, 'Users', {
-      userPoolName: 'PFE-Users',
+    const userPool = new cognito.UserPool(this, 'UserPool', {
+      userPoolName: 'PFE',
       selfSignUpEnabled: true,
       signInAliases: {
         email: true
-      }
+      },
+      standardAttributes: {
+        email: {
+          required: true,
+          mutable: true
+        },
+        familyName: {
+          required: true,
+          mutable: true
+        },
+        givenName: {
+          required: true,
+          mutable: true
+        }
+      },
+
     });
+    //add a username attribute to the user pool
+
+
+    
     //User pool client for the api
-    const userPoolClient = new cognito.UserPoolClient(this, 'UsersClient', {
+    const userPoolClient = new cognito.UserPoolClient(this, 'PFEClient', {
       userPool,
       userPoolClientName: 'PFE-Users-client',
       generateSecret: false,
