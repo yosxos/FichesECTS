@@ -40,7 +40,7 @@ export const navbarData: INavbarData[] = [
         ]
     },
     {
-        routeLink: 'parametres',
+        routeLink: 'connexion',
         icon: 'fal fa-cog',
         label: 'Paramètres',
     },

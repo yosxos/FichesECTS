@@ -8,11 +8,11 @@ import { Preing2Component } from './preing2/preing2.component';
 
 const routes: Routes = [
   {
-    path: 'preing1',
+    path: 'preing-1',
     component: Preing1Component
   },
   {
-    path: 'preing2',
+    path: 'preing-2',
     component: Preing2Component
   },
   {

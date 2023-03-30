@@ -1,14 +1,14 @@
 @media (max-width: 600px) {
     .sidenav{
         width: 100vh;
-        height: 5rem;
+        height: 100%;
         // couleur du menu 
         background: #2760ab;
         transition: all .5s ease;
-        position: flex;
         float: left;
         z-index: 1;
         top: 0;
+        bottom:0;
         margin: 0;
     
         //ombre entre le menu et la page 
@@ -33,11 +33,12 @@
     // couleur du menu 
     background: #2760ab;
     transition: all .5s ease;
-    position: flex;
     float: left;
+    position: fixed;
     z-index: 1;
     top: 0;
     margin: 0;
+    bottom: 0;
     width: 5rem;
     height: 100vh;
     //ombre entre le menu et la page 
@@ -239,6 +240,7 @@
     scrollbar-color: #556268 transparent;
 }
 
-
+.sidenav-text{
+    margin-left: 1.5rem;
 }
-
+}

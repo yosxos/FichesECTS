@@ -6,7 +6,7 @@ import { fadeInOut, INavbarData } from './helper';
 @Component({
   selector: 'app-sublevel-menu',
   template: `
-    <ul *ngIf="collapsed && data.items && data.items.length > 0"
+    <ul *ngIf="collapsed"
     [@submenu]="expanded
       ? {value: 'visible', 
           params: {transitionParams: '400ms cubic-bezier(0.86, 0, 0.07, 1)', height: '*'}}
