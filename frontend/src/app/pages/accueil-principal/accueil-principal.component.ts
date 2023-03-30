@@ -19,9 +19,9 @@ export class AccueilPrincipalComponent implements OnInit {
     this.gestionService.getUeMatiereApi()
   }
 
-  openModal() {
+  openModal(id : number) {
     const modalRef = this.modalService.open(ModalFormationComponent);
-    modalRef.componentInstance.data = this.formationService.listeFormations[0];
+    modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
     console.log('data : ', modalRef.componentInstance.data);
   }
   

@@ -32,7 +32,6 @@ export class FormationGetService {
   // Modification de la formation
   addUeToFormation(index: number, ue: UeI){
     this.listeFormations[index].ue?.push(ue as UeI);
-    //this.listeFormations[index].ue?.forEach(ue => {ue.matiere = []})
   }
 
 

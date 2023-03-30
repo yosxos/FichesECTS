@@ -1,5 +1,5 @@
 <section>
-      
+    <!--
     <div class="modal-dialog modal-fullscreen-sm-down">
         <div class="modal-content">
           <div class="modal-header">
@@ -41,23 +41,27 @@
                 </li>
                 </ul> 
             </div>
+            <div class="btn-group ml-auto">
+              <button type="button" class="btn btn-secondary">Exporter en PDF</button>
+              <button type="button" class="btn btn-secondary">Exporter en Excel</button>
+            </div>
         </div>
         </div>
-        </div> 
-        <!--
+        </div> -->
+        
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">{{ data?.parcour }} - {{ data?.annee }} - {{ data?.niveau }}</h4>
               <div class="btn-group ml-auto">
-                <button type="button" class="btn btn-secondary">Exporter en PDF</button>
+                <button type="button" (click)="openPDF()" class="btn btn-secondary">Exporter en PDF</button>
                 <button type="button" class="btn btn-secondary">Exporter en Excel</button>
               </div>
               <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" id="htmlData">
               <table class="table table-striped">
                 <thead class="thead-light">
                   <tr>
@@ -108,6 +112,6 @@
               </table>
             </div>
           </div>
-        </div> -->
+        </div> 
         
 </section>
