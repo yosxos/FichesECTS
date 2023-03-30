@@ -32,8 +32,8 @@ export interface MatiereI {
 
 export interface ControleI {
     id: number,
-    type_control: string | "--"
-    type_epreuve: "E" | "et/ou" | "O",
-    regle_particuliere: string | "--",
+    type_control: string | "--", // enum
+    type_epreuve: "E" | "E et/ou O" | "O" , // enum
+    regle_particuliere: string ,
     regle_calcul: number
 }

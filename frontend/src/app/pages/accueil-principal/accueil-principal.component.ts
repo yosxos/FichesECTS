@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from '../modal-formation/modal-formation.component';
+import { FormationGetService } from 'src/app/services/formation-get.service';
+import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
 
 @Component({
   selector: 'app-accueil-principal',
@@ -11,17 +12,17 @@ import { ModalFormationComponent } from '../modal-formation/modal-formation.comp
 
 export class AccueilPrincipalComponent implements OnInit {
 
-  constructor(public formationService: GestionFichesService, private modalService: NgbModal) { }
+  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService) { }
 
   ngOnInit(): void {
-    this.formationService.getFormationUeApi();
-    this.formationService.getUeApi();
-    this.formationService.getFormations();
+    this.gestionService.getFormationUeApi();
+    this.gestionService.getUeMatiereApi()
   }
 
   openModal() {
     const modalRef = this.modalService.open(ModalFormationComponent);
-    modalRef.componentInstance.data = this.formationService.listeFormations;
+    modalRef.componentInstance.data = this.formationService.listeFormations[0];
+    console.log('data : ', modalRef.componentInstance.data);
   }
   
 
