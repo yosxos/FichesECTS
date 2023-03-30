@@ -28,7 +28,6 @@ export class AuthServiceService {
   
 
   connected() : boolean {
-    console.log(this.userId.status == "actif")
-    return this.userId.status == "actif";
+    return this.userId.status == "actif" || this.userId.status == "admin" ;
   }
 }

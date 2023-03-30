@@ -4,8 +4,8 @@ import { AccueilComponent } from './pages/accueil/accueil.component';
 import { AddFichesComponent } from './pages/add-fiches/add-fiches.component';
 
 const routes: Routes = [
-  {path: '', component:AccueilComponent},
-  {path: 'add-fiches', component:AddFichesComponent}
+  {path: 'addFiche', component:AddFichesComponent},
+  {path: '', component:AccueilComponent}
 ];
 
 @NgModule({

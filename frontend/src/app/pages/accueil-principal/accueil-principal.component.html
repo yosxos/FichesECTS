@@ -49,6 +49,9 @@
                 <option value="Junior">Junior</option>
               </select>
             </div>
+            <div *ngIf="connected()" class="d-flex align-items-end">
+              <button type="button" routerLink="/intranet/addFiche" class="btn btn-primary ms-3">Ajouter</button>
+            </div>
           </div>
         </div>
       </div>

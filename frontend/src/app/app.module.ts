@@ -14,8 +14,6 @@ import { ModalFormationComponent } from './pages/modal-formation/modal-formation
 import { subscribeOn } from 'rxjs';
 import { SublevelMenuComponent } from './pages/sidenav/sublevel-menu.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
-import { AddFichesComponent } from './intranet/pages/add-fiches/add-fiches.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
@@ -26,8 +24,6 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
     ModalFormationComponent,
     SidenavComponent,
     SublevelMenuComponent,
-    AddFichesComponent,
-    DashboardComponent,
   ],
   imports: [
     BrowserModule,

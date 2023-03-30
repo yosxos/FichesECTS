@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 
 import { IntranetRoutingModule } from './intranet-routing.module';
 import { AccueilComponent } from './pages/accueil/accueil.component';
+import { AddFichesComponent } from './pages/add-fiches/add-fiches.component';
 
 
 @NgModule({
   declarations: [
-    AccueilComponent
+    AccueilComponent,
+    AddFichesComponent
   ],
   imports: [
     CommonModule,
