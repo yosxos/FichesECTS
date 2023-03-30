@@ -20,12 +20,22 @@ export class UeGetService {
 
   // Récupère les données de la table ue
   async getUeApi(){
+    this.listUe = [];
     await this.httpClient.get<Array<UeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ue').subscribe(
       (response) => {
         this.listUe = response
         this.listUe.forEach(ue => {ue.matiere = []})
       }
     )
+  }
+
+  /**
+ * Vérification des si les ID suivantes existent dans les données 
+ */
+  idInList(id: string | number): boolean {
+    let tmp: boolean = false; 
+    this.listUe.forEach( element => id == element.id ? tmp = true : console.log("not in array", element))
+    return tmp;
   }
 
   // Ajout d'une matière à l'ue

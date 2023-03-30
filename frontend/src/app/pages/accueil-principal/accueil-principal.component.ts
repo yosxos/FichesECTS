@@ -15,11 +15,11 @@ export class AccueilPrincipalComponent implements OnInit {
   constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService) { }
 
   ngOnInit(): void {
-    this.gestionService.getFormationUeApi();
-    this.gestionService.getUeMatiereApi()
   }
 
+  /** TODOO alerte en cas de manque de donnée ! */
   openModal(id : number) {
+    this.gestionService.getFormationUeById(id);
     const modalRef = this.modalService.open(ModalFormationComponent);
     modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
     console.log('data : ', modalRef.componentInstance.data);

@@ -18,8 +18,18 @@ export class ControleGetService {
     return this.listControle.find(ue => ue.id === id);
   }
 
+   /**
+   * Vérification des si les ID suivantes existent dans les données 
+   */
+   idInList(id: string | number): boolean {
+    let tmp: boolean = false; 
+    this.listControle.forEach( element => id == element.id ? tmp = true : console.log("not in array", element))
+    return tmp;
+  }
+
   // Récupère les données de la table controle
   getControleApi(){
+    this.listControle = [];
     this.httpClient.get<Array<ControleI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/controle').subscribe(
       (response) => {
         this.listControle = response;

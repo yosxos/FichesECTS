@@ -37,3 +37,13 @@ export interface ControleI {
     regle_particuliere: string ,
     regle_calcul: number
 }
+
+export interface FormationUeI {
+    id_formation: number,
+    id_ue: number
+}
+
+export interface UeMatiereI {
+    id_ue: number,
+    id_matiere: number
+}

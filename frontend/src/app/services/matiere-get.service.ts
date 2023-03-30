@@ -21,6 +21,7 @@ export class MatiereGetService {
 
   // Récupère les données de la table matiere
   async getMatiereApi(){
+    this.listMatiere = [];
     await this.httpClient.get<Array<MatiereI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/matiere').subscribe(
       (response) => {
         try {
@@ -38,6 +39,15 @@ export class MatiereGetService {
         }
       }
     )
+  }
+
+   /**
+   * Vérification des si les ID suivantes existent dans les données 
+   */
+   idInList(id: string | number): boolean {
+    let tmp: boolean = false; 
+    this.listMatiere.forEach( element => id == element.id ? tmp = true : console.log("not in array", element))
+    return tmp;
   }
   
 }

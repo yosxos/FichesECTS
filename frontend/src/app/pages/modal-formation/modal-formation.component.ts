@@ -18,7 +18,9 @@ export class ModalFormationComponent {
   @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() data?: FormationI;
 
-  constructor(public activeModal: NgbActiveModal) {}
+  constructor(public activeModal: NgbActiveModal) {
+    
+  }
 
   public openPDF(): void {
     let DATA: any = document.getElementById('htmlData');

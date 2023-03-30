@@ -20,6 +20,7 @@ export class FormationGetService {
 
   // Récupère les données de la table formation
   async getFormations(){
+    this.listeFormations = [];
     await this.httpClient.get<Array<FormationI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/formation').subscribe(
       (response) => {
         console.log('response',response);
@@ -34,5 +35,13 @@ export class FormationGetService {
     this.listeFormations[index].ue?.push(ue as UeI);
   }
 
+   /**
+   * Vérification des si les ID suivantes existent dans les données 
+   */
+   idInList(id: string | number): boolean {
+    let tmp: boolean = false; 
+    this.listeFormations.forEach( element => id == element.id ? tmp = true : console.log("not in array", element))
+    return tmp;
+  }
 
 }
