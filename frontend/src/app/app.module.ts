@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import {HttpClientModule, HTTP_INTERCEPTORS} from '@angular/common/http';
 import { FormsModule
 } from '@angular/forms';
@@ -11,6 +12,9 @@ import { HeaderComponent } from './pages/header/header.component';
 import { AccueilPrincipalComponent } from './pages/accueil-principal/accueil-principal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from './pages/modal-formation/modal-formation.component';
+import { subscribeOn } from 'rxjs';
+import { SublevelMenuComponent } from './pages/sidenav/sublevel-menu.component';
+import { SidenavComponent } from './pages/sidenav/sidenav.component';
 
 @NgModule({
   declarations: [
@@ -19,10 +23,13 @@ import { ModalFormationComponent } from './pages/modal-formation/modal-formation
     FooterComponent,
     HeaderComponent,
     AccueilPrincipalComponent,
-    ModalFormationComponent
+    ModalFormationComponent,
+    SidenavComponent,
+    SublevelMenuComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
