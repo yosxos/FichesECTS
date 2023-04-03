@@ -1,8 +1,7 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormationI } from 'src/app/modeles/formation-i';
-import html2canvas from 'html2canvas';
-import  jsPDF from 'jspdf';
+
 
 
 
@@ -19,21 +18,9 @@ export class ModalFormationComponent {
   @Input() data?: FormationI;
 
   constructor(public activeModal: NgbActiveModal) {
-    
+
   }
 
-  public openPDF(): void {
-    let DATA: any = document.getElementById('htmlData');
-    html2canvas(DATA).then((canvas) => {
-      let fileWidth = 208;
-      let fileHeight = (canvas.height * fileWidth) / canvas.width;
-      const FILEURI = canvas.toDataURL('image/png');
-      let PDF = new jsPDF('p', 'mm', 'a4');
-      let position = 0;
-      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
-      PDF.save('ficheEcts_' + this.data?.parcour + '_' + this.data?.niveau + '_' + this.data?.annee + '.pdf');
-    });
-  }
  /*
   exportDataToPDF() {
     // Creating a unique file name for my PDF
@@ -51,7 +38,7 @@ export class ModalFormationComponent {
     ]), { autoSize: false });
     doc.save(fileName);
   }
-   
+
   private _createHeadersForPdfTable(keys: string[]) {
     const result: CellConfig[] = [];
     for (let i = 0; i < keys.length; i += 1) {
@@ -65,7 +52,7 @@ export class ModalFormationComponent {
     }
     return result;
   }
-   
+
   private _getDataForPdfTable() {
     const data = [];
       data.push({
@@ -76,8 +63,7 @@ export class ModalFormationComponent {
       return data;
     }*/
 
-   
+
 
   }
 
-  

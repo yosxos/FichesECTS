@@ -23,23 +23,23 @@
                     <li>TPE: {{ matiere.TPE }}</li>
                     <li>Département: {{ matiere.departement }}</li>
                   </ul>
-                  
+
                   <h6>Session 1</h6>
                   <ul >
                     <li>Type de contrôle: {{ matiere.id_session1?.type_control }}</li>
                     <li>Type d'épreuve: {{ matiere.id_session1?.type_epreuve }}</li>
                     <li>Règle particulière: {{ matiere.id_session1?.regle_particuliere }}</li>
                     <li>Règle de calcul: {{ matiere.id_session1?.regle_calcul }}</li>
-                  </ul> 
+                  </ul>
                   <h6>Session 2</h6>
                   <ul >
                     <li>Type de contrôle: {{ matiere.id_session2?.type_control }}</li>
                     <li>Type d'épreuve: {{ matiere.id_session2?.type_epreuve }}</li>
                     <li>Règle particulière: {{ matiere.id_session2?.regle_particuliere }}</li>
                     <li>Règle de calcul: {{ matiere.id_session2?.regle_calcul }}</li>
-                  </ul> 
+                  </ul>
                 </li>
-                </ul> 
+                </ul>
             </div>
             <div class="btn-group ml-auto">
               <button type="button" class="btn btn-secondary">Exporter en PDF</button>
@@ -48,13 +48,13 @@
         </div>
         </div>
         </div> -->
-        
+
         <div class="modal-dialog modal-dialog-scrollable modal-xl">
           <div class="modal-content">
             <div class="modal-header">
               <h4 class="modal-title">{{ data?.parcour }} - {{ data?.annee }} - {{ data?.niveau }}</h4>
               <div class="btn-group ml-auto">
-                <button type="button" (click)="openPDF()" class="btn btn-secondary">Exporter en PDF</button>
+                <button type="button"  class="btn btn-secondary">Exporter en PDF</button>
                 <button type="button" class="btn btn-secondary">Exporter en Excel</button>
               </div>
               <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
@@ -112,6 +112,6 @@
               </table>
             </div>
           </div>
-        </div> 
-        
+        </div>
+
 </section>

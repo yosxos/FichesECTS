@@ -24,6 +24,6 @@ export class AccueilPrincipalComponent implements OnInit {
     modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
     console.log('data : ', modalRef.componentInstance.data);
   }
-  
+
 
 }
