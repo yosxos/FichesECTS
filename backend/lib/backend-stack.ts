@@ -125,6 +125,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const FormationGet = new NodejsFunction(this, 'FormationGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
       handler: 'handler',
+      runtime: lambda.Runtime.NODEJS_16_X,
       bundling: {
         externalModules: ['aws-sdk'],
       },
@@ -142,6 +143,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run edit query
     const FormationEdit = new NodejsFunction(this, 'FormationEdit', {
       entry: join(__dirname, '../lambdas/Edit_Formation.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -206,6 +208,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run Select query
     const ControleGet = new NodejsFunction(this, 'ControleGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -236,6 +239,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run edit query
     const ControleEdit = new NodejsFunction(this, 'ControleEdit', {
       entry: join(__dirname, '../lambdas/Edit_Controle.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -282,6 +286,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run Select query
     const UeGet = new NodejsFunction(this, 'UeGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -312,6 +317,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run edit query
     const UeEdit = new NodejsFunction(this, 'UeEdit', {
       entry: join(__dirname, '../lambdas/Edit_UE.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -357,6 +363,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run Select query
     const MatiereGet = new NodejsFunction(this, 'MatiereGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -388,6 +395,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run edit query
     const MatiereEdit = new NodejsFunction(this, 'MatiereEdit', {
       entry: join(__dirname, '../lambdas/Edit_Matiere.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -435,6 +443,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     const ResponsableFormationGet = new NodejsFunction(this, 'ResponsableFormationGet', {
       entry: join(__dirname, '../lambdas/GetIdUSR.ts'),
       handler: 'handler',
+      runtime: lambda.Runtime.NODEJS_16_X,
       bundling: {
         externalModules: ['aws-sdk'],
       },
@@ -465,6 +474,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     //create a lambda function to connect to the database and run edit query
     const ResponsableFormationEdit = new NodejsFunction(this, 'ResponsableFormationEdit', {
       entry: join(__dirname, '../lambdas/Edit_RespForm.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -506,6 +516,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /** UeFormationGet */
     const FormationUeGet = new NodejsFunction(this, 'UeFormationGet', {
       entry: join(__dirname, '../lambdas/GetIdFORM.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -536,6 +547,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /** UeFormationEdit */
     const FormationUeEdit = new NodejsFunction(this, 'UeFormationEdit', {
       entry: join(__dirname, '../lambdas/Edit_UeForm.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -576,6 +588,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /** MatiereUeGet */
     const UeMatiereGet = new NodejsFunction(this, 'MatiereUeGet', {
       entry: join(__dirname, '../lambdas/GetIdMAT.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -607,6 +620,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /** MatiereUeEdit */
     const UeMatiereEdit = new NodejsFunction(this, 'MatiereUeEdit', {
       entry: join(__dirname, '../lambdas/Edit_MatiereUe.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -649,6 +663,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /**Users GET */
     const UsersGet = new NodejsFunction(this, 'UsersGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -680,6 +695,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /**Users Edit */
     const UsersEdit = new NodejsFunction(this, 'UsersEdit', {
       entry: join(__dirname, '../lambdas/Edit_Users.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -720,6 +736,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /**Admin Get */
     const AdminGet = new NodejsFunction(this, 'AdminGet', {
       entry: join(__dirname, '../lambdas/Get.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],
@@ -751,6 +768,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
     /**Admin Edit */
     const AdminEdit = new NodejsFunction(this, 'AdminEdit', {
       entry: join(__dirname, '../lambdas/Edit_Admin.ts'),
+      runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
         externalModules: ['aws-sdk'],

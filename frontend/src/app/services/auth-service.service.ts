@@ -9,7 +9,7 @@ import { Auth } from 'aws-amplify';
 export class AuthServiceService {
 
   userId: UserI = <UserI>{};
-  responsable: ResponsableI = <ResponsableI>{};
+  responsable: ResponsableI = <ResponsableI>{list_formation:[]};
 
   constructor(public httpClient: HttpClient, private router: Router) { }
 
@@ -36,19 +36,21 @@ export class AuthServiceService {
   }
 
   //get userId from database and check if user is admin or responsable
-  UserInDb(nom: string, prenom: string) {
-    this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { name: nom, prenom: prenom } })
-      .subscribe((userData: any) => {
-        console.log(userData)
-        const id: number = userData.id;
-
-        this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id_user: id } })
+  async UserInDb(family_name: string, given_name: string) {
+    await this.httpClient.get<{id:number,name:string,prenom:string}[]>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { name: family_name, prenom: given_name } })
+      .subscribe((userData:{id:number,name:string,prenom:string}[]) => {
+        console.log("userData", userData);
+        const id: number = userData[0].id;
+        console.log("id", id);
+        this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: id } })
           .subscribe((adminData: any) => {
+            console.log(adminData)
             if (adminData.length !== 0) {
               this.userId.status = "admin";
             } else {
               this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id_user: id } })
                 .subscribe((responsableData: any) => {
+                  console.log('responsable',responsableData)
                   if (responsableData.length !== 0) {
                     responsableData.forEach((element: { id_user: number, id_formation: number }) => {
                       if (element.id_user === id) {
@@ -62,7 +64,7 @@ export class AuthServiceService {
             }
           });
       });
-      console.log(this.userId);
+    console.log(this.userId);
   }
 
 
