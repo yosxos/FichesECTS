@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormationI } from 'src/app/modeles/formation-i';
 
@@ -12,15 +12,32 @@ import { FormationI } from 'src/app/modeles/formation-i';
   styleUrls: ['./modal-formation.component.scss']
 })
 
-export class ModalFormationComponent {
+export class ModalFormationComponent implements OnInit {
 
   @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() data?: FormationI;
 
   constructor(public activeModal: NgbActiveModal) {
 
+  constructor(public activeModal: NgbActiveModal){
+    // se connecter sur tableau d'obeservable et mettre a jour la vue a chaque fois la modal est appelé
+
+  }
+  ngOnInit(): void {
   }
 
+  openPDF(): void {
+    let DATA: any = document.getElementById('htmlData');
+    html2canvas(DATA).then((canvas) => {
+      let fileWidth = 208;
+      let fileHeight = (canvas.height * fileWidth) / canvas.width;
+      const FILEURI = canvas.toDataURL('image/png');
+      let PDF = new jsPDF('p', 'mm', 'a4');
+      let position = 0;
+      PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight);
+      PDF.save('ficheEcts_' + this.data?.parcour + '_' + this.data?.niveau + '_' + this.data?.annee + '.pdf');
+    });
+  }
  /*
   exportDataToPDF() {
     // Creating a unique file name for my PDF

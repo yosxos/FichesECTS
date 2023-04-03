@@ -4,6 +4,10 @@ import { FormationI, FormationUeI, MatiereI, UeI, UeMatiereI } from '../modeles/
 import { FormationGetService } from './formation-get.service';
 import { MatiereGetService } from './matiere-get.service';
 import { UeGetService } from './ue-get.service';
+import { Observable, of, throwError } from 'rxjs';
+import { ControleGetService } from './controle-get.service';
+import { catchError } from 'rxjs/operators';
+
 
 @Injectable({
   providedIn: 'root'
@@ -13,85 +17,103 @@ export class GestionFichesService {
   listFormationUe: Array<FormationUeI> = [];
   listUeMatiere: Array<UeMatiereI> = [];
 
-  constructor(private httpClient:HttpClient, public formationService: FormationGetService, public ueService: UeGetService, public matiereService: MatiereGetService) {
-    this.getFormationUeApi();
-    this.getUeMatiereApi();
-   }
 
-   /* Récupère les données de la table formation_ue */
-  async getFormationUeApi(){
-    this.listFormationUe = [];
-    await this.httpClient.get<Array<FormationUeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/formationUe').subscribe(
-      (response) => {
-        this.listFormationUe = response;
-      }
-    )
+  constructor(private httpClient:HttpClient, public controleService: ControleGetService, public formationService: FormationGetService, public ueService: UeGetService, public matiereService: MatiereGetService) {
   }
 
-  /* Récupère les données de la table UeMatiere */
-  async getUeMatiereApi(){
+  async someMethod(){
+    await this.formationService.getFormations();
+    await this.ueService.getUeApi();
+    await this.matiereService.getMatiereApi();
+    await this.getFormationUeApi();
+    await this.getUeMatiereApi(); 
+  }
+
+   /* Récupère les données de la table formation_ue */
+  async getFormationUeApi(){    
+    this.listFormationUe = [];
+    try{
+      const response = await this.httpClient
+        .get<Array<FormationUeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/formationUe')
+        .pipe(catchError((error) => throwError(error)))
+        .toPromise();
+      this.listFormationUe = response!;
+    }catch(error) { 
+      console.error('Une erreur est survenue lors de la récupération des données de formation :', error);
+    }
+  }
+
+  /* Récupère les données de la table UeMatiere  */
+  async getUeMatiereApi(){    
     this.listUeMatiere = [];
-    await this.httpClient.get<Array<UeMatiereI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere').subscribe(
-      (response) => {
-        this.listUeMatiere = response;
-      }
-    )
+    try{
+      const response = await this.httpClient
+        .get<Array<UeMatiereI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere')
+        .pipe(catchError((error) => throwError(error)))
+        .toPromise();
+      this.listUeMatiere = response!;
+    }catch(error) {
+      console.error('Une erreur est survenue lors de la récupération des données de UeMatiere :', error);
+    }
   }  
 
   /**
    * Récupère les données de la table formation par son id
    */
-  getFormationUeById(id_formation: number) {
+  getFormationUeById(id_formation: number): Observable<FormationI>{
+    
+    console.log('avant le if :',this.idInListFormationUe(id_formation))
     if(this.idInListFormationUe(id_formation)){
-
-      let tmp_formation: FormationI = this.formationService.getFormationById(id_formation)!;
+      console.log('dans le if id_formation('+ id_formation +') :');
+      
+      let tmp_formation: FormationI = <FormationI>{};
+      tmp_formation= this.formationService.getFormationById(id_formation)!;
+      tmp_formation.ue = [];
+      console.log("tmp_formation.UE", tmp_formation.ue);
       
 
-      let tmp_formation_ue: Array<FormationUeI> = [];
-
       this.listFormationUe.forEach(formation_ue => {
+        console.log('dans le forEach et verifie si id_formation('+ id_formation +') === formation_ue.id_formation('+ formation_ue.id_formation +') :');
         if(formation_ue.id_formation === id_formation){
-          tmp_formation_ue.push(formation_ue);
+          console.log('dans le if id_formation('+ id_formation +') === formation_ue.id_formation('+ formation_ue.id_formation +') :');
+          if(this.ueService.idInList(formation_ue.id_ue)){
+            console.log('dans le if id_ue('+ formation_ue.id_ue +') :');
+            let tmpUe: UeI = this.ueService.getUeById(formation_ue.id_ue)!;
+            tmpUe.matiere = [];
+            console.log("tmpUe.matiere", tmpUe.matiere);
+            this.getUeMatiereById(tmpUe);
+            tmp_formation.ue?.push(tmpUe);
+          }
         }
       })
-
-      tmp_formation_ue.forEach(formation_ue => {
-        if(this.ueService.idInList(formation_ue.id_ue)){
-          let tmpUe: UeI = this.ueService.getUeById(formation_ue.id_ue)!;
-          this.getUeMatiereById(formation_ue.id_ue);
-          tmp_formation.ue?.push(tmpUe);
-        }
-      })
-      console.log("tmp_formation_ue", tmp_formation_ue);
+      return of(tmp_formation);
+      console.log("tmp_formation_ue", tmp_formation);
     }else{
-      alert("id formation non trouvé");
+      return throwError('Formation non trouvée');
     }
   }
 
   /**
    * Récupère les données de la table ue par son id
    */
-  getUeMatiereById(id_ue: number) {
-    if(this.idInListUeMatiere(id_ue)){
-
-      let tmp_ue: UeI = this.ueService.getUeById(id_ue)!;  
-
-      
-      let tmp_ue_matiere: Array<UeMatiereI> = [];
+  getUeMatiereById(tmp_ue: UeI) {
+    console.log('avant le if de matiere',this.idInListUeMatiere(tmp_ue.id));
+    
+    if(this.idInListUeMatiere(tmp_ue.id)){
+      console.log('dans le if id_ue('+ tmp_ue.id +') :');
+      //let tmp_ue: UeI = this.ueService.getUeById(id_ue)!;  
+      //tmp_ue.matiere = [];
       this.listUeMatiere.forEach(ue_matiere => {
-        if(ue_matiere.id_ue === id_ue){
-          tmp_ue_matiere.push(ue_matiere);
+        console.log('dans le forEach et verifie si id_ue('+ tmp_ue.id +') === ue_matiere.id_ue('+ ue_matiere.id_ue +') :');
+        if(ue_matiere.id_ue === tmp_ue.id){
+          console.log('dans le if id_ue('+ tmp_ue.id +') === ue_matiere.id_ue('+ ue_matiere.id_ue +') :');
+          if(this.matiereService.idInList(ue_matiere.id_matiere)){
+            console.log('dans le if id_matiere('+ ue_matiere.id_matiere +') :');
+            let tmpMatiere: MatiereI = this.matiereService.getMatiereById(ue_matiere.id_matiere)!;
+            tmp_ue.matiere?.push(tmpMatiere);
+          }
         }
       });
-
-      tmp_ue_matiere.forEach(ue_matiere => {
-        if(this.matiereService.idInList(ue_matiere.id_matiere)){
-          let tmpMatiere: MatiereI = this.matiereService.getMatiereById(ue_matiere.id_matiere)!;
-          tmp_ue.matiere?.push(tmpMatiere);
-        }
-      });
-    }else{
-      alert("id ue non trouvé");
     }
   }
 
@@ -113,55 +135,6 @@ export class GestionFichesService {
     return tmp;
   }
   
-  /** 
-   * 
-   * TODOO : 
-   * 
-   * GESTION DES CAS OU LES DONNEES NE SONT PAS TROUVEES
-   * TRY CATCH A IMPLEMENTER
-   * 
-   * */
-
-  /* Récupère les données de la table formation_ue
-  async getFormationUeApi(){
-    await this.httpClient.get<Array<any>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/formationUe').subscribe(
-      (response) => {
-        response.forEach(formation_ue => {
-          let formation: FormationI = this.formationService.getFormationById(formation_ue.id_formation)!;
-          let ue : UeI = this.ueService.getUeById(formation_ue.id_ue)!;     
-          if(formation && ue){
-            let index: number = this.formationService.listeFormations.findIndex(f => f.id === formation?.id);  
-            this.formationService.addUeToFormation(index, ue);
-            console.log('formation after add  ue : ', this.formationService.listeFormations[index]);
-          }
-        });
-      }
-    )
-  }
-
-
-  // Récupère les données de la table UeMatiere
-  async getUeMatiereApi(){
-    await this.httpClient.get<Array<any>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere').subscribe(
-      (response) => {
-        response.forEach(ueMatiere => {
-          let ue : UeI = this.ueService.getUeById(ueMatiere.id_ue)!;
-          console.log('ue in getUeMatiere : ', ue);
-          let matiere : MatiereI = this.matiereService.getMatiereById(ueMatiere.id_matiere)!;
-          console.log('matiere in getUeMatiere : ', matiere);
-               
-          if(ue && matiere){
-            let index: number = this.ueService.listUe.findIndex(u => u.id === ue?.id);  
-            this.ueService.addMatiereToUe(index, matiere);
-            console.log('ue after add  matiere : ', this.ueService.listUe[index]);
-          }
-        });
-      }
-    )
-  }  */
-
-
-
 }
 
 
