@@ -1,8 +1,9 @@
-import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { FormationI } from 'src/app/modeles/formation-i';
 import html2canvas from 'html2canvas';
 import  jsPDF from 'jspdf';
+
 
 
 
@@ -13,16 +14,19 @@ import  jsPDF from 'jspdf';
   styleUrls: ['./modal-formation.component.scss']
 })
 
-export class ModalFormationComponent {
+export class ModalFormationComponent implements OnInit {
 
   @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() data?: FormationI;
 
-  constructor(public activeModal: NgbActiveModal) {
+  constructor(public activeModal: NgbActiveModal){
+    // se connecter sur tableau d'obeservable et mettre a jour la vue a chaque fois la modal est appelé
     
   }
+  ngOnInit(): void {
+  }
 
-  public openPDF(): void {
+  openPDF(): void {
     let DATA: any = document.getElementById('htmlData');
     html2canvas(DATA).then((canvas) => {
       let fileWidth = 208;

@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MatiereI, UeI } from '../modeles/formation-i';
+import { catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -10,8 +12,8 @@ export class UeGetService {
   listUe: Array<UeI> = [];
 
   constructor(private httpClient: HttpClient) {
-    this.getUeApi();
-   }
+    //this.getUeApi();        
+  }
 
   // Récupère la formation par son id
   getUeById(id: number): UeI | undefined{
@@ -19,15 +21,23 @@ export class UeGetService {
   }
 
   // Récupère les données de la table ue
-  async getUeApi(){
+  async getUeApi() {
     this.listUe = [];
-    await this.httpClient.get<Array<UeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ue').subscribe(
-      (response) => {
-        this.listUe = response
-        this.listUe.forEach(ue => {ue.matiere = []})
-      }
-    )
+  
+    try {
+      const response = await this.httpClient
+        .get<Array<UeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ue')
+        .pipe(catchError((error) => throwError(error)))
+        .toPromise();
+  
+      this.listUe = response!;
+      this.listUe.forEach(ue => {ue.matiere = []})
+
+    } catch (error) {
+      console.error('Une erreur est survenue lors de la récupération des données de ue :', error);
+    }
   }
+
 
   /**
  * Vérification des si les ID suivantes existent dans les données 
