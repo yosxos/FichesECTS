@@ -15,7 +15,6 @@ export class AuthServiceService {
   login(username: string, password: string) {
     this.httpClient.get<UserI>('assets/id/userId.json').subscribe(
       (data) => {
-        console.log("data mail : ",data.email);
         this.userId = data;
         if (this.userId.email == username && this.userId.password == password) {
           this.userId.status = "actif";

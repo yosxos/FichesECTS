@@ -3,7 +3,10 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from '../modal-formation/modal-formation.component';
 import { FormationGetService } from 'src/app/services/formation-get.service';
 import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
-import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { FormationI } from 'src/app/modeles/formation-i';
+import { ChangeDetectorRef } from '@angular/core';
+
+
 
 @Component({
   selector: 'app-accueil-principal',
@@ -13,18 +16,24 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 export class AccueilPrincipalComponent implements OnInit {
 
-  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, private authService: AuthServiceService) { }
+  f: FormationI = <FormationI>{};
+
+  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, private changeDecor: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.gestionService.getFormationUeApi();
-    this.gestionService.getUeMatiereApi()
+    this.gestionService.someMethod()
+
   }
-  connected() {
-    return this.authService.connected()
-  }
-  openModal() {
+
+  /** TODOO alerte en cas de manque de donnée ! */
+  openModal(id : number) {
+    this.f = <FormationI>{}
+    this.gestionService.getFormationUeById(id).subscribe(
+      () => { this.changeDecor.markForCheck(); },
+      (error) => {console.log('error : ', error)},
+    );
     const modalRef = this.modalService.open(ModalFormationComponent);
-    modalRef.componentInstance.data = this.formationService.listeFormations[0];
+    modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
     console.log('data : ', modalRef.componentInstance.data);
   }
   

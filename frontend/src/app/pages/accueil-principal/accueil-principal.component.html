@@ -49,7 +49,7 @@
                 <option value="Junior">Junior</option>
               </select>
             </div>
-            <div *ngIf="connected()" class="d-flex align-items-end">
+            <div class="d-flex align-items-end">
               <button type="button" routerLink="/intranet/addFiche" class="btn btn-primary ms-3">Ajouter</button>
             </div>
           </div>
@@ -91,7 +91,7 @@
                         <!-- Code -->
                         <td>{{f.code}}</td>
                         <td>
-                          <a (click)="openModal()" class="btn btn-link btn-sm btn-rounded"> <!-- href="/formation?id={{f.id}}" -->
+                          <a (click)="openModal(f.id)" class="btn btn-link btn-sm btn-rounded"> <!-- href="/formation?id={{f.id}}" -->
                             View
                           </a>
                         </td>
