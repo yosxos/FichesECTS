@@ -6,6 +6,7 @@ import { FormationI } from 'src/app/modeles/formation-i';
 
 
 
+
 @Component({
   selector: 'app-modal-formation',
   templateUrl: './modal-formation.component.html',
