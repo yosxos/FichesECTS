@@ -89,7 +89,7 @@ export class ModalFormationComponent implements OnInit {
         [1, 'Finland', 7.632, 'Helsinki'],
         [2, 'Norway', 7.594, 'Oslo'],
         [3, 'Denmark', 7.555, 'Copenhagen'],
-        [4, 'Iceland', 7.495, 'Reykjavík'],
+        [4, 'Iceland',  7.495, 'Reykjavík'],
         [5, 'Switzerland', 7.487, 'Bern'],
         [9, 'Sweden', 7.314, 'Stockholm'],
         [73, 'Belarus', 5.483, 'Minsk'],
