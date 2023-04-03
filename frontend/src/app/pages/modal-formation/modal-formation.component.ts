@@ -1,10 +1,8 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Observable, Subscription } from 'rxjs';
 import { FormationI } from 'src/app/modeles/formation-i';
-
-
-
-
+import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
 
 
 @Component({
@@ -13,17 +11,28 @@ import { FormationI } from 'src/app/modeles/formation-i';
   styleUrls: ['./modal-formation.component.scss']
 })
 
-export class ModalFormationComponent implements OnInit {
+export class ModalFormationComponent implements OnInit, OnDestroy {
 
   @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() data?: FormationI;
 
-  constructor(public activeModal: NgbActiveModal) {
+  data$!: Observable<FormationI>;
+  private subscription: Subscription;
+
+
+  constructor(public activeModal: NgbActiveModal, private gestionService: GestionFichesService) {
+    this.subscription = new Subscription();
   }
+
   ngOnInit(): void {
+    this.subscription.add(
+      this.gestionService.formationObservable$.subscribe((data => this.data = data))
+    )
   }
 
-
-
+  ngOnDestroy(): void {
+    this.subscription.unsubscribe();
   }
+
+}
 

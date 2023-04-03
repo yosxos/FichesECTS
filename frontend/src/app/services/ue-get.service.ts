@@ -11,9 +11,7 @@ export class UeGetService {
 
   listUe: Array<UeI> = [];
 
-  constructor(private httpClient: HttpClient) {
-    //this.getUeApi();        
-  }
+  constructor(private httpClient: HttpClient) {}
 
   // Récupère la formation par son id
   getUeById(id: number): UeI | undefined{

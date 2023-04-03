@@ -32,13 +32,9 @@ export class AccueilPrincipalComponent implements OnInit {
 
   /** TODOO alerte en cas de manque de donnée ! */
   openModal(id : number) {
-    this.gestionService.getFormationUeById(id).subscribe(
-      (new_data) => { this.data$ = of(new_data) },
-      (error) => {console.log('error : ', error)},
-    );
+    this.gestionService.getFormationUeById(id);
     const modalRef = this.modalService.open(ModalFormationComponent);
-    modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
-    console.log('data : ', modalRef.componentInstance.data);
+    //modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
   }
 
 
