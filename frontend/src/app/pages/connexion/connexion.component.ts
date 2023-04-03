@@ -15,7 +15,7 @@ export class ConnexionComponent {
 
 
   check(mail: string, password: string){
-    this.authService.login(mail, password);
+    this.authService.signIn(mail, password);
   }
 
 }

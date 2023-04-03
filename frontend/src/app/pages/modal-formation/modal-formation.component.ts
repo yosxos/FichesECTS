@@ -18,13 +18,12 @@ export class ModalFormationComponent implements OnInit {
   @ViewChild('htmlData') htmlData!: ElementRef;
   @Input() data?: FormationI;
 
-  constructor(public activeModal: NgbActiveModal){
-    // se connecter sur tableau d'obeservable et mettre a jour la vue a chaque fois la modal est appelé
-    
+  constructor(public activeModal: NgbActiveModal) {
   }
   ngOnInit(): void {
   }
 
+
+
   }
 
-  
