@@ -109,7 +109,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       generateSecret: false,
       authFlows: {
         userPassword: true,
-        //userSrp: true
+        userSrp: true
         
       }
     });

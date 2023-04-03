@@ -9,7 +9,7 @@ import { AuthServiceService } from 'src/app/services/auth-service.service';
 })
 export class ConnexionComponent {
 
-  userId: UserI = <UserI>{};
+  userId={email: "", password: ""} ;
 
   constructor(public authService:AuthServiceService) { }
 
