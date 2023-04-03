@@ -23,6 +23,9 @@ export class AuthServiceService {
       }
     )
   }
+  connected(){
+    return this.userId.status == "admin" || this.userId.status == "actif";
+  }
   // sign in with email password from aws amplify
   signIn(email: string, password: string) {
     Auth.signIn(email, password)
