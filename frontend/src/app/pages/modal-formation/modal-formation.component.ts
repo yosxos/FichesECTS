@@ -2,7 +2,6 @@ import { Component, ElementRef, Input, OnDestroy, OnInit, ViewChild } from '@ang
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Observable, Subscription } from 'rxjs';
 import { FormationI } from 'src/app/modeles/formation-i';
-import html2canvas from 'html2canvas';
 import  jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
