@@ -91,7 +91,7 @@
                         </td>
                         <ng-container *ngIf="connected()">
                           <td>
-                            <a class="btn btn-link btn-sm btn-rounded">
+                            <a [routerLink]="['edit-formation', f.id]" class="btn btn-link btn-sm btn-rounded">
                               Modifier
                             </a> 
                           </td>
