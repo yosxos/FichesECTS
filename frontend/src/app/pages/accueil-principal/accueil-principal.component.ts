@@ -3,9 +3,9 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from '../modal-formation/modal-formation.component';
 import { FormationGetService } from 'src/app/services/formation-get.service';
 import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
-import { ChangeDetectorRef } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { FormationI } from 'src/app/modeles/formation-i';
+import { AuthServiceService } from 'src/app/services/auth-service.service';
 
 
 
@@ -19,11 +19,7 @@ import { FormationI } from 'src/app/modeles/formation-i';
 export class AccueilPrincipalComponent implements OnInit {
 
 
-  data$: Observable<FormationI>;
-
-
-  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, private changeDecor: ChangeDetectorRef) {
-    this.data$ = of(<FormationI>{});
+  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public auth: AuthServiceService) {
   }
 
   ngOnInit(): void {
@@ -37,5 +33,7 @@ export class AccueilPrincipalComponent implements OnInit {
     //modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);
   }
 
-
+  connected() : boolean {
+    return (this.auth.userId.status === 'actif'  || this.auth.userId.status === 'admin');
+  }
 }

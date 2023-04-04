@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccueilComponent } from './intranet/pages/accueil/accueil.component';
-import { AddFichesComponent } from './intranet/pages/add-fiches/add-fiches.component';
 import { AccueilPrincipalComponent } from './pages/accueil-principal/accueil-principal.component';
 import { ConnexionComponent } from './pages/connexion/connexion.component';
 

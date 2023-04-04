@@ -17,6 +17,7 @@ export class AuthServiceService {
   connected() {
     return this.userId.status ;
   }
+  
   // sign in with email password from aws amplify
   signIn(email: string, password: string) {
     Auth.signIn(email, password)
@@ -24,6 +25,7 @@ export class AuthServiceService {
         console.log(user.attributes);
         this.userId.email = user.attributes.email;
         this.UserInDb(user.attributes.family_name, user.attributes.given_name);
+        this.router.navigateByUrl('/intranet')
       })
       .catch(err => console.log(err));
   }
@@ -33,6 +35,7 @@ export class AuthServiceService {
     Auth.signOut()
       .then(() => console.log("Successfully signed out."))
       .catch(err => console.log(err));
+      this.router.navigateByUrl('/')
   }
 
   //get userId from database and check if user is admin or responsable
