@@ -37,6 +37,11 @@
                 <option value="Awaiting">En attente</option>
               </select>
             </div>
+            <ng-container *ngIf="connected()">
+              <div class="d-flex align-items-end">
+                <button type="button" [routerLink]="['add-formation']" class="btn btn-primary ms-3">Ajouter</button>
+              </div>
+            </ng-container>
           </div>
         </div>
       </div>

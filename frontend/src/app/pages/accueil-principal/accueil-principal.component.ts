@@ -36,4 +36,5 @@ export class AccueilPrincipalComponent implements OnInit {
   connected() : boolean {
     return (this.auth.userId.status === 'actif'  || this.auth.userId.status === 'admin');
   }
+
 }

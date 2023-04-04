@@ -11,13 +11,13 @@ export class AuthServiceService {
   userId: UserI = <UserI>{};
   responsable: ResponsableI = <ResponsableI>{list_formation:[]};
 
-  constructor(public httpClient: HttpClient, private router: Router) { }
+  constructor(public httpClient: HttpClient, public router: Router) { }
 
 
   connected() {
     return this.userId.status ;
   }
-  
+
   // sign in with email password from aws amplify
   signIn(email: string, password: string) {
     Auth.signIn(email, password)

@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AccueilComponent } from './pages/accueil/accueil.component';
+import { AccueilPrincipalComponent } from '../pages/accueil-principal/accueil-principal.component';
+import { AddFormationComponent } from './pages/add-formation/add-formation.component';
 
 const routes: Routes = [
-  {path: '', component:AccueilComponent}
+  {path: '', component:AccueilPrincipalComponent},
+  {path: 'add-formation', component:AddFormationComponent}
 ];
 
 @NgModule({
