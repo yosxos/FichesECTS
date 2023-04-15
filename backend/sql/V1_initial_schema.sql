@@ -13,7 +13,7 @@ CREATE TABLE admin (
 CREATE TABLE Formation (
   id int NOT NULL AUTO_INCREMENT,
   parcour VARCHAR(50) NOT NULL,
-  annee VARCHAR(50) NOT NULL,
+  année VARCHAR(50) NOT NULL,
   niveau VARCHAR(50) NOT NULL,
   code VARCHAR(50) NOT NULL,
   PRIMARY KEY (id)
@@ -36,10 +36,14 @@ CREATE TABLE UE (
 
 CREATE TABLE Controle (
   id int NOT NULL AUTO_INCREMENT,
-  type_control ENUM('--','CC','ET') NOT NULL,
-  type_epreuve ENUM('E','O','E et/ou O') NOT NULL,
-  regle_particuliere VARCHAR(50) NOT NULL,
-  regle_calcul int NOT NULL,
+  type_control_S1 ENUM('--','CC','ET') NOT NULL,
+  type_epreuve_S1 ENUM('E','O','E et/ou O') NOT NULL,
+  regle_calcul_S1 int NOT NULL,
+  type_control_S2 ENUM('--','CC','ET') NOT NULL,
+  type_epreuve_S2 ENUM('E','O','E et/ou O') NOT NULL,
+  regle_calcul_S2 int ,
+  regle_particuliere VARCHAR(50) ,
+  
   PRIMARY KEY (id)
 );
 
@@ -53,11 +57,9 @@ CREATE TABLE Matiere (
   Pro int NOT NULL,
   TPE int NOT NULL,
   departement VARCHAR(50) NOT NULL,
-  id_session1 INT,
-  id_session2 INT,
+  id_Controle INT,
   PRIMARY KEY (id),
-  FOREIGN KEY (id_session1) REFERENCES Controle(id),
-  FOREIGN KEY (id_session2) REFERENCES Controle(id)
+  FOREIGN KEY (id_Controle) REFERENCES Controle(id)
 );
 
 CREATE TABLE Matiere_UE (
@@ -73,3 +75,4 @@ CREATE TABLE Formation_UE (
   FOREIGN KEY (id_formation) REFERENCES Formation(id),
   FOREIGN KEY (id_ue) REFERENCES UE(id)
 ); 
+
