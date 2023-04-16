@@ -5,6 +5,7 @@ import { AddFormationComponent } from './pages/add-formation/add-formation.compo
 import { EditFormationComponent } from './pages/edit-formation/edit-formation.component';
 
 const routes: Routes = [
+  {path: '', component:AccueilPrincipalComponent},
   {path: 'edit-formation/:id', component:EditFormationComponent, pathMatch: 'full'},
   {path: 'add-formation', component:AddFormationComponent}
 ];

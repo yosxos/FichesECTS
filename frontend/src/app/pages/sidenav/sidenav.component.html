@@ -43,13 +43,13 @@
                     ></app-sublevel-menu>
                 </div> -->
                 <a *ngIf="this.authService.connected()" class="sidenav-nav-link"  [ngClass]="setActiveClass('addFiche')"
-                    routerLink="/intranet/addFiche" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+                    routerLink="/intranet/add-formation" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
                     <i class="sidenav-link-icon fal fa-files-medical"></i>
                     <i class="sidenav-link-text" *ngIf="opened()">
                         Ajout Fiche
                     </i>
                 </a>
-                <a class="sidenav-nav-link" routerLink="" routerLinkActive="active"
+                <a class="sidenav-nav-link" routerLink="/intranet" routerLinkActive="active"
                     [routerLinkActiveOptions]="{exact: true}" [ngClass]="setActiveClass('')">
                     <i class="sidenav-link-icon fal fa-file-search"></i>
                     <i class="sidenav-link-text" *ngIf="opened()">

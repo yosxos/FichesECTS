@@ -39,7 +39,7 @@
             </div>
             <ng-container *ngIf="connected()">
               <div class="d-flex align-items-end">
-                <button type="button" [routerLink]="['add-formation']" class="btn btn-primary ms-3">Ajouter</button>
+                <button mat-raised-button type="button" (click)="openAddEditFormDialog()" class="btn btn-primary ms-3">Ajouter</button> <!-- [routerLink]="['add-formation']"  -->
               </div>
             </ng-container>
           </div>

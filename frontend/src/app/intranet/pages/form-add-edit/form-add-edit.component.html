@@ -1,0 +1,35 @@
+<div modal subtitle class="modal__container">
+    <ng-container>
+        <section class="py-5">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <h2>Ajouter une formation</h2>
+                  <form>
+                    <!-- Champs de formation -->
+                    <div class="mb-3">
+                      <label for="parcours" class="form-label">Parcours</label>
+                      <input type="text" class="form-control" id="parcours" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="annee" class="form-label">Année</label>
+                      <input type="number" class="form-control" id="annee" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="niveau" class="form-label">Niveau</label>
+                      <input type="text" class="form-control" id="niveau" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="code" class="form-label">Code</label>
+                      <input type="text" class="form-control" id="code" required>
+                    </div>
+                    
+                    <button type="submit" (click)="onToggle(false)" class="btn btn-primary mt-3">Annuler</button>
+                    <button type="submit" (click)="onToggle(true)" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+    </ng-container>
+</div>

@@ -32,11 +32,9 @@ export class MatiereGetService {
         .toPromise();
   
       response!.forEach(matiere => {
-        let session1 = this.controleGetService.getControleById(matiere.id_session1 as any);
-        let session2 = this.controleGetService.getControleById(matiere.id_session2 as any);
-        if (session1 && session2) {
-          matiere.id_session1 = session1 as ControleI;
-          matiere.id_session2 = session2 as ControleI;
+        let controle = this.controleGetService.getControleById(matiere.id_Controle as any);
+        if (controle) {
+          matiere.id_Controle = controle as ControleI;
           this.listMatiere = response!;
         }
       });

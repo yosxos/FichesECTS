@@ -1,0 +1,53 @@
+<div>
+    <div class="modal__title">
+        
+    </div>
+</div>
+
+<div modal subtitle class="modal__container">
+    <!--
+        <div>
+            <p>Confirmez-vous la suppression de {{dataSource.type}}</p>
+        </div>
+    -->
+
+
+    <ng-container>
+        <section class="py-5">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <h2>Ajouter une formation</h2>
+                  <form>
+                    <!-- Champs de formation -->
+                    <div class="mb-3">
+                      <label for="parcours" class="form-label">Parcours</label>
+                      <input type="text" class="form-control" id="parcours" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="annee" class="form-label">Année</label>
+                      <input type="number" class="form-control" id="annee" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="niveau" class="form-label">Niveau</label>
+                      <input type="text" class="form-control" id="niveau" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="code" class="form-label">Code</label>
+                      <input type="text" class="form-control" id="code" required>
+                    </div>
+                    
+                    <button type="submit" (click)="onToggle(false)" class="btn btn-primary mt-3">Annuler</button>
+                    <button type="submit" (click)="onToggle(true)" class="btn btn-primary mt-3">Ajouter</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+    </ng-container>
+</div>
+
+<div class="button-part">
+    <button mat-raised-button class="btn btn-primary mt-3" (click)="onToggle(false)">Annuler</button>
+    <button mat-raised-button class="btn btn-primary mt-3" color="primary" (click)="onToggle(true)">Confirmer</button>
+</div>

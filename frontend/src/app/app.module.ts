@@ -10,9 +10,9 @@ import { FooterComponent } from './pages/footer/footer.component';
 import { AccueilPrincipalComponent } from './pages/accueil-principal/accueil-principal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from './pages/modal-formation/modal-formation.component';
-import { subscribeOn } from 'rxjs';
 import { SublevelMenuComponent } from './pages/sidenav/sublevel-menu.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
+import { ModalElementComponent } from './shared-components/modal-element/modal-element.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +23,7 @@ import { SidenavComponent } from './pages/sidenav/sidenav.component';
     ModalFormationComponent,
     SidenavComponent,
     SublevelMenuComponent,
+    ModalElementComponent,
   ],
   imports: [
     BrowserModule,

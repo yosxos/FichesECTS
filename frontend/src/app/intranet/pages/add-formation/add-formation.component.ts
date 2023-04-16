@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AddFormationComponent implements OnInit {
 
+  showUEForm = false;
+
   constructor() { }
 
   ngOnInit(): void {

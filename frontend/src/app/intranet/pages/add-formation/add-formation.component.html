@@ -1,1 +1,50 @@
-<p>add-formation works!</p>
+<section class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-12">
+          <h2>Ajouter une formation</h2>
+          <form>
+            <!-- Champs de formation -->
+            <div class="mb-3">
+              <label for="parcours" class="form-label">Parcours</label>
+              <input type="text" class="form-control" id="parcours" formControlName="parcours" required>
+            </div>
+            <div class="mb-3">
+              <label for="annee" class="form-label">Année</label>
+              <input type="number" class="form-control" id="annee" formControlName="annee" required>
+            </div>
+            <div class="mb-3">
+              <label for="niveau" class="form-label">Niveau</label>
+              <input type="text" class="form-control" id="niveau" formControlName="niveau" required>
+            </div>
+            <div class="mb-3">
+              <label for="code" class="form-label">Code</label>
+              <input type="text" class="form-control" id="code" formControlName="code" required>
+            </div>
+  
+            <!-- Bouton pour afficher le formulaire d'ajout d'UE -->
+            <button type="button" class="btn btn-secondary mt-3" (click)="showUEForm = !showUEForm">Créer un UE</button>
+  
+            <!-- Formulaire d'ajout de UE -->
+            <div *ngIf="showUEForm" class="mt-3">
+              <h2>Ajouter une UE</h2>
+              <form>
+                <div class="mb-3">
+                  <label for="ueName" class="form-label">Nom de l'UE</label>
+                  <input type="text" class="form-control" id="ueName" required>
+                </div>
+                <div class="mb-3">
+                  <label for="ueCode" class="form-label">Code de l'UE</label>
+                  <input type="text" class="form-control" id="ueCode" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Ajouter l'UE</button>
+              </form>
+            </div>
+  
+            <button type="submit" class="btn btn-primary mt-3">Ajouter la formation</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+  

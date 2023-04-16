@@ -25,17 +25,18 @@ export interface MatiereI {
     Pro: number,
     TPE: number,
     departement: string,
-    id_session1?: ControleI,
-    id_session2?: ControleI,
-
+    id_Controle?: ControleI,
 }
 
 export interface ControleI {
     id: number,
-    type_control: string | "--", // enum
-    type_epreuve: "E" | "E et/ou O" | "O" , // enum
+    type_control_S1: string | "--", // enum
+    type_control_S2: string | "--", // enum
+    type_epreuve_S1: "E" | "E et/ou O" | "O" , // enum
+    type_epreuve_S2: "E" | "E et/ou O" | "O" , // enum
     regle_particuliere: string ,
-    regle_calcul: number
+    regle_calcul_S1: number
+    regle_calcul_S2: number
 }
 
 export interface FormationUeI {
