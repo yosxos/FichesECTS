@@ -6,7 +6,6 @@ import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
 import { AuthServiceService } from 'src/app/services/auth-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormAddEditComponent } from 'src/app/intranet/pages/form-add-edit/form-add-edit.component';
-import { ModalElementComponent } from 'src/app/shared-components/modal-element/modal-element.component';
 
 
 

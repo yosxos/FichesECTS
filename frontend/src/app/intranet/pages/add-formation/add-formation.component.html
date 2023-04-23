@@ -1,50 +1,135 @@
 <section class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-12">
-          <h2>Ajouter une formation</h2>
-          <form>
-            <!-- Champs de formation -->
-            <div class="mb-3">
-              <label for="parcours" class="form-label">Parcours</label>
-              <input type="text" class="form-control" id="parcours" formControlName="parcours" required>
-            </div>
-            <div class="mb-3">
-              <label for="annee" class="form-label">Année</label>
-              <input type="number" class="form-control" id="annee" formControlName="annee" required>
-            </div>
-            <div class="mb-3">
-              <label for="niveau" class="form-label">Niveau</label>
-              <input type="text" class="form-control" id="niveau" formControlName="niveau" required>
-            </div>
-            <div class="mb-3">
-              <label for="code" class="form-label">Code</label>
-              <input type="text" class="form-control" id="code" formControlName="code" required>
-            </div>
-  
-            <!-- Bouton pour afficher le formulaire d'ajout d'UE -->
-            <button type="button" class="btn btn-secondary mt-3" (click)="showUEForm = !showUEForm">Créer un UE</button>
-  
-            <!-- Formulaire d'ajout de UE -->
-            <div *ngIf="showUEForm" class="mt-3">
-              <h2>Ajouter une UE</h2>
-              <form>
-                <div class="mb-3">
-                  <label for="ueName" class="form-label">Nom de l'UE</label>
-                  <input type="text" class="form-control" id="ueName" required>
-                </div>
-                <div class="mb-3">
-                  <label for="ueCode" class="form-label">Code de l'UE</label>
-                  <input type="text" class="form-control" id="ueCode" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Ajouter l'UE</button>
-              </form>
-            </div>
-  
-            <button type="submit" class="btn btn-primary mt-3">Ajouter la formation</button>
-          </form>
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title"></h4>
+        <div class="btn-group ml-auto">
+          <button (click)="showNewModal()" class="btn btn-primary">Ajouter UE</button>
+          <!--<button type="button" class="btn btn-secondary">Exporter en Excel</button>-->
         </div>
       </div>
+      <div class="modal-body" id="htmlData" #htmlData>
+        <table *ngIf="formation">
+          <!-- Row A -->
+          <tr class="general">
+            <td rowspan="4">Validation</td>
+            <td>Niveau</td>
+            <td></td>
+            <td colspan="100%"></td>
+          </tr>
+          <tr class="general">
+            <td>Parcours</td>
+            <td>Génie Informatique</td>
+            <td class="indication" rowspan="3">semestre</td>
+            <td class="indication" colspan="5">répartition horaire</td>
+            <td></td>
+            <td class="indication" colspan="8">contrôle de connaissance</td>
+          </tr>
+          <!-- Row C -->
+          <tr class="general">
+            <td>Année</td>
+            <td></td>
+            <td class="indication" colspan="5">par étudiant</td>
+            <td></td>
+            <td class="indication" rowspan="2">ECTS</td>
+            <td class="indication" colspan="3">1ère session</td>
+            <td class="indication" colspan="3">2è session</td>
+            <td class="indication"></td>
+          </tr>
+          <!-- Row D -->
+          <tr class="general">
+            <td colspan="2"><input [(ngModel)]="formation.code" placeholder="Code"> </td>
+            <td class="indication">CM</td>
+            <td class="indication">TD</td>
+            <td class="indication">TP</td>
+            <td class="indication">PRO</td>
+            <td class="indication">TPE</td>
+            <td></td>
+            <td class="indication">type de controle</td>
+            <td class="indication">type d'epreuve</td>
+            <td class="indication">regle de calcul</td>
+            <td class="indication">type de controle</td>
+            <td class="indication">type d'epreuve</td>
+            <td class="indication">regle de calcul</td>
+            <td class="indication">regle particuliere</td>
+          </tr>
+          <!-- Row 5 -->
+          <ng-container *ngFor="let ue of formation.ue">
+            <tr class="generalUE">
+                <td class="indication"></td>
+                <td>UE1 : {{ue.nom}}</td>
+                <td>196.5</td>
+                <td>139</td>
+                <td>57.5</td>
+                <td>0</td>
+                <td>0</td>
+                <td></td>
+                <td>{{ue.ects}}</td>
+                <td colspan="100%"></td>
+            </tr>
+                <!-- Row 6 -->
+        
+            <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="ue.nom">
+                <td>M</td>
+                <td colspan="2">{{matiere.nom}}</td>
+                <td>{{ue.semestre}}</td>
+                <td>{{matiere.cm}}</td>
+                <td>{{matiere.td}}</td>
+                <td>{{matiere.tp}}</td>
+                <td>{{matiere.Pro}}</td>
+                <td>{{matiere.TPE}}</td>
+                <td></td>
+                <td>{{matiere.ects}}</td>
+                <td>{{matiere.id_Controle?.type_control_S1}}</td>
+                <td>{{matiere.id_Controle?.type_epreuve_S1}}</td>
+                <td>{{matiere.id_Controle?.regle_calcul_S1}}</td>
+                <td>{{matiere.id_Controle?.type_control_S2}}</td>
+                <td>{{matiere.id_Controle?.type_epreuve_S2}}</td>
+                <td>{{matiere.id_Controle?.regle_calcul_S2}}</td>
+                <td>{{matiere.id_Controle?.regle_particuliere}}</td>
+            </tr>
+          </ng-container>
+        </table>
+      </div>
     </div>
-  </section>
-  
+  </div>
+</section>
+<section>
+  <div modal subtitle class="modal__container">
+    <ng-container>
+      <section class="py-5">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-12">
+              <h2>Ajouter une Ue</h2>
+              <form #f="ngForm">
+                <!-- Champs de formation -->
+                <div class="mb-3">
+                  <label for="parcours" class="form-label">ECTS</label>
+                  <input type="text" [(ngModel)]="this.ue.ects" class="form-control" name="ects" placeholder="ECTS"
+                    required>
+                </div>
+                <div class="mb-3">
+                  <label for="annee" class="form-label">Nom</label>
+                  <input type="number" [(ngModel)]="this.ue.nom" class="form-control" name="nom" placeholder="Nom"
+                    required>
+                </div>
+                <div class="mb-3">
+                  <label for="niveau" class="form-label">Niveau</label>
+                  <input type="text" [(ngModel)]="this.ue.semestre" class="form-control" name="semestre"
+                    placeholder="semestre" required>
+                </div>
+                <div class="mb-3">
+                  <label for="code" class="form-label">Code</label>
+                  <input type="text" class="form-control" id="code" required>
+                </div>
+
+                <button type="submit" (click)="ajouter()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+    </ng-container>
+  </div>
+</section>

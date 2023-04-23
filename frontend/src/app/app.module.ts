@@ -12,7 +12,8 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from './pages/modal-formation/modal-formation.component';
 import { SublevelMenuComponent } from './pages/sidenav/sublevel-menu.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
-import { ModalElementComponent } from './shared-components/modal-element/modal-element.component';
+import {MatButtonModule} from '@angular/material/button';
+import {MatDialogModule} from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,6 @@ import { ModalElementComponent } from './shared-components/modal-element/modal-e
     ModalFormationComponent,
     SidenavComponent,
     SublevelMenuComponent,
-    ModalElementComponent,
   ],
   imports: [
     BrowserModule,
@@ -31,7 +31,9 @@ import { ModalElementComponent } from './shared-components/modal-element/modal-e
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    MatButtonModule,
+    MatDialogModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,35 @@
+.matiere {
+    background-color: blue;
+}
+
+.general {
+    background-color: yellow;
+}
+
+.generalUE {
+    background-color: rgb(138, 129, 63);
+}
+
+.indication {
+    background-color: white;
+}
+
+#UE1 {
+    background-color: rgb(144, 241, 0);
+}
+
+#UE2 {
+    background-color: rgb(90, 219, 233);
+}
+
+table {
+    margin-left: 30px;
+    
+}
+
+td {
+    border-width: 1px;
+}
+
+section {
+    width: 1000px;}
