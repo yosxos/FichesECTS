@@ -12,7 +12,7 @@ export interface UeI {
     nom : string,
     semestre : string,
     ects : number,
-    matiere ?: Array<MatiereI>
+    matiere?: Array<MatiereI>
 }
 
 export interface MatiereI {
