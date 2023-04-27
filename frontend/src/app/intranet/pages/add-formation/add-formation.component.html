@@ -88,12 +88,16 @@
                 <td>{{matiere.id_Controle?.type_epreuve_S2}}</td>
                 <td>{{matiere.id_Controle?.regle_calcul_S2}}</td>
                 <td>{{matiere.id_Controle?.regle_particuliere}}</td>
+                <td id="deleteMatiere"><input type="button" (click)="delete(matiere.departement, ue.id)" value="-" ></td>
+
             </tr>
           </ng-container>
         </table>
       </div>
     </div>
   </div>
+  <input type="button" (click)="validerFormation()" value="Valider" >
+
 </section>
 <section>
   <div modal subtitle class="modal__container">
@@ -123,6 +127,7 @@
 
 
                 <button type="submit" (click)="ajouter()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                
               </form>
             </div>
           </div>
@@ -179,7 +184,7 @@
                     placeholder="Département" required>
                 </div>
 
-                <button type="submit" (click)="ajouterMatiere(this.index)" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                <button type="submit" (click)="ajouterMatiere()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
               </form>
             </div>
           </div>

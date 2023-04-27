@@ -22,7 +22,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
   ngOnInit(): void {
     this.formation.code = "Code1";
-    this.formation.ue = [{id:0, nom: 'UeNom', ects : 30, semestre: "1"}];
+    this.formation.ue = [];
 
     console.log('dans la page add-formation');
   }
@@ -60,11 +60,15 @@ export class AddFormationComponent implements OnInit, OnChanges {
   }
 
   focus(idd:number){
+    console.log("entreée");
+
     this.boolMatiere = !this.boolMatiere;
     console.log(idd);
-    idd = 3
     const selectedUe = this.formation.ue?.find(ue => ue.id === idd );
+    
+    
     if (selectedUe) {
+      console.log("entreée",selectedUe.id);
       this.ue = selectedUe;
       console.log(this.ue)
     }
@@ -72,21 +76,20 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
   ajouter(){
     console.log('ue dans la fonction ajouter: ', this.ue);
-    this.ue.id = this.formation.ue!.length; 
+    this.ue.id = this.formation.ue!.length || 0; 
     this.formation.ue!.push({...this.ue});
     console.log("res final !",this.formation);
   }
 
-  ajouterMatiere(id:number){
-    console.log('ue dans la fonction ajoutermatiere: ', this.matiere);
+  ajouterMatiere(){
     const selectedUe = this.formation.ue?.find(ue => ue.id === this.ue.id );
-    
-    console.log(selectedUe);
+
     if (selectedUe) {
       if (!selectedUe.matiere) {
         selectedUe.matiere = []; // initialize the matiere array if it's not defined
       }
       selectedUe.matiere.push({...this.matiere});
+      console.log(this.matiere.id)
       console.log("res final !",this.formation);
     } else {
       console.log("Selected UE not found!");
@@ -98,6 +101,19 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
   }
 
+  // ici j'ai mis departement car j'ai pas encore d'id pour les matiere et les ue donc c'est galere de les delete by id 
+  delete(departement:string, id_ue: number) {
+    const selectedUe = this.formation.ue?.find(ue => ue.id === id_ue)
+    if (selectedUe) {
+      console.log(selectedUe,"avant")
+      const matiere = selectedUe.matiere?.find(matiere => matiere.departement === departement);
+      selectedUe.matiere = selectedUe.matiere?.filter(item => item !== matiere)
+      console.log(selectedUe,"apres")
+  }
+  }
+  validerFormation(): void{
+    console.log(this.formation)
+  }
 }
 
 
