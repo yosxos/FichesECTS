@@ -35,7 +35,7 @@ export class GestionFichesService {
     this.listFormationUe = [];
     try{
       const response = await this.httpClient
-        .get<Array<FormationUeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/formationUe')
+        .get<Array<FormationUeI>>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe')
         .pipe(catchError((error) => throwError(error)))
         .toPromise();
       this.listFormationUe = response!;
@@ -49,7 +49,7 @@ export class GestionFichesService {
     this.listUeMatiere = [];
     try{
       const response = await this.httpClient
-        .get<Array<UeMatiereI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere')
+        .get<Array<UeMatiereI>>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere')
         .pipe(catchError((error) => throwError(error)))
         .toPromise();
       this.listUeMatiere = response!;
@@ -80,6 +80,29 @@ export class GestionFichesService {
       })
       this.formationObservable$ = of(tmp_formation);
     }
+  }
+
+
+  getUeById(id_formation: number): FormationI{
+    this.formationObservable$ = of(<FormationI>{});
+         
+      let tmp_formation: FormationI = <FormationI>{};
+      tmp_formation= this.formationService.getFormationById(id_formation)!;
+      tmp_formation.ue = [];      
+
+      this.listFormationUe.forEach(formation_ue => {
+        if(formation_ue.id_formation === id_formation){
+          if(this.ueService.idInList(formation_ue.id_ue)){
+            let tmpUe: UeI = this.ueService.getUeById(formation_ue.id_ue)!;
+            tmpUe.matiere = [];
+            this.getUeMatiereById(tmpUe);
+            tmp_formation.ue?.push(tmpUe);
+          }
+        }
+      })
+      return tmp_formation
+    
+    
   }
 
   /**

@@ -2,12 +2,14 @@ import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/cor
 import { MatDialog } from '@angular/material/dialog';
 import { FormationI, MatiereI, UeI } from 'src/app/modeles/formation-i';
 import { FormAddEditComponent } from '../form-add-edit/form-add-edit.component';
+import { auto } from '@popperjs/core';
 
 @Component({
   selector: 'app-add-formation',
   templateUrl: './add-formation.component.html',
   styleUrls: ['./add-formation.component.css']
 })
+
 export class AddFormationComponent implements OnInit, OnChanges {
 
   showUEForm : boolean = false;
@@ -40,29 +42,23 @@ export class AddFormationComponent implements OnInit, OnChanges {
   }
 
   formUe(){
-    this.showUEForm = !this.showUEForm
+    this.showUEForm = true;
   }
   
-  showNewModal(element?: any){
-    this._dialog.open( FormAddEditComponent, {
-      width: '600px',
-      data: {
-        title: `Formulaire de ...`,
-        type: 'cet utilisateur',
-        data: this.formation
-      }
-    })
-    .afterClosed()
-    .subscribe((res : FormationI) => {
-      console.log('res after form called: ', res);
-    });
-    this.isActive = true;
+  fermerFormMatiere(){
+    this.boolMatiere = false;
   }
 
+  fermerFormUe(){
+    this.showUEForm = false;
+  }
+  
+
+  
   focus(idd:number){
     console.log("entreée");
-
-    this.boolMatiere = !this.boolMatiere;
+    
+    
     console.log(idd);
     const selectedUe = this.formation.ue?.find(ue => ue.id === idd );
     
@@ -91,12 +87,13 @@ export class AddFormationComponent implements OnInit, OnChanges {
       selectedUe.matiere.push({...this.matiere});
       console.log(this.matiere.id)
       console.log("res final !",this.formation);
+      
     } else {
       console.log("Selected UE not found!");
     }
     // console.log("///////////",selectedUe?.matiere)
     // selectedUe!.matiere!.push(this.matiere);
-    //console.log("res final !",this.formation);
+    // console.log("res final !",this.formation);
 
 
   }

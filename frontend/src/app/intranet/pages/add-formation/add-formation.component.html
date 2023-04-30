@@ -4,7 +4,7 @@
       <div class="modal-header">
         <h4 class="modal-title"></h4>
         <div class="btn-group ml-auto">
-          <button (click)="formUe()" class="btn btn-primary">Ajouter UE</button>
+          <button (click)="formUe()" class="btn btn-primary">Ajouter une UE</button>
           <!--<button type="button" class="btn btn-secondary">Exporter en Excel</button>-->
         </div>
       </div>
@@ -145,6 +145,7 @@
           <div class="row">
             <div class="col-lg-12" *ngIf="this.boolMatiere">
               <h2>Ajouter une Matiere</h2>
+              <input type="button" value="Fermer" (click)="fermerFormMatiere()"> 
               <form #f="ngForm" >
                 <!-- Champs de formation -->
                 

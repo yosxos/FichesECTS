@@ -6,7 +6,7 @@ import { Auth } from 'aws-amplify';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthServiceService {
+export class AuthService {
 
   userId: UserI = <UserI>{};
   responsable: ResponsableI = <ResponsableI>{list_formation:[]};
@@ -22,8 +22,9 @@ export class AuthServiceService {
   signIn(email: string, password: string) {
     Auth.signIn(email, password)
       .then(user => {
-        console.log(user.attributes);
+        console.log("user.attributes", user.attributes);
         this.userId.email = user.attributes.email;
+        console.log("lksdfjksd");
         this.UserInDb(user.attributes.family_name, user.attributes.given_name);
         this.router.navigateByUrl('/intranet')
       })
@@ -40,18 +41,18 @@ export class AuthServiceService {
 
   //get userId from database and check if user is admin or responsable
   async UserInDb(family_name: string, given_name: string) {
-    await this.httpClient.get<{id:number,name:string,prenom:string}[]>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { name: family_name, prenom: given_name } })
+    await this.httpClient.get<{id:number,name:string,prenom:string}[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { name: family_name, prenom: given_name } })
       .subscribe((userData:{id:number,name:string,prenom:string}[]) => {
         console.log("userData", userData);
         const id: number = userData[0].id;
         console.log("id", id);
-        this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: id } })
+        this.httpClient.get('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: id } })
           .subscribe((adminData: any) => {
             console.log(adminData)
             if (adminData.length !== 0) {
               this.userId.status = "admin";
             } else {
-              this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id_user: id } })
+              this.httpClient.get('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id_user: id } })
                 .subscribe((responsableData: any) => {
                   console.log('responsable',responsableData)
                   if (responsableData.length !== 0) {
@@ -69,18 +70,6 @@ export class AuthServiceService {
       });
     console.log(this.userId);
   }
-
-
-  // this.httpClient.get('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/user', { params: { name: nom, prenom: prenom } }).subscribe((data: any) => {
-  //  if (data.length == 0) {
-  //   this.userId.status = "inconnu";
-  //  }
-  //else {
-  //  this.userId.status = data[0].status;
-  // }
-  //}
-
-
 }
 
 

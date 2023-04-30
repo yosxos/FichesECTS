@@ -24,7 +24,7 @@ export class UeGetService {
   
     try {
       const response = await this.httpClient
-        .get<Array<UeI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/ue')
+        .get<Array<UeI>>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ue')
         .pipe(catchError((error) => throwError(error)))
         .toPromise();
   

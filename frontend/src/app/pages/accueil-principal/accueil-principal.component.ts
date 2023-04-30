@@ -3,7 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from '../modal-formation/modal-formation.component';
 import { FormationGetService } from 'src/app/services/formation-get.service';
 import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
-import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { AuthService } from 'src/app/services/auth-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormAddEditComponent } from 'src/app/intranet/pages/form-add-edit/form-add-edit.component';
 
@@ -19,7 +19,7 @@ import { FormAddEditComponent } from 'src/app/intranet/pages/form-add-edit/form-
 export class AccueilPrincipalComponent implements OnInit {
 
 
-  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public auth: AuthServiceService, private _dialog: MatDialog) {
+  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public authService: AuthService, private _dialog: MatDialog) {
   }
 
   ngOnInit(): void {
@@ -56,6 +56,6 @@ export class AccueilPrincipalComponent implements OnInit {
   }
 
   connected() : boolean {
-    return (this.auth.userId.status === 'actif'  || this.auth.userId.status === 'admin');
+    return (this.authService.userId.status === 'actif'  || this.authService.userId.status === 'admin');
   }
 }

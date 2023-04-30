@@ -2,7 +2,7 @@ import { animate, keyframes, style, transition, trigger } from '@angular/animati
 import { Component, Output, EventEmitter, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserI } from 'src/app/modeles/user-i';
-import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { AuthService } from 'src/app/services/auth-service.service';
 import { fadeInOut, INavbarData } from './helper';
 import { navbarData } from './nav-data';
 
@@ -50,7 +50,7 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  constructor(public router: Router, public authService: AuthServiceService) { }
+  constructor(public router: Router, public authService: AuthService) { }
 
   ngOnInit(): void {
     this.screenWidth = window.innerWidth;

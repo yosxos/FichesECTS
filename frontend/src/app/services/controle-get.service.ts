@@ -33,7 +33,7 @@ export class ControleGetService {
   getControleApi(){
     
     this.listControle = [];
-    this.httpClient.get<Array<ControleI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/controle').subscribe(
+    this.httpClient.get<Array<ControleI>>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/controle').subscribe(
       (response) => {
         this.listControle = response;
       }

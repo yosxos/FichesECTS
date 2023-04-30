@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { UserI } from 'src/app/modeles/user-i';
-import { AuthServiceService } from 'src/app/services/auth-service.service';
+import { AuthService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'app-connexion',
@@ -11,7 +11,7 @@ export class ConnexionComponent {
 
   userId={email: "", password: ""} ;
 
-  constructor(public authService:AuthServiceService) { }
+  constructor(public authService:AuthService) { }
 
 
   check(mail: string, password: string){

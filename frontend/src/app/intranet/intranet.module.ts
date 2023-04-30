@@ -6,13 +6,15 @@ import { FormAddEditComponent } from './pages/form-add-edit/form-add-edit.compon
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
+import { EditFormationComponent } from './pages/edit-formation/edit-formation.component';
 
 
 
 @NgModule({
   declarations: [
     AddFormationComponent,
-    FormAddEditComponent
+    FormAddEditComponent,
+    EditFormationComponent
   ],
   imports: [
     CommonModule,

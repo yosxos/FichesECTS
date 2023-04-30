@@ -27,7 +27,7 @@ export class FormationGetService {
   
     try {
       const response = await this.httpClient
-        .get<Array<FormationI>>('https://gd9eauezge.execute-api.eu-west-3.amazonaws.com/prod/formation')
+        .get<Array<FormationI>>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation')
         .pipe(catchError((error) => throwError(error)))
         .toPromise();
   
