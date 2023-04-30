@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ResponsableI, UserI } from '../modeles/user-i';
 import { Auth } from 'aws-amplify';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -18,18 +19,19 @@ export class AuthService {
     return this.userId.status ;
   }
 
-  // sign in with email password from aws amplify
-  signIn(email: string, password: string) {
-    Auth.signIn(email, password)
-      .then(user => {
-        console.log("user.attributes", user.attributes);
-        this.userId.email = user.attributes.email;
-        console.log("lksdfjksd");
-        this.UserInDb(user.attributes.family_name, user.attributes.given_name);
-        this.router.navigateByUrl('/intranet')
-      })
-      .catch(err => console.log(err));
+async signIn(email: string, password: string) {
+  try {
+    const user = await Auth.signIn(email, password);
+    console.log("user.attributes", user.attributes);
+    this.userId.email = user.attributes.email;
+    console.log("lksdfjksd");
+    await this.UserInDb(user.attributes.family_name, user.attributes.given_name);
+    this.router.navigateByUrl('/intranet')
+  } catch (error) {
+    console.log(error);
   }
+}
+
 
   // sign out with email password from aws amplify
   signOut() {

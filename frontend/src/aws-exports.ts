@@ -4,10 +4,10 @@
 const awsmobile = {
     "aws_project_region": "eu-west-3",
     "aws_cognito_region": "eu-west-3",
-    "aws_user_pools_id": "eu-west-3_Gg35cuDYX",
+    "aws_user_pools_id": "eu-west-3_troJT3ZzC",
     "aws_user_pools_web_client_id": "3bam5ei8qj63et1253pv23ed4k",
     "oauth": {
-        "domain": "testingauth.auth.eu-west-3.amazoncognito.com"
+        "domain": "ficheects.auth.eu-west-3.amazoncognito.com"
     },
     "aws_cognito_username_attributes": [
         "EMAIL"
