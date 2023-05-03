@@ -1,6 +1,6 @@
 import { Component, Inject, Input, OnInit } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { FormationI, UeI } from 'src/app/modeles/formation-i';
+import { FormationI, MatiereI, UeI } from 'src/app/modeles/formation-i';
 
 
 @Component({
@@ -36,7 +36,6 @@ export class FormAddEditComponent implements OnInit {
     console.log('dataSource : ', this.formation.ue?.push(this.ue));
     
   }
-
 
 
 }

@@ -3,17 +3,30 @@ import { Injectable } from '@angular/core';
 import { FormationI, UeI } from '../modeles/formation-i';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { Auth } from 'aws-amplify';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class FormationGetService {
+  public get httpClient(): HttpClient {
+    return this._httpClient;
+  }
+  public set httpClient(value: HttpClient) {
+    this._httpClient = value;
+  }
 
   listeFormations: Array<FormationI> = [];
-
-  constructor(private httpClient: HttpClient) {
-    //this.getFormations();
+  idToken: string = "";
+  constructor(private _httpClient: HttpClient) {
+    Auth.currentSession().then(data => {
+      this.idToken = 'Bearer ' + data.getIdToken().getJwtToken();
+      
+    })
+      .catch((error) => {
+        console.log("token not found");
+      });
    }
 
   // Récupère la formation par son id

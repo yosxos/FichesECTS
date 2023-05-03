@@ -17,7 +17,7 @@ export class GestionFichesService {
   listFormationUe: Array<FormationUeI> = [];
   listUeMatiere: Array<UeMatiereI> = [];
   formationObservable$: Observable<FormationI> = of(<FormationI>{});
-
+  idToken: string = "";
 
   constructor(private httpClient:HttpClient, public controleService: ControleGetService, public formationService: FormationGetService, public ueService: UeGetService, public matiereService: MatiereGetService) {
   }

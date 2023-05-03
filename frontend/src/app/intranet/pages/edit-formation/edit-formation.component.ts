@@ -87,7 +87,7 @@ export class EditFormationComponent implements OnInit, OnChanges {
       selectedUe.matiere.push({...this.matiere});
       console.log(this.matiere.id)
       console.log("res final !",this.formation);
-      this.matiereService.postMatiereApi(this.matiere)
+      //this.matiereService.postMatiereApi(this.matiere)
     } else {
       console.log("Selected UE not found!");
     }

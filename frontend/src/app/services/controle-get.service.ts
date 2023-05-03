@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ControleI } from '../modeles/formation-i';
+import { Auth } from 'aws-amplify';
 
 
 @Injectable({
@@ -9,9 +10,16 @@ import { ControleI } from '../modeles/formation-i';
 export class ControleGetService {
 
   listControle: Array<ControleI> = [];
-
+  idToken: string = "";
   constructor(private httpClient: HttpClient) {
-    this.getControleApi();
+    Auth.currentSession().then(data => {
+      this.idToken = 'Bearer ' + data.getIdToken().getJwtToken();
+      console.log(this.idToken)
+    })
+      .catch((error) => {
+        console.log("token not found");
+      });
+    
   }
 
   // Récupère le controle par son id

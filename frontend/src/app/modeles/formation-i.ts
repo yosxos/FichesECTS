@@ -48,3 +48,30 @@ export interface UeMatiereI {
     id_ue: number,
     id_matiere: number
 }
+
+export interface FormationI_post {
+    parcour: string,
+    annee: string,
+    niveau: string,
+    code: string 
+    ue?: Array<UeI>
+}
+
+export interface UeI_post {
+    nom : string,
+    semestre : string,
+    ects : number,
+}
+
+
+export interface MatiereI_post {
+    nom: string,
+    ects: number,
+    cm: number,
+    td: number,
+    tp: number,
+    Pro: number,
+    TPE: number,
+    departement: string,
+    id_Controle: number,
+}
