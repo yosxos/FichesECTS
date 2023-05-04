@@ -33,6 +33,7 @@ export class MatiereGetService {
   // Récupère les données de la table matiere
   async getMatiereApi() {
     this.listMatiere = [];
+console.log('kjsdfkjskjdgkdfjlgfdjldfsfsjlgshglh');
 
     try {
       const response = await this.httpClient
@@ -40,13 +41,11 @@ export class MatiereGetService {
         .pipe(catchError((error) => throwError(error)))
         .toPromise();
 
-      response!.forEach(matiere => {
-        let controle = this.controleGetService.getControleById(matiere.id_Controle as any);
-        if (controle) {
-          matiere.id_Controle = controle as ControleI;
-          this.listMatiere = response!;
-        }
-      });
+
+        this.listMatiere = response!;
+        console.log("AAAAAAAAAAAAAAAAAAAAAA", this.listMatiere);
+        
+
     } catch (error) {
       console.error('Une erreur est survenue lors de la récupération des données de matière :', error);
     }
@@ -57,7 +56,7 @@ export class MatiereGetService {
   */
   idInList(id: string | number): boolean {
     let tmp: boolean = false;
-    this.listMatiere.forEach(element => id == element.id ? tmp = true : console.log("not in array", element))
+    this.listMatiere.forEach(element => id == element.id ? tmp = true : console.log("not in array matiere", element))
     return tmp;
   }
 

@@ -14,12 +14,12 @@
           <tr class="general">
             <td rowspan="4">Validation</td>
             <td>Niveau</td>
-            <td></td>
+            <td><input [(ngModel)]="formation.niveau" placeholder="Niveau"></td>
             <td colspan="100%"></td>
           </tr>
           <tr class="general">
             <td>Parcours</td>
-            <td>Génie Informatique</td>
+            <td><input [(ngModel)]="formation.parcour" placeholder="Parcours"></td>
             <td class="indication" rowspan="3">semestre</td>
             <td class="indication" colspan="5">répartition horaire</td>
             <td></td>
@@ -28,7 +28,7 @@
           <!-- Row C -->
           <tr class="general">
             <td>Année</td>
-            <td></td>
+            <td><input [(ngModel)]="formation.annee" placeholder="2023" (input)="onYearChanged()"><p>/{{this.annee_plus_un}}</p> </td>
             <td class="indication" colspan="5">par étudiant</td>
             <td></td>
             <td class="indication" rowspan="2">ECTS</td>
@@ -66,7 +66,7 @@
                 <td>sum</td>
                 <td>sum</td>
                 <td colspan="100%"></td>
-                <td id="addMatiere"><input type="button" (click)="focus(ue.id)" value="+" ></td>
+                <td id="addMatiere"><input type="button" (click)="selectByUeId(ue.id)" value="+" ></td>
                 <td id="deleteMatiere"><input type="button" (click)="deleteUe(ue.id)" value="-" ></td>
 
             </tr>
@@ -108,7 +108,7 @@
           <div class="row">
             <div class="col-lg-12" *ngIf="this.showUEForm">
               <h2>Ajouter une Ue</h2>
-              <form #f="ngForm" >
+              <form #form="ngForm" >
                 <!-- Champs de Ue -->
                 <div class="mb-3">
                   <label for="annee" class="form-label">Nom</label>
@@ -127,7 +127,7 @@
                 </div>
 
 
-                <button type="submit" (click)="ajouter()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                <button type="submit" (click)="ajouterUe()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
                 
               </form>
             </div>
@@ -147,7 +147,7 @@
             <div class="col-lg-12" *ngIf="this.boolMatiere">
               <h2>Ajouter une Matiere</h2>
               <!-- <input type="button" value="Fermer" (click)="fermerFormMatiere()">  -->
-              <form #f="ngForm" >
+              <form #ft="ngForm" >
                 <!-- Champs de formation -->
                 
                 <div class="mb-3">

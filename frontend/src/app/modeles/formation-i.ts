@@ -1,7 +1,7 @@
 export interface FormationI {
     id: number,
     parcour: string,
-    annee: string,
+    annee: number,
     niveau: string,
     code: string 
     ue?: Array<UeI>

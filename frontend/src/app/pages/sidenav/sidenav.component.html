@@ -56,15 +56,13 @@
                         Fiches ECTS
                     </i>
                 </a>
-                <a class="sidenav-nav-link" (click)="openSidenav()" routerLinkActive="active"
-                    [routerLinkActiveOptions]="{exact: true}"> <!-- [ngClass]="setActiveClass('annee')"-->
+                <!-- <a class="sidenav-nav-link" (click)="openSidenav()" routerLinkActive="active"
+                    [routerLinkActiveOptions]="{exact: true}"> 
                     <i class="sidenav-link-icon fal fa-poll-people"></i>
                     <i class="sidenav-text" *ngIf="opened()">
                         Année
                     </i>
-                    <!-- <div>
-                        <app-sublevel-menu></app-sublevel-menu>
-                    </div> -->
+
                 </a>
                 <div *ngIf="collapsed">
                     <ul *ngIf="collapsed" class="sublevel-nav">
@@ -101,7 +99,7 @@
                             </a>
                         </li>
                     </ul>
-                </div>
+                </div> -->
                 <a *ngIf="!this.authService.connected()" class="sidenav-nav-link" routerLink="connexion"
                     routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                     [ngClass]="setActiveClass('connexion')">

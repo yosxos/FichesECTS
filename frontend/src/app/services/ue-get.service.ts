@@ -31,7 +31,8 @@ export class UeGetService {
   // Récupère les données de la table ue
   async getUeApi() {
     this.listUe = [];
-  
+    console.log("skjgggggggggggggggggggggggggggggggggggggggggl ");
+
     try {
       const response = await this.httpClient
         .get<Array<UeI>>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ue')
@@ -52,7 +53,7 @@ export class UeGetService {
  */
   idInList(id: string | number): boolean {
     let tmp: boolean = false; 
-    this.listUe.forEach( element => id == element.id ? tmp = true : console.log("not in array", element))
+    this.listUe.forEach( element => id == element.id ? tmp = true : console.log("not in array ue", element,"\nid = ",id))
     return tmp;
   }
 

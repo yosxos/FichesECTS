@@ -6,6 +6,7 @@ import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
 import { AuthService } from 'src/app/services/auth-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormAddEditComponent } from 'src/app/intranet/pages/form-add-edit/form-add-edit.component';
+import { FormationI } from 'src/app/modeles/formation-i';
 
 
 
@@ -18,12 +19,17 @@ import { FormAddEditComponent } from 'src/app/intranet/pages/form-add-edit/form-
 
 export class AccueilPrincipalComponent implements OnInit {
 
-
+  allformation!: FormationI;
   constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public authService: AuthService, private _dialog: MatDialog) {
   }
 
   ngOnInit(): void {
     this.gestionService.someMethod()
+
+     //this.allformation = this.gestionService.formationObservable$.subscribe();
+    // console.log("observable =",allformation);
+
+    
   }
 
 
@@ -50,6 +56,7 @@ export class AccueilPrincipalComponent implements OnInit {
 
   /** TODOO alerte en cas de manque de donnée ! */
   openModal(id : number) {
+
     this.gestionService.getFormationUeById(id);
     const modalRef = this.modalService.open(ModalFormationComponent);
     //modalRef.componentInstance.data = this.formationService.listeFormations.find(formation => formation.id === id);

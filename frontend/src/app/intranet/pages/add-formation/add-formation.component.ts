@@ -5,6 +5,7 @@ import { FormAddEditComponent } from '../form-add-edit/form-add-edit.component';
 import { auto } from '@popperjs/core';
 import { MatiereGetService } from 'src/app/services/matiere-get.service';
 import { UeGetService } from 'src/app/services/ue-get.service';
+import { FormationGetService } from 'src/app/services/formation-get.service';
 
 @Component({
   selector: 'app-add-formation',
@@ -25,27 +26,41 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
   matierepost: MatiereI_post = <MatiereI_post>{};
   uepost: UeI_post = <UeI_post>{};
+  annee_plus_un!: number;
+  constructor(private _dialog: MatDialog, public matieresService: MatiereGetService, public ueService: UeGetService, public formationService: FormationGetService) { }
 
-
-  constructor(private _dialog: MatDialog, public matieresService: MatiereGetService, public ueService: UeGetService) { }
 
   ngOnInit(): void {
-    this.formation.code = "Code1";
+    console.log(this.formationService.listeFormations );
+    
     this.formation.ue = [];
+    this.ue.matiere = [];
+  }
 
-    console.log('dans la page add-formation');
+  annee_plus_un_toString(annee: string): string {
+    return (parseInt(annee) + 1).toString()
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('dans ngOnChanges');
     if (changes['formation']) {
-
+      console.log("entrééééé-------------éééééééééééééé",this.ue)
       this.formation = changes['formation'].currentValue;
     }
+    if(changes['ue']){
+      this.ue = changes['ue'].currentValue;
+      console.log("entrééééééééééééééééééé",this.ue)
+    }
     if (changes['matiere']) {
-      this.formation = changes['matiere'].currentValue;
+      console.log("entrééééééééééééékdhdjféééééé",this.ue)
+      this.matiere = changes['matiere'].currentValue;
     }
 
+  }
+
+
+
+  onYearChanged() {
+    this.annee_plus_un = this.formationService.sum(this.formation.annee, Number(1));
   }
 
   formUe() {
@@ -60,116 +75,124 @@ export class AddFormationComponent implements OnInit, OnChanges {
   //   this.showUEForm = false;
   // }
 
-
-
-  focus(idd: number) {
-    console.log("entreée");
-
-    this.boolMatiere = !this.boolMatiere;
-    console.log(idd);
-    const focusUe = this.formation.ue?.find(ue => ue.id === idd);
-
-
-    if (focusUe) {
-      console.log("entreée", focusUe.id);
-      this.ue = focusUe;
-      console.log(this.ue)
-    }
+  check_id_ue(id: number): boolean {
+    return this.formation.ue?.some(ue => ue.id === id)!;
   }
 
+  selectByUeId(idd: number) {
+    this.showUEForm = false;
+    this.ue = <UeI>{} //TODO peut etre inutile 
+    this.matiere = <MatiereI>{} //TODO peut etre in
+    this.boolMatiere = true;
+    if (this.check_id_ue(idd)) {
+      
+      this.ue = this.formation.ue?.find(ue => ue.id === idd)!;
+      console.log("Ue selected",this.ue);
+    }else{
+      alert("Please select")
+    }
+  }
   //TODO ajouter une ue apres avoir rentré des matieres sur une UE crée une nouvelle  ue avec un copie  des matieres de crée juste avant dans l'autre ue 
-  ajouter() {
+  ajouterUe() {
+    console.log("////////////////////// Ue ", this.ue);
+    
+    /* etape 1
+      add ue add mat dans cette ue 
+      add new ue implique que les mat s'ajoutennt aussi dans la new ue
+    */
+    // this.ue.matiere rempli 
+    /**
+     * Variable tmp pour  push ue 
+     */
+    if (this.ue.matiere){
+      if(this.ue.matiere!.length>0){
+        this.ue.matiere = []
+      }
+    }
+    
+    let id_tmp: number = this.formation.ue?.length || 0;
+    this.ue.id = id_tmp + 1
+    console.log("ID lasted : ", this.ue.id);
+    console.log("Ue added : ", this.ue);
+/* etape 1*/ 
 
-    this.ue.id = this.formation.ue!.length || 0;
-    //this.ue.matiere = [];
-    console.log("avant push ", this.ue);
     this.formation.ue!.push({ ...this.ue });
-
-
-
-
+    this.ue = <UeI>{};//TODO peut etre inutile
+    this.ue.matiere = []
+    console.log("this.ue cleaned : ", this.ue);
+    console.log(this.formation)
   }
 
   ajouterMatiere() {
-    const selectedUe = this.formation.ue?.find(ue => ue.id === this.ue.id);
+    console.log("////////////////////// matiere ", this.matiere);
 
-    if (selectedUe) {
-      if (!selectedUe.matiere) {
-        selectedUe.matiere = []; // initialize the matiere array if it's not defined
-      }
+    this.showUEForm = false;
+    
 
+    if (this.check_id_ue(this.ue.id)) {
+      console.log("entrée");
+      
+      let id_tmp : number = this.ue.matiere?.length || 0;
+      console.log("id_tmp", id_tmp);
 
-      //const cont = this.matieresService.postMatiereApi(this.matiere)
-      //console.log(cont)
-      // this.matiere.id = id;
-      selectedUe.matiere.push({ ...this.matiere });
-      console.log(this.matiere.id)
-      console.log("res final !", this.formation);
-
-    } else {
+      this.matiere.id = id_tmp + 1;
+      console.log("this.matiere",this.matiere);
+      // trouve plusieurs ue 
+      console.log("//////////////////////////////////////////////////",this.formation.ue?.find(ue => ue.id === this.ue.id));
+      
+      this.formation.ue?.find(ue => ue.id === this.ue.id)!.matiere!.push({ ...this.matiere})
+    }else {
+      alert("Selected UE not found!");
       console.log("Selected UE not found!");
     }
-    // console.log("///////////",selectedUe?.matiere)
-    // selectedUe!.matiere!.push(this.matiere);
-    // console.log("res final !",this.formation);
-
+    this.ue = <UeI>{};
+    this.ue.matiere = [];
+    this.matiere = <MatiereI>{};
+    this.boolMatiere = false
 
   }
 
   // ici j'ai mis departement car j'ai pas encore d'id pour les matiere et les ue donc c'est galere de les delete by id 
   deleteMatiere(departement: string, id_ue: number) {
-    console.log(id_ue);
+
 
     const selectedUe = this.formation.ue?.find(ue => ue.id === id_ue)
-    console.log(selectedUe);
+
 
     if (selectedUe) {
-      console.log(selectedUe, "avant")
       const matiere = selectedUe.matiere?.find(matiere => matiere.departement === departement);
       selectedUe.matiere = selectedUe.matiere?.filter(item => item !== matiere)
-      console.log(selectedUe, "apres")
     }
   }
 
 
   deleteUe(id_ue: number) {
     const ueIndex = this.formation.ue?.findIndex(ue => ue.id === id_ue);
-    console.log(id_ue);
-    console.log(ueIndex);
+
 
     if (ueIndex != undefined) {
       if (this.formation.ue != undefined) {
-        console.log("before loop", this.formation.ue);
 
         for (let i = 0; i < this.formation.ue.length; i++) {
-          console.log("i : ", i);
 
-          console.log("entrée", this.formation.ue.at(i));
         }
-        console.log("ueIndex ", ueIndex);
-
         this.formation.ue?.splice(ueIndex, 1);
-        console.log("apres", this.formation.ue);
-
       }
 
     }
-    console.log("sorti");
   }
 
   async validerFormation(): Promise<void> {
 
     if (this.formation.ue?.length != undefined) {
-      console.log("entrée AAAAAAA", this.formation.ue?.length);
+      // Ne post pas de formation sans UE 
+      const insertIdFormation = await this.formationService.postFormationApi(this.formation)
       for (let i = 0; i < this.formation.ue.length; i++) {
-        console.log("i : ", i);
 
         if (this.formation.ue[i].matiere != undefined) {
-          let matiereIds : Array<number> = [];
           const insertIdUe = await this.ueService.postUeApi(this.formation.ue[i])
 
           for (let j = 0; j < this.formation.ue[i].matiere!.length; j++) {
-            console.log("j : ", j);
             // TODO stupide interaction l'object peut etre undefined dans le if alors que pour rentrer dans le if il faut qu'il soit defini 
             let matiereVide: MatiereI = {
               id: -1,
@@ -180,6 +203,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
               cm: -1,
               departement: "-1",
               ects: -1,
+              // id_Controle: -1,
               id_Controle: {
                 id: -1,
                 type_control_S1: "--", // enum
@@ -194,10 +218,10 @@ export class AddFormationComponent implements OnInit, OnChanges {
             };
 
             const insertIdMat = await this.matieresService.postMatiereApi2(this.formation.ue.at(i)?.matiere!.at(j) || matiereVide);
-            
-            this.ueService.postMatiere_Ue_ids(insertIdUe,insertIdMat)            
-            //TODO add les post mais attention pb async probable 
+
+            this.ueService.postMatiere_Ue_ids(insertIdUe, insertIdMat)
           }
+          this.formationService.postFormation_Ue_ids(insertIdUe, insertIdFormation)
         }
       }
     }

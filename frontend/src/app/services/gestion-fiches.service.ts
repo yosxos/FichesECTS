@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { FormationI, FormationUeI, MatiereI, UeI, UeMatiereI } from '../modeles/formation-i';
+import { FormationI, FormationUeI, MatiereI, UeI, UeMatiereI,ControleI } from '../modeles/formation-i';
 import { FormationGetService } from './formation-get.service';
 import { MatiereGetService } from './matiere-get.service';
 import { UeGetService } from './ue-get.service';
@@ -15,6 +15,7 @@ import { catchError } from 'rxjs/operators';
 export class GestionFichesService {
 
   listFormationUe: Array<FormationUeI> = [];
+  listFormation: Array<FormationI> = [];
   listUeMatiere: Array<UeMatiereI> = [];
   formationObservable$: Observable<FormationI> = of(<FormationI>{});
   idToken: string = "";
@@ -26,6 +27,7 @@ export class GestionFichesService {
     await this.formationService.getFormations();
     await this.ueService.getUeApi();
     await this.matiereService.getMatiereApi();
+    await this.controleService.getControleApi();
     await this.getFormationUeApi();
     await this.getUeMatiereApi(); 
   }
@@ -79,6 +81,11 @@ export class GestionFichesService {
         }
       })
       this.formationObservable$ = of(tmp_formation);
+      console.log("tmp_formation",tmp_formation)
+      console.log("listematiereUE ",this.listUeMatiere);
+      console.log("listematiere ",this.matiereService.listMatiere);
+
+      
     }
   }
 
@@ -115,6 +122,15 @@ export class GestionFichesService {
         if(ue_matiere.id_ue === tmp_ue.id){
           if(this.matiereService.idInList(ue_matiere.id_matiere)){
             let tmpMatiere: MatiereI = this.matiereService.getMatiereById(ue_matiere.id_matiere)!;
+
+            let tmpControle: ControleI = this.controleService.listControle.find(controle => {tmpMatiere.id_Controle?.id == controle.id;
+            console.log("kkkkkkkkkkkkkkkkkkkkkkkkk",
+              controle
+            );
+             })  as ControleI;
+            console.log("tmpCOntrole",tmpControle);
+            
+            tmpMatiere.id_Controle = tmpControle;
             tmp_ue.matiere?.push(tmpMatiere);
           }
         }
@@ -127,7 +143,7 @@ export class GestionFichesService {
    */
   idInListFormationUe(id_formation: number): boolean {
     let tmp: boolean = false; 
-    this.listFormationUe.forEach( element => id_formation == element.id_formation ? tmp = true : console.log("not in array", element))
+    this.listFormationUe.forEach( element => id_formation == element.id_formation ? tmp = true : console.log("not in array formationUe", element, "\nid_formation",id_formation))
     return tmp;
   }
 
@@ -136,10 +152,11 @@ export class GestionFichesService {
    */
   idInListUeMatiere(id_ue: number): boolean {
     let tmp: boolean = false; 
-    this.listUeMatiere.forEach( element => id_ue == element.id_ue ? tmp = true : console.log("not in array", element))
+    this.listUeMatiere.forEach( element => id_ue == element.id_ue ? tmp = true :
+      console.log("not in array ueMatiere", element, "\nid_ue",id_ue))
     return tmp;
   }
-  
+
 }
 
 

@@ -23,7 +23,7 @@ export class ControleGetService {
   }
 
   // Récupère le controle par son id
-  getControleById(id: any): ControleI | undefined{
+  getControleById(id: number): ControleI | undefined{
     
     return this.listControle.find(ue => ue.id === id);
   }
@@ -33,7 +33,7 @@ export class ControleGetService {
    */
    idInList(id: string | number): boolean {
     let tmp: boolean = false; 
-    this.listControle.forEach( element => id == element.id ? tmp = true : console.log("not in array", element))
+    this.listControle.forEach( element => id == element.id ? tmp = true : console.log("not in array controle", element))
     return tmp;
   }
 
