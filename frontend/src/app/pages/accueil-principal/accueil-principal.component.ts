@@ -20,6 +20,7 @@ import { FormationI } from 'src/app/modeles/formation-i';
 export class AccueilPrincipalComponent implements OnInit {
 
   allformation!: FormationI;
+  searchText = '';
   constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public authService: AuthService, private _dialog: MatDialog) {
   }
 

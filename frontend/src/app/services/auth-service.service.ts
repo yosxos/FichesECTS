@@ -10,22 +10,24 @@ import { Auth } from 'aws-amplify';
 export class AuthService {
 
   userId: UserI = <UserI>{};
+  connectedUser: boolean= false;
   responsable: ResponsableI = <ResponsableI>{list_formation:[]};
 
   constructor(public httpClient: HttpClient, public router: Router) { }
 
 
   connected() {
-    return this.userId.status ;
+    
+    //Auth.currentSession().then(data => this.connectedUser = data.isValid())
+    return !!localStorage.getItem('token');
   }
 
 async signIn(email: string, password: string) {
   try {
     const user = await Auth.signIn(email, password);
-    console.log("user.attributes", user.attributes);
     this.userId.email = user.attributes.email;
-    console.log("lksdfjksd");
     await this.UserInDb(user.attributes.family_name, user.attributes.given_name);
+    localStorage.setItem('token', (await Auth.currentSession()).getIdToken().getJwtToken())
     this.router.navigateByUrl('/intranet')
   } catch (error) {
     console.log(error);
@@ -38,6 +40,8 @@ async signIn(email: string, password: string) {
     Auth.signOut()
       .then(() => console.log("Successfully signed out."))
       .catch(err => console.log(err));
+      console.log("test",localStorage.removeItem('token'));
+       
       this.router.navigateByUrl('/')
   }
 

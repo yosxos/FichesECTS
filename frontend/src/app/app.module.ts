@@ -14,6 +14,7 @@ import { SublevelMenuComponent } from './pages/sidenav/sublevel-menu.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
+import { SearchPipe } from './pipe/search.pipe';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import {MatDialogModule} from '@angular/material/dialog';
     ModalFormationComponent,
     SidenavComponent,
     SublevelMenuComponent,
+    SearchPipe,
   ],
   imports: [
     BrowserModule,

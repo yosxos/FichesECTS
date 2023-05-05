@@ -108,7 +108,7 @@
                         Connexion
                     </i>
                 </a>
-                <a *ngIf="this.authService.connected()" class="sidenav-nav-link" [ngClass]="setActiveClass('dashboard')"
+                <a *ngIf="this.authService.connected()" class="sidenav-nav-link" [ngClass]="setActiveClass('dashboard')" (click)="signOut()"
                     href="/">
                     <i class="sidenav-link-icon fas fa-sign-out-alt"></i>
                     <i class="sidenav-link-text" *ngIf="opened()">

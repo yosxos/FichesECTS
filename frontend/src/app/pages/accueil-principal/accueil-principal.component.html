@@ -7,11 +7,11 @@
           <p class="mb-3">Informations : Pellentesque vitae vestibulum lorem. Nulla facilisi. Integer pulvinar nunc a lacus bibendum, vel consequat turpis laoreet.</p>
           <p class="mb-3">Description : Etiam sed nibh vitae metus tempor venenatis. Sed pellentesque enim ac consequat interdum. Integer tristique, libero vel scelerisque euismod, metus ligula.</p>
           <div class="d-flex">
-            <a href="#" class="btn btn-primary mt-3">En savoir plus</a>
+            <!-- <a href="#" class="btn btn-primary mt-3">En savoir plus</a> -->
           </div>
         </div>
         <div class="col-lg-4 d-none d-lg-block">
-          <img src="https://via.placeholder.com/300x400" alt="Fiche ECTS" class="img-fluid">
+          <img src="assets/ficheExample.png" alt="Fiche ECTS" class="img-fluid">
         </div>
       </div>
     </div>
@@ -26,15 +26,15 @@
           <div class="d-flex justify-content-between">
             <div>
               <label for="filter-name" class="form-label">Parcours</label>
-              <input type="text" id="filter-name" class="form-control" placeholder="Filtrer par parcours">
+              <input class="form-control" type="text" placeholder="Search" [(ngModel)]="searchText">
+              
             </div>
             <div>
               <label for="filter-status" class="form-label">Année</label>
-              <select id="filter-status" class="form-select">
-                <option selected>Tous</option>
-                <option value="Active">Actif</option>
-                <option value="Onboarding">Intégration</option>
-                <option value="Awaiting">En attente</option>
+              <select  [(ngModel)]="searchText" placeholder="Annee" id="filter-status" class="form-select">
+                <option value="2022/2023">2022/2023</option>
+                <option value="2021/2022">2021/2022</option>
+                <option value="2020/2021">2020/2021</option>
               </select>
             </div>
             <ng-container *ngIf="connected()">
@@ -63,7 +63,7 @@
                   </tr>
                 </thead>
                 <tbody >
-                    <tr *ngFor="let f of formationService.listeFormations">
+                    <tr *ngFor="let f of formationService.listeFormations | search : searchText">
                         <!-- ID -->
                         <td>
                           <div class="d-flex align-items-center">
