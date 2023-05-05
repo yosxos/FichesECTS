@@ -6,6 +6,7 @@ import { auto } from '@popperjs/core';
 import { MatiereGetService } from 'src/app/services/matiere-get.service';
 import { UeGetService } from 'src/app/services/ue-get.service';
 import { FormationGetService } from 'src/app/services/formation-get.service';
+import { __esDecorate } from 'tslib';
 
 @Component({
   selector: 'app-add-formation',
@@ -27,12 +28,18 @@ export class AddFormationComponent implements OnInit, OnChanges {
   matierepost: MatiereI_post = <MatiereI_post>{};
   uepost: UeI_post = <UeI_post>{};
   annee_plus_un!: number;
+  sum_cm!: number;
+  sum_td!: number;
+  sum_tp!: number;
+  sum_pro!: number;
+  sum_tpe!: number;
+  sum_ects!: number;
   constructor(private _dialog: MatDialog, public matieresService: MatiereGetService, public ueService: UeGetService, public formationService: FormationGetService) { }
 
 
   ngOnInit(): void {
-    console.log(this.formationService.listeFormations );
-    
+    console.log(this.formationService.listeFormations);
+
     this.formation.ue = [];
     this.ue.matiere = [];
   }
@@ -43,21 +50,147 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['formation']) {
-      console.log("entrééééé-------------éééééééééééééé",this.ue)
       this.formation = changes['formation'].currentValue;
     }
-    if(changes['ue']){
+    if (changes['ue']) {
       this.ue = changes['ue'].currentValue;
-      console.log("entrééééééééééééééééééé",this.ue)
     }
     if (changes['matiere']) {
-      console.log("entrééééééééééééékdhdjféééééé",this.ue)
       this.matiere = changes['matiere'].currentValue;
     }
 
   }
 
+  sumECTS(id: number, matiere_ects: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
 
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          console.log("i : ", i, "ects ", slected.matiere!.at(i - 1)!.ects);
+
+          res += slected.matiere!.at(i - 1)!.ects;
+          // console.log("sssssssssssssssssss",res);
+        }
+        res += matiere_ects
+
+      } else {
+        res = matiere_ects;
+      }
+    }
+    return res
+  }
+
+
+  sumCM(id: number, matiere_cm: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.cm);
+
+          res += slected.matiere!.at(i - 1)!.cm;
+          // console.log("sssssssssssssssssss",res);
+        }
+        res += matiere_cm
+
+      } else {
+        res = matiere_cm;
+      }
+    }
+    return res
+  }
+  sumTp(id: number, matiere_tp: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.tp);
+
+          res += slected.matiere!.at(i - 1)!.cm;
+          // console.log("sssssssssssssssssss",res);
+        }
+        res += matiere_tp
+
+      } else {
+        res = matiere_tp;
+      }
+    }
+    return res
+  }
+  sumPro(id: number, matiere_pro: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.Pro);
+
+          res += slected.matiere!.at(i - 1)!.Pro;
+          // console.log("sssssssssssssssssss",res);
+        }
+        res += matiere_pro
+
+      } else {
+        res = matiere_pro;
+      }
+    }
+    return res
+  }
+
+  sumTPE(id: number, matiere_tpe: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.TPE);
+
+          res += slected.matiere!.at(i - 1)!.TPE;
+          // console.log("sssssssssssssssssss",res);
+        }
+        res += matiere_tpe
+
+      } else {
+        res = matiere_tpe;
+      }
+    }
+    return res
+  }
+
+  sumTd(id: number, matiere_TD: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.td);
+
+          res += slected.matiere!.at(i - 1)!.td;
+          // console.log("sssssssssssssssssss",res);
+        }
+        res += matiere_TD
+
+      } else {
+        res = matiere_TD;
+      }
+    }
+    return res
+  }
 
   onYearChanged() {
     this.annee_plus_un = this.formationService.sum(this.formation.annee, Number(1));
@@ -85,63 +218,70 @@ export class AddFormationComponent implements OnInit, OnChanges {
     this.matiere = <MatiereI>{} //TODO peut etre in
     this.boolMatiere = true;
     if (this.check_id_ue(idd)) {
-      
+
       this.ue = this.formation.ue?.find(ue => ue.id === idd)!;
-      console.log("Ue selected",this.ue);
-    }else{
+    } else {
       alert("Please select")
     }
   }
   //TODO ajouter une ue apres avoir rentré des matieres sur une UE crée une nouvelle  ue avec un copie  des matieres de crée juste avant dans l'autre ue 
   ajouterUe() {
-    console.log("////////////////////// Ue ", this.ue);
+    this.sum_cm = 0;
+    this.sum_td = 0;
+    this.sum_tp = 0;
+    this.sum_pro = 0;
+    this.sum_tpe = 0;
     
-    /* etape 1
-      add ue add mat dans cette ue 
-      add new ue implique que les mat s'ajoutennt aussi dans la new ue
-    */
-    // this.ue.matiere rempli 
-    /**
-     * Variable tmp pour  push ue 
-     */
-    if (this.ue.matiere){
-      if(this.ue.matiere!.length>0){
+    if (this.ue.matiere) {
+      if (this.ue.matiere!.length > 0) {
         this.ue.matiere = []
       }
     }
-    
+
     let id_tmp: number = this.formation.ue?.length || 0;
     this.ue.id = id_tmp + 1
-    console.log("ID lasted : ", this.ue.id);
-    console.log("Ue added : ", this.ue);
-/* etape 1*/ 
+
 
     this.formation.ue!.push({ ...this.ue });
     this.ue = <UeI>{};//TODO peut etre inutile
     this.ue.matiere = []
-    console.log("this.ue cleaned : ", this.ue);
     console.log(this.formation)
   }
 
   ajouterMatiere() {
-    console.log("////////////////////// matiere ", this.matiere);
+    this.sum_ects = this.matiere.ects;//8
+    this.sum_cm = this.matiere.cm
+    this.sum_td = this.matiere.td;
+    this.sum_tp = this.matiere.tp;
+    this.sum_pro = this.matiere.Pro;
+    this.sum_tpe = this.matiere.TPE;
+    console.log(this.sum_ects);
 
     this.showUEForm = false;
-    
+
 
     if (this.check_id_ue(this.ue.id)) {
-      console.log("entrée");
-      
-      let id_tmp : number = this.ue.matiere?.length || 0;
-      console.log("id_tmp", id_tmp);
+
+      let id_tmp: number = this.ue.matiere?.length || 0;
 
       this.matiere.id = id_tmp + 1;
-      console.log("this.matiere",this.matiere);
       // trouve plusieurs ue 
-      console.log("//////////////////////////////////////////////////",this.formation.ue?.find(ue => ue.id === this.ue.id));
-      
-      this.formation.ue?.find(ue => ue.id === this.ue.id)!.matiere!.push({ ...this.matiere})
-    }else {
+      const id_ue = this.formation.ue?.find(ue => ue.id === this.ue.id)!.id!
+      this.sum_ects = this.sumECTS(id_ue, this.matiere.ects);
+      this.sum_cm = this.sumCM(id_ue, this.matiere.cm);
+      this.sum_td = this.sumTd(id_ue, this.matiere.td);
+      this.sum_tp = this.sumTp(id_ue, this.matiere.tp);
+      this.sum_pro = this.sumPro(id_ue, this.matiere.Pro);
+      this.sum_tpe = this.sumTPE(id_ue, this.matiere.TPE);
+
+
+
+      this.formation.ue!.find(ue => ue.id === this.ue.id)!.ects = this.sum_ects;
+      // this.formation.ue!.find(ue => ue.id === this.ue.id)!. = this.sum_cm;
+
+      this.sum_ects = 0;
+      this.formation.ue?.find(ue => ue.id === this.ue.id)!.matiere!.push({ ...this.matiere })
+    } else {
       alert("Selected UE not found!");
       console.log("Selected UE not found!");
     }

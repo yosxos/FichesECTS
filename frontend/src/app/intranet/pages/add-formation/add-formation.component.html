@@ -1,21 +1,22 @@
 <section class="py-5">
-  <div class="modal-dialog modal-dialog-scrollable modal-xl">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h4 class="modal-title"></h4>
+  <div >
+    <div>
+      <div >
+        <h4 ></h4>
         <div class="btn-group ml-auto">
-          <button (click)="formUe()" class="btn btn-primary">Ajouter une UE</button>
           <!--<button type="button" class="btn btn-secondary">Exporter en Excel</button>-->
         </div>
       </div>
-      <div class="modal-body" id="htmlData" #htmlData>
+      <div id="htmlData" #htmlData>
         <table *ngIf="formation">
           <!-- Row A -->
           <tr class="general">
             <td rowspan="4">Validation</td>
             <td>Niveau</td>
             <td><input [(ngModel)]="formation.niveau" placeholder="Niveau"></td>
-            <td colspan="100%"></td>
+            <td colspan="16"></td>
+            <td class="vide"></td>
+            <td class="vide"></td>
           </tr>
           <tr class="general">
             <td>Parcours</td>
@@ -24,6 +25,7 @@
             <td class="indication" colspan="5">répartition horaire</td>
             <td></td>
             <td class="indication" colspan="8">contrôle de connaissance</td>
+            <td></td>
           </tr>
           <!-- Row C -->
           <tr class="general">
@@ -35,6 +37,9 @@
             <td class="indication" colspan="3">1ère session</td>
             <td class="indication" colspan="3">2è session</td>
             <td class="indication"></td>
+            <td></td>
+            <td class="vide"></td>
+            <td class="vide"></td>
           </tr>
           <!-- Row D -->
           <tr class="general">
@@ -52,23 +57,27 @@
             <td class="indication">type d'epreuve</td>
             <td class="indication">regle de calcul</td>
             <td class="indication">regle particuliere</td>
+            <td></td>
+            <td class="vide"><button (click)="formUe()" class="btn btn-primary">Ajouter une UE</button></td>
+            <td class="vide"></td>
           </tr>
           <!-- Row 5 -->
           <ng-container *ngFor="let ue of formation.ue">
             <tr class="generalUE">
                 <td class="indication">{{ue.id}}</td>
                 <td>{{ue.nom}}</td>
-                <td>{{ue.ects}}</td>
+                <td></td>
                 <td>{{ue.semestre}}</td>
-                <td>sum</td>
-                <td>sum</td>
-                <td>sum</td>
-                <td>sum</td>
-                <td>sum</td>
-                <td colspan="100%"></td>
-                <td id="addMatiere"><input type="button" (click)="selectByUeId(ue.id)" value="+" ></td>
-                <td id="deleteMatiere"><input type="button" (click)="deleteUe(ue.id)" value="-" ></td>
-
+                <td>{{this.sum_cm}}</td>
+                <td>{{this.sum_td}}</td>
+                <td>{{this.sum_tp}}</td>
+                <td>{{this.sum_pro}}</td>
+                <td>{{this.sum_tpe}}</td>
+                <td></td>
+                <td>{{ue.ects}}</td>
+                <td colspan="8"></td>
+                <td class="vide"><input  class="btn btn-primary" type="button" (click)="selectByUeId(ue.id)" value="Ajouter une matiere" ></td>
+                <td class="vide"><input class="btn btn-primary" type="button" (click)="deleteUe(ue.id)" value="Supprimer l'UE" ></td>
             </tr>
                 <!-- Row 6 -->
         
@@ -90,9 +99,11 @@
                 <td>{{matiere.id_Controle?.type_epreuve_S2}}</td>
                 <td>{{matiere.id_Controle?.regle_calcul_S2}}</td>
                 <td>{{matiere.id_Controle?.regle_particuliere}}</td>
-                <td id="deleteMatiere"><input type="button" (click)="deleteMatiere(matiere.departement, ue.id)" value="-" ></td>
+                <td></td>
+                <td class="vide" id="deleteMatiere"><input type="button" class="btn btn-secondary" (click)="deleteMatiere(matiere.departement, ue.id)" value="Supprimer la matiere" ></td>
 
             </tr>
+            
           </ng-container>
         </table>
       </div>
