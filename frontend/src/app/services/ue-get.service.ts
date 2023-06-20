@@ -31,7 +31,6 @@ export class UeGetService {
   // Récupère les données de la table ue
   async getUeApi() {
     this.listUe = [];
-    console.log("skjgggggggggggggggggggggggggggggggggggggggggl ");
 
     try {
       const response = await this.httpClient
@@ -53,7 +52,7 @@ export class UeGetService {
  */
   idInList(id: string | number): boolean {
     let tmp: boolean = false; 
-    this.listUe.forEach( element => id == element.id ? tmp = true : console.log("not in array ue", element,"\nid = ",id))
+    this.listUe.forEach( element => id == element.id ? tmp = true : null)
     return tmp;
   }
 
@@ -69,9 +68,9 @@ export class UeGetService {
         semestre: ue.semestre,
         ects: ue.ects
       };
-      console.log("sdjkkkkjsdjksfkjd",ue);
-      console.log("ue.ects", ue.ects)
-      console.log("this.uepost",this.uepost);
+      // console.log("sdjkkkkjsdjksfkjd",ue);
+      // console.log("ue.ects", ue.ects)
+      // console.log("this.uepost",this.uepost);
       
       const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
       const options = { headers };
@@ -79,7 +78,7 @@ export class UeGetService {
           .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ue/edit', this.uepost,options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-          console.log(response.insertId);
+          // console.log(response.insertId);
           return response.insertId; // Return the insertId value from the response body
   
         } catch (error) {
@@ -87,6 +86,27 @@ export class UeGetService {
           return -1;
         }
       }
+      
+      async putUeApi(ue: UeI):Promise<number>  {
+        try {
+          // console.log("sdjkkkkjsdjksfkjd",ue);
+          // console.log("ue.ects", ue.ects)
+          // console.log("this.uepost",this.uepost);
+          
+          const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+          const options = { headers };
+          const response = await this.httpClient
+              .put<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ue/edit', ue,options)
+              .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+    
+              // console.log(response.insertId);
+              return response.insertId; // Return the insertId value from the response body
+      
+            } catch (error) {
+              console.error('An error occurred while creating a new formation:', error);
+              return -1;
+            }
+          }
 
 
 
@@ -96,9 +116,9 @@ async postMatiere_Ue_ids(ue_id: number,matiere_id:number):Promise<number>  {
       id_ue: ue_id,
       id_matiere: matiere_id
     };
-    console.log("ue_id",ue_id);
-    console.log("matiere_id", matiere_id)
-    console.log("this.uepost",this.matiereUe);
+    // console.log("ue_id",ue_id);
+    // console.log("matiere_id", matiere_id)
+    // console.log("this.uepost",this.matiereUe);
     
     const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
     const options = { headers };

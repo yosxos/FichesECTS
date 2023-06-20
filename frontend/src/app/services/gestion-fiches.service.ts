@@ -124,11 +124,8 @@ export class GestionFichesService {
             let tmpMatiere: MatiereI = this.matiereService.getMatiereById(ue_matiere.id_matiere)!;
 
             let tmpControle: ControleI = this.controleService.listControle.find(controle => {tmpMatiere.id_Controle?.id == controle.id;
-            console.log("kkkkkkkkkkkkkkkkkkkkkkkkk",
-              controle
-            );
              })  as ControleI;
-            console.log("tmpCOntrole",tmpControle);
+            // console.log("tmpCOntrole",tmpControle);
             
             tmpMatiere.id_Controle = tmpControle;
             tmp_ue.matiere?.push(tmpMatiere);
@@ -152,8 +149,7 @@ export class GestionFichesService {
    */
   idInListUeMatiere(id_ue: number): boolean {
     let tmp: boolean = false; 
-    this.listUeMatiere.forEach( element => id_ue == element.id_ue ? tmp = true :
-      console.log("not in array ueMatiere", element, "\nid_ue",id_ue))
+    this.listUeMatiere.forEach( element => id_ue == element.id_ue ? tmp = true : null )
     return tmp;
   }
 

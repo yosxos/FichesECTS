@@ -95,6 +95,24 @@ export class FormationGetService {
     }
   }
 
+  async putFormationApi(formation: FormationI):Promise<number> {
+    try {
+
+      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const options = { headers };
+      const response = await this.httpClient
+        .put<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation/edit', formation, options)
+        .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+
+      console.log(response.insertId);
+      return response.insertId; // Return the insertId value from the response body
+
+    } catch (error) {
+      console.error('An error occurred while creating a new formation:', error);
+      return -1;
+    }
+  }
+
 
 
   async postFormation_Ue_ids(ue_id :number ,formation_id:number ){
@@ -103,16 +121,16 @@ export class FormationGetService {
           id_ue: ue_id,
           id_formation: formation_id
         };
-        console.log("ue_id",ue_id);
-        console.log("formation_id", formation_id)
-        console.log("this.uepost",this.formationUe);
+        // console.log("ue_id",ue_id);
+        // console.log("formation_id", formation_id)
+        // console.log("this.uepost",this.formationUe);
         
         const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
         const options = { headers };
         const response = await this.httpClient
             .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe/edit', this.formationUe,options)
             .toPromise();
-            console.log(response.insertId);
+          // console.log(response.insertId);
             return response.insertId; // Return the insertId value from the response body
     
           } catch (error) {

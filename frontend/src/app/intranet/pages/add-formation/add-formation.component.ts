@@ -38,7 +38,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
 
   ngOnInit(): void {
-    console.log(this.formationService.listeFormations);
+    // console.log(this.formationService.listeFormations);
 
     this.formation.ue = [];
     this.ue.matiere = [];
@@ -69,7 +69,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "ects ", slected.matiere!.at(i - 1)!.ects);
+          // console.log("i : ", i, "ects ", slected.matiere!.at(i - 1)!.ects);
 
           res += slected.matiere!.at(i - 1)!.ects;
           // console.log("sssssssssssssssssss",res);
@@ -92,7 +92,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.cm);
+          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.cm);
 
           res += slected.matiere!.at(i - 1)!.cm;
           // console.log("sssssssssssssssssss",res);
@@ -113,7 +113,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.tp);
+          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.tp);
 
           res += slected.matiere!.at(i - 1)!.cm;
           // console.log("sssssssssssssssssss",res);
@@ -134,7 +134,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.Pro);
+          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.Pro);
 
           res += slected.matiere!.at(i - 1)!.Pro;
           // console.log("sssssssssssssssssss",res);
@@ -156,7 +156,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.TPE);
+          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.TPE);
 
           res += slected.matiere!.at(i - 1)!.TPE;
           // console.log("sssssssssssssssssss",res);
@@ -178,7 +178,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.td);
+          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.td);
 
           res += slected.matiere!.at(i - 1)!.td;
           // console.log("sssssssssssssssssss",res);
@@ -245,7 +245,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
     this.formation.ue!.push({ ...this.ue });
     this.ue = <UeI>{};//TODO peut etre inutile
     this.ue.matiere = []
-    console.log(this.formation)
+    // console.log(this.formation)
   }
 
   ajouterMatiere() {
@@ -255,7 +255,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
     this.sum_tp = this.matiere.tp;
     this.sum_pro = this.matiere.Pro;
     this.sum_tpe = this.matiere.TPE;
-    console.log(this.sum_ects);
+    // console.log(this.sum_ects);
 
     this.showUEForm = false;
 
@@ -365,7 +365,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
         }
       }
     }
-    console.log(this.formation)
+    console.log("this.formation ",this.formation)
   }
   //TODO faire le post de la formation et refaire pareil que pour matiere et ue pour l'association des ue à la formation créée
 }

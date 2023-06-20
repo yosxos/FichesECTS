@@ -33,7 +33,6 @@ export class MatiereGetService {
   // Récupère les données de la table matiere
   async getMatiereApi() {
     this.listMatiere = [];
-console.log('kjsdfkjskjdgkdfjlgfdjldfsfsjlgshglh');
 
     try {
       const response = await this.httpClient
@@ -43,7 +42,6 @@ console.log('kjsdfkjskjdgkdfjlgfdjldfsfsjlgshglh');
 
 
         this.listMatiere = response!;
-        console.log("AAAAAAAAAAAAAAAAAAAAAA", this.listMatiere);
         
 
     } catch (error) {
@@ -56,7 +54,7 @@ console.log('kjsdfkjskjdgkdfjlgfdjldfsfsjlgshglh');
   */
   idInList(id: string | number): boolean {
     let tmp: boolean = false;
-    this.listMatiere.forEach(element => id == element.id ? tmp = true : console.log("not in array matiere", element))
+    this.listMatiere.forEach(element => id == element.id ? tmp = true : null)
     return tmp;
   }
 
@@ -112,6 +110,24 @@ console.log('kjsdfkjskjdgkdfjlgfdjldfsfsjlgshglh');
         const options = { headers };
         const response = await this.httpClient
           .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/matiere/edit', this.matierepost, options)
+          .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+
+        console.log(response.insertId);
+        return response.insertId; // Return the insertId value from the response body
+
+      } catch (error) {
+        console.error('An error occurred while creating a new formation:', error);
+        return -1;
+      }
+    }
+
+    async putMatiereApi2(matiere: MatiereI):Promise<number> {
+      try {
+
+        const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+        const options = { headers };
+        const response = await this.httpClient
+          .put<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/matiere/edit', matiere, options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
         console.log(response.insertId);
