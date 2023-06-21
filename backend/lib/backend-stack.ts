@@ -733,10 +733,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
       });
-    usersEdit.addMethod('POST', UsersEditIntegration    , {
-      authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-      });
+    usersEdit.addMethod('POST', UsersEditIntegration );
     usersEdit.addMethod('DELETE', UsersEditIntegration    , {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
