@@ -75,3 +75,16 @@ export interface MatiereI_post {
     departement: string,
     id_Controle: number,
 }
+
+export interface MatiereI_put {
+    id: number,
+    nom: string,
+    ects: number,
+    cm: number,
+    td: number,
+    tp: number,
+    Pro: number,
+    TPE: number,
+    departement: string,
+    id_Controle: number,
+}

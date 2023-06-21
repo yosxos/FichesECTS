@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, SimpleChanges, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ControleI, FormationI, MatiereI, UeI } from 'src/app/modeles/formation-i';
+import { ControleI, FormationI, MatiereI, MatiereI_post, MatiereI_put, UeI } from 'src/app/modeles/formation-i';
 import { FormationGetService } from 'src/app/services/formation-get.service';
 import { GestionFichesService } from 'src/app/services/gestion-fiches.service';
 import { MatDialog } from '@angular/material/dialog';
@@ -141,7 +141,8 @@ export class EditFormationComponent implements OnInit, OnChanges {
       const matiere = selectedUe.matiere?.find(matiere => matiere.departement === departement);
       selectedUe.matiere = selectedUe.matiere?.filter(item => item !== matiere)
       // console.log(selectedUe,"apres")
-  }
+    }
+    
   }
   
   async validerFormation(): Promise<void>{
@@ -156,7 +157,7 @@ export class EditFormationComponent implements OnInit, OnChanges {
 
           for (let j = 0; j < this.formation.ue[i].matiere!.length; j++) {
             // TODO stupide interaction l'object peut etre undefined dans le if alors que pour rentrer dans le if il faut qu'il soit defini 
-            let matiereVide: MatiereI = {
+            let matiereVide: MatiereI_put = {
               id: -1,
               Pro: -1,
               nom: "-1",
@@ -166,20 +167,23 @@ export class EditFormationComponent implements OnInit, OnChanges {
               departement: "-1",
               ects: -1,
               // id_Controle: -1,
-              id_Controle: {
-                id: -1,
-                type_control_S1: "--", // enum
-                type_control_S2: "--", // enum
-                type_epreuve_S1: "E", // enum
-                type_epreuve_S2: "E", // enum
-                regle_particuliere: "string",
-                regle_calcul_S1: -1,
-                regle_calcul_S2: -1
-              },
+              id_Controle: 1,
               TPE: -1
             };
-
-            const insertIdMat = await this.matieresService.putMatiereApi2(this.formation.ue.at(i)?.matiere!.at(j) || matiereVide);
+            let matierePut: MatiereI_put = {
+              id: this.formation.ue.at(i)?.matiere!.at(j)!.id  || 0,
+              Pro: this.formation.ue.at(i)?.matiere!.at(j)!.Pro || 0,
+              nom: this.formation.ue.at(i)?.matiere!.at(j)!.nom || "",
+              td: this.formation.ue.at(i)?.matiere!.at(j)!.td || 0,
+              tp: this.formation.ue.at(i)?.matiere!.at(j)!.tp || 0,
+              cm: this.formation.ue.at(i)?.matiere!.at(j)!.cm|| 0,
+              departement: this.formation.ue.at(i)?.matiere!.at(j)!.departement|| "",
+              ects: this.formation.ue.at(i)?.matiere!.at(j)!.ects|| 0,
+              // id_Controle: -1,
+              id_Controle:1,
+              TPE: this.formation.ue.at(i)?.matiere!.at(j)!.TPE|| 0
+            };
+            const insertIdMat = await this.matieresService.putMatiereApi2(matierePut || matiereVide);
 
             this.ueService.postMatiere_Ue_ids(insertIdUe, insertIdMat)
           }
@@ -199,32 +203,20 @@ export class EditFormationComponent implements OnInit, OnChanges {
   async modifierMatiere(matiere: MatiereI) : Promise<void>{
     console.log(matiere);
 
-    // let matierePut: MatiereI = {
-    //   id: matiere.id,
-    //   Pro: matiere.Pro,
-    //   nom: matiere.nom,
-    //   td: matiere.td,
-    //   tp: matiere.tp,
-    //   cm: matiere.cm,
-    //   departement: matiere.departement,
-    //   ects: matiere.ects,
-    //   // id_Controle: -1,
-    //   id_Controle: {
-    //     id: -1,
-    //     type_control_S1: "--", // enum
-    //     type_control_S2: "--", // enum
-    //     type_epreuve_S1: "E", // enum
-    //     type_epreuve_S2: "E", // enum
-    //     regle_particuliere: "string",
-    //     regle_calcul_S1: -1,
-    //     regle_calcul_S2: -1
-    //   },
-    //   TPE: matiere.TPE
-    // };
+    let matierePut: MatiereI_put = {
+      id: matiere.id,
+      Pro: matiere.Pro,
+      nom: matiere.nom,
+      td: matiere.td,
+      tp: matiere.tp,
+      cm: matiere.cm,
+      departement: matiere.departement,
+      ects: matiere.ects,
+      // id_Controle: -1,
+      id_Controle:1,
+      TPE: matiere.TPE
+    };
 
-  //  await this.matieresService.putMatiereApi2(matierePut)
+   await this.matieresService.putMatiereApi2(matierePut)
   }
 }
-
-
-
