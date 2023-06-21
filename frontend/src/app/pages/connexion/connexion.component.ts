@@ -8,20 +8,28 @@ import { AuthService } from 'src/app/services/auth-service.service';
   styleUrls: ['./connexion.component.scss']
 })
 export class ConnexionComponent {
-  signIn: boolean = true;
   userId={email: "", password: ""} ;
-  newUser={email: "", password: "", family_name: "", given_name: ""} ;
+  error?: string| null =null;
+
   constructor(public authService:AuthService) { }
 
-  switch() {
-    this.signIn = !this.signIn;
-  }
-  check(mail: string, password: string){
-    this.authService.signIn(mail, password);
-  }
-  signUp(mail: string, password: string, family_name: string, given_name: string){
-    this.authService.signUp(mail, password, family_name, given_name);
+  public async check(){
+    try {
+      await this.authService.signIn(this.userId.email, this.userId.password);
+    } catch (error: any)     {
+      if(error.code =='UserNotConfirmedException')
+      {
+        this.error= "Validate your email Id";
+      }
+      if(error.code =='UserNotFoundException')
+      {
+        this.error= error.message;
+      }
+      this.error= error.message;
+      console.log(error);
+   }
+
   }
 
-  
+
 }

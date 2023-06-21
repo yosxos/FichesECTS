@@ -22,40 +22,17 @@
               <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
             </div>
 
-            <button (click)="check(userId.email, userId.password)" class="btn btn-primary w-100 mb-3">Se connecter</button>
+            <button (click)="check()" class="btn btn-primary w-100 mb-3">Se connecter</button>
+            <p>Not a member?   <a href="#"  routerLink="/inscription">Sign up</a> </p>
+            <p  class="alert alert-danger" *ngIf="error" role="alert" >{{error}}</p>
 
             <div class="text-center">
               <a href="#" class="text-decoration-none">Mot de passe oublié ?</a>
             </div>
           </form>
 
-          <!-- Sign Up button -->
-          <button *ngIf="userId" (click)=switch() class="btn btn-primary w-100 mb-3">S'inscrire</button>
 
-          <!-- New user registration form -->
-          <form #f2="ngForm" *ngIf="!signIn">
-            <h3 class="card-title text-center mb-4">Inscription</h3>
-            <div class="form-outline mb-4">
-              <input [(ngModel)]="newUser.email" name="email" type="email" id="inputRegEmail" class="form-control" required />
-              <label class="form-label" for="inputRegEmail">Adresse e-mail</label>
-            </div>
 
-            <div class="form-outline mb-4">
-              <input [(ngModel)]="newUser.password" name="password" type="password" id="inputRegPassword" class="form-control" required />
-              <label class="form-label" for="inputRegPassword">Mot de passe</label>
-            </div>
-
-            <div class="form-outline mb-4">
-              <input [(ngModel)]="newUser.family_name" name="family_name" type="text" id="inputRegFamilyName" class="form-control" required />
-              <label class="form-label" for="inputRegFamilyName">Nom de famille</label>
-            </div>
-
-            <div class="form-outline mb-4">
-              <input [(ngModel)]="newUser.given_name" name="given_name" type="text" id="inputRegGivenName" class="form-control" required />
-              <label class="form-label" for="inputRegGivenName">Prénom</label>
-            </div>
-            <button (click)="signUp(newUser.email, newUser.password, newUser.family_name, newUser.given_name)" class="btn btn-primary w-100 mb-3">S'inscrire</button>
-          </form>
         </div>
       </div>
     </div>

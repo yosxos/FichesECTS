@@ -1,0 +1,31 @@
+<section class="">
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h3>Confirm Sign up</h3>
+                    <form >
+                     
+                      <div class="form-outline mb-4">
+                        <label for="email" class="form-label">Email:</label>
+                        <input type="email"  [(ngModel)]="email" class="form-control" id="email" placeholder="Enter email" name="email">
+                      </div>
+                      <div class="form-outline mb-4">
+                        <label for="code" class="form-label"> Code:</label>
+                        <input type="code" [(ngModel)]="code" class="form-control" id="code" placeholder="Enter email verification code" name="code">
+                      </div>
+                      
+                      <div class="row mb-4">
+                      <button type="submit" (click)="onConfirmSignUp()" class="btn btn-primary btn-block mb-4">Submit</button>
+                     
+                      <div >
+                        <p *ngIf="success" class="alert alert-success" role="alert" >{{success}}</p>
+                      <p *ngIf="error"  class="alert alert-danger" role="alert" >{{error}}</p>
+                      </div>
+                      </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
