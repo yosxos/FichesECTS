@@ -33,6 +33,28 @@ async signIn(email: string, password: string) {
     console.log(error);
   }
 }
+// sign up with email password from aws amplify and add user in database
+  async signUp(email: string, password: string, family_name: string, given_name: string) {
+    try {
+      // const user = await Auth.signUp({
+      //   username: email,
+      //   password: password,
+      //   attributes: {
+      //     email: email,
+      //     family_name: family_name,
+      //     given_name: given_name
+      //   }
+      // });
+      //console.log({ user });
+      this.httpClient.post<{name:string,prenom:string}>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users', { params :{name: family_name, prenom: given_name }})
+        .subscribe((data: any) => {
+          console.log(data);
+        });
+      this.router.navigateByUrl('/login')
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
 
   // sign out with email password from aws amplify
