@@ -16,18 +16,34 @@ export const handler = async (event: any = {}): Promise<any> => {
     });
    switch (method) {
     case 'DELETE':
-        // Run a DELETE query
-        const queryDel = `DELETE FROM ${TABLE_NAME} WHERE id_formation = ${body.id_formation}`;
-        const [rowsDel] = await connection.execute(queryDel);
-        await connection.end();
+      let queryDel = `DELETE FROM ${TABLE_NAME}`;
+    
+      if (body.id_ue) {
+        queryDel += ` WHERE id_ue = ${body.id_ue}`;
+      } else if (body.id_formation) {
+        queryDel += ` WHERE id_formation = ${body.id_formation}`;
+      } else {
         return {
-            statusCode: 200,
-            headers: {
-              'Access-Control-Allow-Origin': '*', // or set to a specific origin
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(rowsDel),
+          statusCode: 400,
+          headers: {
+            'Access-Control-Allow-Origin': '*',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ message: 'Missing id_formation' }),
         };
+      }
+    
+      const [rowsDel] = await connection.execute(queryDel);
+      await connection.end();
+      return {
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(rowsDel),
+      };
+    
     case 'PUT':
         // Run a UPDATE query
         const queryUp = `UPDATE ${TABLE_NAME} SET id_ue = ${body.id_ue} WHERE id_formation = ${body.id_formation}`;

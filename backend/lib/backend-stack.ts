@@ -8,7 +8,7 @@ import { join } from 'path';
 import * as apigateway from 'aws-cdk-lib/aws-apigateway';
 import * as cognito from 'aws-cdk-lib/aws-cognito';
 import { AllowedMethods } from 'aws-cdk-lib/aws-cloudfront';
-
+import * as sm from 'aws-cdk-lib/aws-secretsmanager';
 export class BackendStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -41,6 +41,14 @@ const vpc = new ec2.Vpc(this, 'VPC', {
 });
 
 dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow inbound traffic to the database from anywhere');
+//creating a new secret manager for the database
+const secret = sm.Secret.fromSecretNameV2(
+  this, "MySecret", "BackendStackMyDatabaseSecre-xFHZifa8cihF"
+)
+// Retrieve the password from the secret
+const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
+
+
 
     const instance = new rds.DatabaseInstance(this, 'MyDatabase', {
       engine: rds.DatabaseInstanceEngine.mysql({
@@ -133,7 +141,8 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        // db password from secret manager key :password
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Formation",
       },
       vpc,
@@ -152,7 +161,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Formation",
       },
       vpc,
@@ -217,7 +226,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Controle",
       },
       vpc,
@@ -248,7 +257,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Controle",
       },
       vpc,
@@ -295,7 +304,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"UE",
       },
       vpc,
@@ -326,7 +335,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"UE",
       },
       vpc,
@@ -372,7 +381,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Matiere",
       },
       vpc,
@@ -404,7 +413,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Matiere",
       },
       vpc,
@@ -451,7 +460,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Responsable_formation",
       },
       vpc,
@@ -483,7 +492,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Responsable_formation",
       },
       vpc,
@@ -525,7 +534,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Formation_UE",
       },
       vpc,
@@ -556,7 +565,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Formation_UE",
       },
       vpc,
@@ -597,7 +606,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Matiere_UE",
 
       },
@@ -629,7 +638,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"Matiere_UE",
       },
       vpc,
@@ -672,7 +681,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"users",
 
       },
@@ -704,7 +713,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"users",
       },
       vpc,
@@ -724,10 +733,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
       });
-    usersEdit.addMethod('POST', UsersEditIntegration    , {
-      authorizer,
-      authorizationType: apigateway.AuthorizationType.COGNITO,
-      });
+    usersEdit.addMethod('POST', UsersEditIntegration );
     usersEdit.addMethod('DELETE', UsersEditIntegration    , {
       authorizer,
       authorizationType: apigateway.AuthorizationType.COGNITO,
@@ -745,7 +751,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"admin",
       
       },
@@ -777,7 +783,7 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
         DB_NAME: 'FicheECTS',
         RDS_HOST: instance.instanceEndpoint.hostname,
         DB_USER:'admin',
-        DB_PASSWORD:"iEfuZ8_497XayIM-_I-wMs,0Lo1ADv",
+        DB_PASSWORD:"I--bJ.hQrIAp-4E5GcuSTbodStOkL5",
         TABLE_NAME:"admin",
       },
       vpc,
@@ -806,8 +812,29 @@ dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow in
       authorizationType: apigateway.AuthorizationType.COGNITO,
       });
 
+      // grant secret read for all my lambdas functions
+    secret.grantRead(UsersGet);
+    secret.grantRead(UsersEdit);
+    secret.grantRead(AdminGet);
+    secret.grantRead(AdminEdit);
+    secret.grantRead(UeMatiereEdit);
+    secret.grantRead(UeMatiereGet);
+    secret.grantRead(FormationEdit);
+    secret.grantRead(FormationGet);
+    secret.grantRead(ControleEdit);
+    secret.grantRead(ControleGet);
+    secret.grantRead(UeGet);
+    secret.grantRead(UeEdit);
+    secret.grantRead(MatiereGet);
+    secret.grantRead(MatiereEdit);
+    secret.grantRead(ResponsableFormationGet);
+    secret.grantRead(ResponsableFormationEdit);
+    secret.grantRead(FormationUeGet);
+    secret.grantRead(FormationUeEdit);
+    
+
+
+
   
   }
 }
-  
-
