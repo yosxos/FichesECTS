@@ -27,6 +27,7 @@ export class EditFormationComponent implements OnInit, OnChanges {
   boolMatiere: boolean= false;
   matiereSelected: MatiereI = <MatiereI>{}
   ueSelected: UeI = <UeI>{}
+  // nbMatiere!: number;
   
   constructor(private route: ActivatedRoute,public gestionService: GestionFichesService, public matieresService: MatiereGetService, public ueService: UeGetService, public formationService: FormationGetService) { }
   ngOnInit() {
@@ -93,14 +94,17 @@ export class EditFormationComponent implements OnInit, OnChanges {
     }
   }
 
-  ajouter(){
+  async ajouter(){
     // console.log('ue dans la fonction ajouter: ', this.ue);
     this.ue.id = this.formation.ue!.length || 0; 
     this.formation.ue!.push({...this.ue});
+    const insertIdUe = await this.ueService.postUeApi(this.ue)
+    this.formationService.postFormation_Ue_ids(insertIdUe, this.formation.id)
+    alert("L'UE a été ajouté")
     // console.log("res final !",this.formation);
   }
 
-  ajouterMatiere(){
+  async ajouterMatiere(){
     const selectedUe = this.formation.ue?.find(ue => ue.id === this.ue.id );
 
     if (selectedUe) {
@@ -108,8 +112,10 @@ export class EditFormationComponent implements OnInit, OnChanges {
         selectedUe.matiere = []; // initialize the matiere array if it's not defined
       }
       selectedUe.matiere.push({...this.matiere});
-      console.log(this.matiere.id)
-      // console.log("res final !",this.formation);
+      console.log("thematiere",this.matiere)
+      alert("La matière a été ajouté")
+      const insertIdMat = await this.matieresService.postMatiereApi2(this.matiere)
+      this.ueService.postMatiere_Ue_ids(this.ue.id, insertIdMat)      // console.log("res final !",this.formation);
       //this.matiereService.postMatiereApi(this.matiere)
     } else {
       console.log("Selected UE not found!");
@@ -125,7 +131,6 @@ export class EditFormationComponent implements OnInit, OnChanges {
     this.ueSelected =  this.formation.ue!.find(ue => ue.id === id_ue)! as UeI
     this.matiereSelected = this.ueSelected.matiere!.find(matiere => matiere.id === id_matiere) as MatiereI;
 
-
     
   }
 
@@ -137,16 +142,16 @@ export class EditFormationComponent implements OnInit, OnChanges {
   delete(departement:string, id_ue: number) {
     const selectedUe = this.formation.ue?.find(ue => ue.id === id_ue)
     if (selectedUe) {
-      // console.log(selectedUe,"avant")
+      
       const matiere = selectedUe.matiere?.find(matiere => matiere.departement === departement);
       selectedUe.matiere = selectedUe.matiere?.filter(item => item !== matiere)
       // console.log(selectedUe,"apres")
     }
-    
+
   }
   
   async validerFormation(): Promise<void>{
-   
+    
     if (this.formation.ue?.length != undefined) {
       // Ne post pas de formation sans UE 
       const insertIdFormation = await this.formationService.putFormationApi(this.formation)
@@ -157,19 +162,7 @@ export class EditFormationComponent implements OnInit, OnChanges {
 
           for (let j = 0; j < this.formation.ue[i].matiere!.length; j++) {
             // TODO stupide interaction l'object peut etre undefined dans le if alors que pour rentrer dans le if il faut qu'il soit defini 
-            let matiereVide: MatiereI_put = {
-              id: -1,
-              Pro: -1,
-              nom: "-1",
-              td: -1,
-              tp: -1,
-              cm: -1,
-              departement: "-1",
-              ects: -1,
-              // id_Controle: -1,
-              id_Controle: 1,
-              TPE: -1
-            };
+            
             let matierePut: MatiereI_put = {
               id: this.formation.ue.at(i)?.matiere!.at(j)!.id  || 0,
               Pro: this.formation.ue.at(i)?.matiere!.at(j)!.Pro || 0,
@@ -183,14 +176,16 @@ export class EditFormationComponent implements OnInit, OnChanges {
               id_Controle:1,
               TPE: this.formation.ue.at(i)?.matiere!.at(j)!.TPE|| 0
             };
-            const insertIdMat = await this.matieresService.putMatiereApi2(matierePut || matiereVide);
+            
+            const insertIdMat = await this.matieresService.putMatiereApi2(matierePut);
 
-            this.ueService.postMatiere_Ue_ids(insertIdUe, insertIdMat)
+            // this.ueService.postMatiere_Ue_ids(insertIdUe, insertIdMat)
           }
-          this.formationService.postFormation_Ue_ids(insertIdUe, insertIdFormation)
+          // this.formationService.postFormation_Ue_ids(insertIdUe, insertIdFormation)
         }
       }
     }
+    
     console.log(this.formation)
   }
   

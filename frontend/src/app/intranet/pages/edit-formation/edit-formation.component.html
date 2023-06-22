@@ -1,21 +1,22 @@
 <section class="py-5">
-    <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title"></h4>
           <div class="btn-group ml-auto">
-            <button (click)="formUe()" class="btn btn-primary">Ajouter UE</button>
+            
             <!--<button type="button" class="btn btn-secondary">Exporter en Excel</button>-->
           </div>
         </div>
         <div class="modal-body" id="htmlData" #htmlData>
+          
           <table *ngIf="formation">
             <!-- Row A -->
             <tr class="general">
               <td rowspan="4">Validation</td>
               <td>Niveau</td>
               <td></td>
-              <td colspan="100%"></td>
+              <td colspan="15"></td>
             </tr>
             <tr class="general">
               <td>Parcours</td>
@@ -52,37 +53,43 @@
               <td class="indication">type d'epreuve</td>
               <td class="indication">regle de calcul</td>
               <td class="indication">regle particuliere</td>
+              <td id="videe"><button (click)="formUe()" class="btn btn-dark">Ajouter UE</button></td>
             </tr>
             <!-- Row 5 -->
             <ng-container *ngFor="let ue of formation.ue">
-              <tr class="generalUE">
+              <tr class="general">
                   <td class="indication">{{ue.id}}</td>
-                  <td>{{ue.nom}}</td>
+                  <td><input type="text" [(ngModel)]="ue.nom" class="form-control" required name="nom" placeholder="Nom"></td>
                   <td>{{ue.ects}}</td>
-                  <td>{{ue.semestre}}</td>
-                  <td>sum</td>
-                  <td>sum</td>
-                  <td>sum</td>
-                  <td>sum</td>
-                  <td>sum</td>
-                  <td colspan="100%"></td>
-                  <td id="addMatiere"><input type="button" (click)="focus(ue.id)" value="Ajout Matière" ></td>
-                  <td id="modifUE"><input type="button" (click)="selectUE(ue.id)" value="Modifier UE" ></td>
+                  <td><select [(ngModel)]="ue.semestre" class="form-select" required name="semestre">
+                    <option value="" disabled selected>Sélectionnez un semestre</option>
+                    <option value="semestre 1">1</option>
+                    <option value="semestre 2">2</option>
+                    </select>
+                  </td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td colspan="9"></td>
+                  <td class="indication" id="videe"><input class="btn btn-dark"  type="button" (click)="focus(ue.id)" value="Ajout Matière" ></td>
+                  <td class="indication" id="videe"><input type="button" class="btn btn-primary" (click)="selectUE(ue.id)" value="Modifier UE" ></td>
 
               </tr>
                   <!-- Row 6 -->
           
-              <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="ue.nom">
+              <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="matiere.departement">
                   <td>{{matiere.id}}</td>
-                  <td colspan="2">{{matiere.nom}}</td>
-                  <td>{{ue.semestre}}</td>
-                  <td>{{matiere.cm}}</td>
-                  <td>{{matiere.td}}</td>
-                  <td>{{matiere.tp}}</td>
-                  <td>{{matiere.Pro}}</td>
-                  <td>{{matiere.TPE}}</td>
+                  <td colspan="2"><input type="text" [(ngModel)]="matiere.nom" class="form-control" required name="nom" placeholder="Nom"></td>
                   <td></td>
-                  <td>{{matiere.ects}}</td>
+                  <td><input type="number" [(ngModel)]="matiere.cm" class="form-control" required name="cm" placeholder="Nombre d'heures de cours magistraux"></td>
+                  <td><input type="number" [(ngModel)]="matiere.td" class="form-control" required name="td" placeholder="Nombre d'heures de travaux dirigés">
+                  <td><input type="number" [(ngModel)]="matiere.tp" class="form-control" required name="tp" placeholder="Nombre d'heures de travaux pratiques"></td>
+                  <td><input type="number" [(ngModel)]="matiere.Pro" class="form-control" required name="Pro" placeholder="Pro"></td>
+                  <td><input type="number" [(ngModel)]="matiere.TPE" class="form-control" required name="TPE" placeholder="TPE"></td>
+                  <td></td>
+                  <td> <input type="number" [(ngModel)]="matiere.ects" class="form-control" required name="ects" placeholder="Nombre d'ects"></td>
                   <td>{{matiere.id_Controle?.type_control_S1}}</td>
                   <td>{{matiere.id_Controle?.type_epreuve_S1}}</td>
                   <td>{{matiere.id_Controle?.regle_calcul_S1}}</td>
@@ -90,17 +97,29 @@
                   <td>{{matiere.id_Controle?.type_epreuve_S2}}</td>
                   <td>{{matiere.id_Controle?.regle_calcul_S2}}</td>
                   <td>{{matiere.id_Controle?.regle_particuliere}}</td>
-                  <td id="deleteMatiere"><input type="button" (click)="delete(matiere.departement, ue.id)" value="-" ></td>
-                  <td class="vide" id="deleteMatiere"><input type="button" class="btn btn-secondary" (click)="selectMatiere(matiere.id, ue.id)" value="Modifier la matiere" ></td>
+                  <td class="indication"><select [(ngModel)]="matiere.departement" class="form-select" required name="departement">
+                    <option value="" disabled selected>Sélectionnez un département</option>
+                    <option value="maths">Mathématique</option>
+                    <option value="info">Informatique</option>
+                    <option value="hd">HD</option>
+                    <option value="ieg">IEG</option>
+                    <option value="autre">Autre</option>                      
+                    <option value="projet">Projet</option>
+                    <!-- Ajoutez d'autres options ici -->
+                  </select></td>
+                  <td id="videe"><input type="button" class="btn btn-danger" (click)="delete(matiere.departement, ue.id)" value="Supprimer" ></td>
+                  <td class="vide" id="videe"><input type="button" class="btn btn-primary" (click)="selectMatiere(matiere.id, ue.id)" value="Modifier" ></td>
 
   
-              </tr>
+               </tr>
             </ng-container>
+         
+          
+          <tr><td id="videe" colspan="18"></td><td id="videe"><input type="button" class="btn btn-success mt-3 ms-2" (click)="validerFormation()" value="Valider" ></td></tr>
           </table>
         </div>
       </div>
     </div>
-    <input type="button" (click)="validerFormation()" value="Valider" >
   
   </section>
   <section>
@@ -113,24 +132,24 @@
                 <h2>Ajouter une Ue</h2>
                 <form #f="ngForm" >
                   <!-- Champs de formation -->
-                  <div class="mb-3">
+                  <!-- <div class="mb-3">
                     <label for="parcours" class="form-label">ECTS</label>
-                    <input type="text" [(ngModel)]="this.ue.ects" class="form-control" name="ects" placeholder="Nombre d'ECTS"
-                      required>
-                  </div>
+                    <input type="text" [(ngModel)]="this.ue.ects" class="form-control" required name="ects" placeholder="Nombre d'ECTS"
+                      > 
+                  </div>-->
                   <div class="mb-3">
                     <label for="annee" class="form-label">Nom</label>
-                    <input type="text" [(ngModel)]="this.ue.nom" class="form-control" name="nom" placeholder="Nom"
-                      required>
+                    <input type="text" [(ngModel)]="this.ue.nom" class="form-control" required name="nom" placeholder="Nom"
+                      >
                   </div>
                   <div class="mb-3">
                     <label for="niveau" class="form-label">Semestre</label>
-                    <input type="text" [(ngModel)]="this.ue.semestre" class="form-control" name="semestre"
-                      placeholder="semestre" required>
+                    <input type="text" [(ngModel)]="this.ue.semestre" class="form-control" required name="semestre"
+                      placeholder="semestre" >
                   </div>
   
   
-                  <button type="submit" (click)="ajouter()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                  <button type="submit" (click)="ajouter()" class="btn btn-success mt-3 ms-2">Valider</button>
                   
                 </form>
               </div>
@@ -152,23 +171,17 @@
                 <form #f="ngForm" >
                   <!-- Champs de formation -->
                   <div class="mb-3">
-                    <label for="parcours" class="form-label">ECTS</label>
-                    <input type="text" [(ngModel)]="this.ueSelected.ects" class="form-control" name="ects" placeholder="Nombre d'ECTS"
-                      required>
-                  </div>
-                  <div class="mb-3">
                     <label for="annee" class="form-label">Nom</label>
-                    <input type="text" [(ngModel)]="this.ueSelected.nom" class="form-control" name="nom" placeholder="Nom"
-                      required>
+                    <input type="text" [(ngModel)]="this.ueSelected.nom" class="form-control" required name="nom" placeholder="Nom">
                   </div>
                   <div class="mb-3">
                     <label for="niveau" class="form-label">Semestre</label>
-                    <input type="text" [(ngModel)]="this.ueSelected.semestre" class="form-control" name="semestre"
-                      placeholder="semestre" required>
+                    <input type="text" [(ngModel)]="this.ueSelected.semestre" class="form-control" required name="semestre"
+                      placeholder="semestre" >
                   </div>
   
   
-                  <button type="submit" (click)="modifierUE(this.ueSelected)" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                  <button type="submit" (click)="modifierUE(this.ueSelected)" class="btn btn-dark mt-3 ms-2">Ajouter</button>
                   
                 </form>
               </div>
@@ -192,41 +205,39 @@
                   
                   <div class="mb-3">
                     <label for="Nom" class="form-label">Nom</label>
-                    <input type="text" [(ngModel)]="this.matiere.nom" class="form-control" name="nom" placeholder="Nom"
-                      required>
+                    <input type="text" [(ngModel)]="this.matiere.nom" class="form-control" required name="nom" placeholder="Nom">
                   </div>
                   <div class="mb-3">
                     <label for="ECTS" class="form-label">ECTS</label>
-                    <input type="number" [(ngModel)]="this.matiere.ects" class="form-control" name="ects" placeholder="Nombre d'ects"
-                      required>
+                    <input type="number" [(ngModel)]="this.matiere.ects" class="form-control" required name="ects" placeholder="Nombre d'ects">
                   </div>
                   <div class="mb-3">
                     <label for="cm" class="form-label">Cours Magistraux</label>
-                    <input type="number" [(ngModel)]="this.matiere.cm" class="form-control" name="cm"
-                      placeholder="Nombre d'heures de cours magistraux" required>
+                    <input type="number" [(ngModel)]="this.matiere.cm" class="form-control" required name="cm" placeholder="Nombre d'heures de cours magistraux" >
                   </div>
                   <div class="mb-3">
                     <label for="niveau" class="form-label">Travaux Dirigés</label>
-                    <input type="number" [(ngModel)]="this.matiere.td" class="form-control" name="td"
-                      placeholder="Nombre d'heures de travaux dirigés" required>
+                    <input type="number" [(ngModel)]="this.matiere.td" class="form-control" required name="td" placeholder="Nombre d'heures de travaux dirigés" >
                   </div>
                   <div class="mb-3">
                     <label for="niveau" class="form-label">Travaux Pratiques</label>
-                    <input type="text" [(ngModel)]="this.matiere.tp" class="form-control" name="tp"
-                      placeholder="Nombre d'heures de travaux pratiques" required>
+                    <input type="number" [(ngModel)]="this.matiere.tp" class="form-control" required name="tp" placeholder="Nombre d'heures de travaux pratiques" >
+                  </div>
+                  <div class="mb-3">
+                    <label for="niveau" class="form-label">Travaux Pratiques Encadrés</label>
+                    <input type="number" [(ngModel)]="this.matiere.TPE" class="form-control" required name="TPE" placeholder="Nombre d'heures de travaux pratiques encadrés" >
                   </div>
                   <div class="mb-3">
                     <label for="Pro" class="form-label">Pro</label>
-                    <input type="number" [(ngModel)]="this.matiere.Pro" class="form-control" name="Pro" placeholder="Pro"
-                      required>
+                    <input type="number" [(ngModel)]="this.matiere.Pro" class="form-control" required name="Pro" placeholder="Pro">
                   </div>
                   <div class="mb-3">
                     <label for="departement" class="form-label">Département</label>
-                    <input type="text" [(ngModel)]="this.matiere.departement"  class="form-control" name="departement"
-                      placeholder="Département" required>
+                    <input type="text" [(ngModel)]="this.matiere.departement" class="form-control" required name="departement" placeholder="Département" >
                   </div>
+                  
   
-                  <button type="submit" (click)="ajouterMatiere()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                  <button type="submit" (click)="ajouterMatiere()" class="btn btn-dark mt-3 ms-2">Valider</button>
                 </form>
               </div>
             </div>
@@ -249,41 +260,50 @@
                   
                   <div class="mb-3">
                     <label for="Nom" class="form-label">Nom</label>
-                    <input type="text" [(ngModel)]="this.matiereSelected.nom" class="form-control" name="nom" placeholder="Nom"
-                      required>
+                    <input type="text" [(ngModel)]="this.matiereSelected.nom" class="form-control" required name="nom" placeholder="Nom">
                   </div>
                   <div class="mb-3">
                     <label for="ECTS" class="form-label">ECTS</label>
-                    <input type="number" [(ngModel)]="this.matiereSelected.ects" class="form-control" name="ects" placeholder="Nombre d'ects"
-                      required>
+                    <input type="number" [(ngModel)]="this.matiereSelected.ects" class="form-control" required name="ects" placeholder="Nombre d'ects" >
                   </div>
                   <div class="mb-3">
                     <label for="cm" class="form-label">Cours Magistraux</label>
-                    <input type="number" [(ngModel)]="this.matiereSelected.cm" class="form-control" name="cm"
-                      placeholder="Nombre d'heures de cours magistraux" required>
+                    <input type="number" [(ngModel)]="this.matiereSelected.cm" class="form-control" required name="cm" placeholder="Nombre d'heures de cours magistraux" >
                   </div>
                   <div class="mb-3">
                     <label for="niveau" class="form-label">Travaux Dirigés</label>
-                    <input type="number" [(ngModel)]="this.matiereSelected.td" class="form-control" name="td"
-                      placeholder="Nombre d'heures de travaux dirigés" required>
+                    <input type="number" [(ngModel)]="this.matiereSelected.td" class="form-control" required name="td" placeholder="Nombre d'heures de travaux dirigés" >
                   </div>
                   <div class="mb-3">
                     <label for="niveau" class="form-label">Travaux Pratiques</label>
-                    <input type="text" [(ngModel)]="this.matiereSelected.tp" class="form-control" name="tp"
-                      placeholder="Nombre d'heures de travaux pratiques" required>
+                    <input type="number" [(ngModel)]="this.matiereSelected.tp" class="form-control" required name="tp" placeholder="Nombre d'heures de travaux pratiques" >
                   </div>
                   <div class="mb-3">
                     <label for="Pro" class="form-label">Pro</label>
-                    <input type="number" [(ngModel)]="this.matiereSelected.Pro" class="form-control" name="Pro" placeholder="Pro"
-                      required>
+                    <input type="number" [(ngModel)]="this.matiereSelected.Pro" class="form-control" required name="Pro" placeholder="Pro">
                   </div>
+                  <!-- <div class="mb-3">
+                    <label for="departement" class="form-label">Département</label>
+                    <input type="text" [(ngModel)]="this.matiereSelected.departement"  class="form-control" required name="departement"
+                      placeholder="Département" >
+                  </div> -->
                   <div class="mb-3">
                     <label for="departement" class="form-label">Département</label>
-                    <input type="text" [(ngModel)]="this.matiereSelected.departement"  class="form-control" name="departement"
-                      placeholder="Département" required>
+                    <select [(ngModel)]="matiereSelected.departement" class="form-select" required name="departement">
+                      <option value="" disabled selected>Sélectionnez un département</option>
+                      <option value="maths">Mathématique</option>
+                      <option value="info">Informatique</option>
+                      <option value="hd">HD</option>
+                      <option value="ieg">IEG</option>
+                      <option value="autre">Autre</option>                      
+                      <option value="projet">Projet</option>
+                      <!-- Ajoutez d'autres options ici -->
+                    </select>
                   </div>
+
+                  
   
-                  <button type="submit" (click)="modifierMatiere(this.matiereSelected)" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                  <!-- <button type="submit" (click)="modifierMatiere(this.matiereSelected)" class="btn btn-primary mt-3 ms-2">Ajouter</button> -->
                 </form>
               </div>
             </div>

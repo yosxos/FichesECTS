@@ -73,7 +73,7 @@ export interface MatiereI_post {
     Pro: number,
     TPE: number,
     departement: string,
-    id_Controle: number,
+    id_Controle: number
 }
 
 export interface MatiereI_put {
@@ -86,5 +86,5 @@ export interface MatiereI_put {
     Pro: number,
     TPE: number,
     departement: string,
-    id_Controle: number,
+    id_Controle: number
 }

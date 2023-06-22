@@ -2,24 +2,38 @@
     background-color: blue;
 }
 
-.general {
-    background-color: yellow;
-}
 
-.generalUE {
-    background-color: rgb(138, 129, 63);
+
+.general {
+    background-color: #fae3c2;
 }
 
 .indication {
     background-color: white;
 }
 
-#UE1 {
+#maths {
     background-color: rgb(144, 241, 0);
 }
 
-#UE2 {
+#info {
     background-color: rgb(90, 219, 233);
+}
+
+#projet {
+    background-color: rgb(255, 242, 0);
+}
+
+#hd {
+    background-color: rgb(233, 137, 241);
+}
+
+#ieg {
+    background-color: rgb(237, 177, 49);
+}
+
+#autre {
+    background-color:rgb( 253 , 191 , 183);
 }
 
 table {
@@ -32,10 +46,24 @@ td {
 }
 
 section {
-    width: 1000px;}
+    width: 100%;}
 
 #addMatiere {
     background-color: white;
     border: none;
 }
+#videe {
+    background-color: white;
+    border: none;
+}
 
+td {
+min-width: 3rem;
+min-height: 0px;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }

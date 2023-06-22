@@ -7,7 +7,7 @@
           <button (click)="generatePDFDescription()" class="btn btn-primary">Download PDF</button>
           <!--<button type="button" class="btn btn-secondary">Exporter en Excel</button>-->
         </div>
-        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+        <button type="button" class="btn btn-primary close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -58,7 +58,7 @@
           </tr>
           <!-- Row 5 -->
           <ng-container *ngFor="let ue of data?.ue">
-          <tr class="generalUE">
+          <tr class="general">
               <td class="indication"></td>
               <td>UE1 : {{ue.nom}}</td>
               <td>196.5</td>
@@ -72,7 +72,7 @@
           </tr>
               <!-- Row 6 -->
       
-          <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="ue.nom">
+          <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="matiere.departement">
               <td>M</td>
               <td colspan="2">{{matiere.nom}}</td>
               <td>{{ue.semestre}}</td>

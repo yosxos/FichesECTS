@@ -123,7 +123,6 @@ export class MatiereGetService {
 
     async putMatiereApi2(matiere: MatiereI_put):Promise<number> {
       try {
-
         const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
         const options = { headers };
         const response = await this.httpClient

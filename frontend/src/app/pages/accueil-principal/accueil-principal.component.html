@@ -39,7 +39,7 @@
             </div>
             <ng-container *ngIf="connected()">
               <div class="d-flex align-items-end">
-                <button mat-raised-button type="button" [routerLink]="['add-formation']" class="btn btn-primary ms-3">Ajouter</button> <!-- (click)="openAddEditFormDialog()"  -->
+                <button mat-raised-button type="button" [routerLink]="['add-formation']" class="btn btn-dark ms-3">Ajouter</button> <!-- (click)="openAddEditFormDialog()"  -->
               </div>
             </ng-container>
           </div>
@@ -99,6 +99,7 @@
                           <td>
                             <a class="btn btn-link btn-sm btn-rounded">
                               Supprimer
+                              <!-- TODO  suppression formation -->
                             </a> 
                           </td>
                         </ng-container>

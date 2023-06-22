@@ -58,12 +58,12 @@
             <td class="indication">regle de calcul</td>
             <td class="indication">regle particuliere</td>
             <td></td>
-            <td class="vide"><button (click)="formUe()" class="btn btn-primary">Ajouter une UE</button></td>
+            <td class="vide"><button (click)="formUe()" class="btn btn-dark">Ajouter une UE</button></td>
             <td class="vide"></td>
           </tr>
           <!-- Row 5 -->
           <ng-container *ngFor="let ue of formation.ue">
-            <tr class="generalUE">
+            <tr class="general">
                 <td class="indication">{{ue.id}}</td>
                 <td>{{ue.nom}}</td>
                 <td></td>
@@ -76,12 +76,12 @@
                 <td></td>
                 <td>{{ue.ects}}</td>
                 <td colspan="8"></td>
-                <td class="vide"><input  class="btn btn-primary" type="button" (click)="selectByUeId(ue.id)" value="Ajouter une matiere" ></td>
-                <td class="vide"><input class="btn btn-primary" type="button" (click)="deleteUe(ue.id)" value="Supprimer l'UE" ></td>
+                <td class="vide"><input  class="btn btn-dark" type="button" (click)="selectByUeId(ue.id)" value="Ajouter une matiere" ></td>
+                <td class="vide"><input class="btn btn-danger" type="button" (click)="deleteUe(ue.id)" value="Supprimer l'UE" ></td>
             </tr>
                 <!-- Row 6 -->
         
-            <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="ue.nom">
+            <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="matiere.departement">
                 <td>{{matiere.id}}</td>
                 <td colspan="2">{{matiere.nom}}</td>
                 <td>{{ue.semestre}}</td>
@@ -123,13 +123,11 @@
                 <!-- Champs de Ue -->
                 <div class="mb-3">
                   <label for="annee" class="form-label">Nom</label>
-                  <input type="text" [(ngModel)]="this.ue.nom" class="form-control" name="nom" placeholder="Nom"
-                    required>
+                  <input type="text" [(ngModel)]="this.ue.nom" class="form-control" name="nom" placeholder="Nom" required>
                 </div>
                 <div class="mb-3">
                   <label for="parcours" class="form-label">ECTS</label>
-                  <input type="number" [(ngModel)]="this.ue.ects" class="form-control" name="ects" placeholder="Nombre d'ECTS"
-                    required>
+                  <input type="number" [(ngModel)]="this.ue.ects" class="form-control" name="ects" placeholder="Nombre d'ECTS" required>
                 </div>
                 
                 <div class="mb-3">
@@ -138,7 +136,7 @@
                 </div>
 
 
-                <button type="submit" (click)="ajouterUe()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                <button type="submit" (click)="ajouterUe()" class="btn btn-success mt-3 ms-2">Valider</button>
                 
               </form>
             </div>
@@ -196,13 +194,26 @@
                   <input type="number" [(ngModel)]="this.matiere.Pro" class="form-control" name="Pro" placeholder="Pro"
                     required>
                 </div>
-                <div class="mb-3">
+                <!-- <div class="mb-3">
                   <label for="departement" class="form-label">Département</label>
                   <input type="text" [(ngModel)]="this.matiere.departement" class="form-control" name="departement"
                     placeholder="Département" required>
+                </div> -->
+                <div class="mb-3">
+                  <label for="departement" class="form-label">Département</label>
+                  <select [(ngModel)]="matiere.departement" class="form-select" required name="departement">
+                    <option value="" disabled selected>Sélectionnez un département</option>
+                    <option value="maths">Mathématique</option>
+                    <option value="info">Informatique</option>
+                    <option value="hd">HD</option>
+                    <option value="ieg">IEG</option>
+                    <option value="autre">Autre</option>                      
+                    <option value="projet">Projet</option>
+                    <!-- Ajoutez d'autres options ici -->
+                  </select>
                 </div>
 
-                <button type="submit" (click)="ajouterMatiere()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                <button type="submit" (click)="ajouterMatiere()" class="btn btn-success mt-3 ms-2">Valider</button>
               </form>
             </div>
           </div>
@@ -211,4 +222,4 @@
     </ng-container>
   </div>
 </section>
-<input type="button" (click)="validerFormation()" value="Valider" >
+<input type="button" class="btn btn-dark mt-3 ms-2" (click)="validerFormation()" value="Valider" >
