@@ -22,7 +22,7 @@
           </tr>
           <tr class="general">
               <td>Parcours</td>
-              <td>Génie Informatique</td>
+              <td>{{this.data?.parcour}}</td>
               <td class="indication" rowspan="3">semestre</td>
               <td class="indication" colspan="5">répartition horaire</td>
               <td></td>
@@ -60,20 +60,21 @@
           <ng-container *ngFor="let ue of data?.ue">
           <tr class="general">
               <td class="indication"></td>
-              <td>UE1 : {{ue.nom}}</td>
-              <td>196.5</td>
-              <td>139</td>
-              <td>57.5</td>
-              <td>0</td>
-              <td>0</td>
+              <td colspan="2">{{ue.nom}}</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
               <td></td>
               <td>{{ue.ects}}</td>
-              <td colspan="100%"></td>
+              <td colspan="7"></td>
           </tr>
               <!-- Row 6 -->
       
           <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="matiere.departement">
-              <td>M</td>
+              <td></td>
               <td colspan="2">{{matiere.nom}}</td>
               <td>{{ue.semestre}}</td>
               <td>{{matiere.cm}}</td>
