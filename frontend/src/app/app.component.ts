@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Amplify } from '@aws-amplify/core';
+import { Auth } from '@aws-amplify/auth';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +8,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'fichesects';
+  title = 'fiche-ects-project';
 }
+

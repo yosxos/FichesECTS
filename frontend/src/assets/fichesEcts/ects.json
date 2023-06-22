@@ -1,0 +1,38 @@
+{
+    "formation" : 
+        {
+            "0" : {
+                "id" : 0,
+                "parcours" : "Génie Informatique",
+                "niveau" : "3ème année ICC",
+                "anneée" : "2022-2023",
+                "code" : "DI01G3 version 2026",
+                "ue" : {
+                    "id" : 0,
+                    "nom" : "UE1 : Cloud 1 ",
+                    "semestre" : "Semestre 1",
+                    "ects" : 30,
+                    "matiere" : {
+                        "id" : 0,
+                        "nom" : "Matière 1",
+                        "cm": 35,
+                        "td" : 14,
+                        "tp" : 0,
+                        "pro" : 0,
+                        "tpe" : 0,
+                        "session_1" : {
+                            "Controle" : {
+                                "id" : 0,
+                                "type_control" : "CC",
+                                "type_epreuve" : "CE",
+                                "regle_calcul" : 100,
+                                "regle_particulière" : 0
+                            }
+                        },
+                        "ects" : 5,
+                        "departement" : "Information"                
+                    }
+                }
+        }
+    }
+}

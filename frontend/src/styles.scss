@@ -1,1 +1,16 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+* {
+    position: relative;
+}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+app-modal-formation {
+    width: 1000px;
+    background-color: rgb(236, 0, 0);
+    align-self: center;
+    border-radius: 10px;
+    margin: 0;  
+}

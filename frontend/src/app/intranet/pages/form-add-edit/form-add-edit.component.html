@@ -1,0 +1,36 @@
+<div modal subtitle class="modal__container">
+    <ng-container>
+        <section class="py-5">
+            <div class="container">
+              <div class="row">
+                <div class="col-lg-12">
+                  <h2>Ajouter une Ue</h2>
+                  <form #f="ngForm">
+                    <!-- Champs de formation -->
+                    <div class="mb-3">
+                      <label for="parcours" class="form-label">ECTS</label>
+                      <input type="text" [(ngModel)]="this.ue.ects"  class="form-control" name="ects" placeholder="ECTS" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="annee" class="form-label">Nom</label>
+                      <input type="number" [(ngModel)]="this.ue.nom" class="form-control" name="nom" placeholder="Nom" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="niveau" class="form-label">Niveau</label>
+                      <input type="text" [(ngModel)]="this.ue.semestre" class="form-control" name="semestre" placeholder="semestre" required>
+                    </div>
+                    <div class="mb-3">
+                      <label for="code" class="form-label">Code</label>
+                      <input type="text" class="form-control" id="code" required>
+                    </div>
+                    
+                    <button type="submit" (click)="onToggle(false)" class="btn btn-primary mt-3">Annuler</button>
+                    <button type="submit" (click)="ajouter()" class="btn btn-primary mt-3 ms-2">Ajouter</button>
+                    <button class="modal-next" (click)="onToggle(true)" class="btn btn-primary mt-3 ms-2">Suivant</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </section>
+    </ng-container>
+</div>

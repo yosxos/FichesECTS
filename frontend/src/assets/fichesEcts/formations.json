@@ -1,0 +1,94 @@
+[
+    {
+        "id": 0,
+        "parcour": "GI",
+        "annee": "2022/2023",
+        "niveau": "ING3",
+        "code": "blabla",
+        "ue" : [
+            {
+                "id" : 0,
+                "nom" : "Cloud data 1",
+                "semestre" : "Semestre 1",
+                "ects" : 30,
+                "matiere" : [
+                    {
+                        "id": 1,
+                        "nom": "Matiere 1",
+                        "ects": 6,
+                        "cm": 0,
+                        "td": 0,
+                        "tp": 0,
+                        "Pro": 0,
+                        "TPE": 0,
+                        "departement": "departement1",
+                        "id_session1": [
+                            {
+                                "id": 1,
+                                "type_control": "--",
+                                "type_epreuve": "E et/ou O",
+                                "regle_particuliere": "--",
+                                "regle_calcul": 0
+                            }
+                        ],
+                        "id_session2": [
+                            {
+                                "id": 2,
+                                "type_control": "CC",
+                                "type_epreuve": "E et/ou O",
+                                "regle_particuliere": "--",
+                                "regle_calcul": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 1,
+        "parcour": "GM",
+        "annee": "2022/2023",
+        "niveau": "ING3",
+        "code": "blabla",
+        "ue" : [
+            {
+                "id" : 0,
+                "nom" : "Math Appliqué 1",
+                "semestre" : "Semestre 1",
+                "ects" : 30,
+                "matiere" : [
+                    {
+                        "id": 1,
+                        "nom": "Matiere 1",
+                        "ects": 6,
+                        "cm": 0,
+                        "td": 0,
+                        "tp": 0,
+                        "Pro": 0,
+                        "TPE": 0,
+                        "departement": "departement1",
+                        "id_session1": [
+                            {
+                                "id": 1,
+                                "type_control": "--",
+                                "type_epreuve": "E et/ou O",
+                                "regle_particuliere": "--",
+                                "regle_calcul": 0
+                            }
+                        ],
+                        "id_session2": [
+                            {
+                                "id": 2,
+                                "type_control": "CC",
+                                "type_epreuve": "E et/ou O",
+                                "regle_particuliere": "--",
+                                "regle_calcul": 0
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    }
+]

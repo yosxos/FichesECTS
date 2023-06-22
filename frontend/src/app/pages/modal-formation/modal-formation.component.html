@@ -1,0 +1,100 @@
+<section>
+  <div class="modal-dialog modal-dialog-scrollable modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">{{ data?.parcour }} - {{ data?.annee }} - {{ data?.niveau }}</h4>
+        <div class="btn-group ml-auto">
+          <button (click)="generatePDFDescription()" class="btn btn-primary">Download PDF</button>
+          <!--<button type="button" class="btn btn-secondary">Exporter en Excel</button>-->
+        </div>
+        <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" id="htmlData" #htmlData>
+        <table>
+          <!-- Row A -->
+          <tr class="general">
+              <td rowspan="4">Validation</td>
+              <td>Niveau</td>
+              <td>{{this.data?.niveau}}</td>
+              <td colspan="100%"></td>
+          </tr>
+          <tr class="general">
+              <td>Parcours</td>
+              <td>Génie Informatique</td>
+              <td class="indication" rowspan="3">semestre</td>
+              <td class="indication" colspan="5">répartition horaire</td>
+              <td></td>
+              <td class="indication" colspan="8">contrôle de connaissance</td>
+          </tr>
+          <!-- Row C -->
+          <tr class="general">
+              <td>Année</td>
+              <td>{{this.data?.annee}}</td>
+              <td class="indication" colspan="5">par étudiant</td>
+              <td></td>
+              <td class="indication" rowspan="2">ECTS</td>
+              <td class="indication" colspan="3">1ère session</td>
+              <td class="indication" colspan="3">2è session</td>
+              <td class="indication"></td>
+          </tr>
+          <!-- Row D -->
+          <tr class="general">
+              <td colspan="2">{{this.data?.code}} </td>
+              <td class="indication">CM</td>
+              <td class="indication">TD</td>
+              <td class="indication">TP</td>
+              <td class="indication">PRO</td>
+              <td class="indication">TPE</td>
+              <td></td>
+              <td class="indication">type de controle</td>
+              <td class="indication">type d'epreuve</td>
+              <td class="indication">regle de calcul</td>
+              <td class="indication">type de controle</td>
+              <td class="indication">type d'epreuve</td>
+              <td class="indication">regle de calcul</td>
+              <td class="indication">regle particuliere</td>
+          </tr>
+          <!-- Row 5 -->
+          <ng-container *ngFor="let ue of data?.ue">
+          <tr class="generalUE">
+              <td class="indication"></td>
+              <td>UE1 : {{ue.nom}}</td>
+              <td>196.5</td>
+              <td>139</td>
+              <td>57.5</td>
+              <td>0</td>
+              <td>0</td>
+              <td></td>
+              <td>{{ue.ects}}</td>
+              <td colspan="100%"></td>
+          </tr>
+              <!-- Row 6 -->
+      
+          <tr *ngFor="let matiere of ue.matiere" class="matiere" [id]="ue.nom">
+              <td>M</td>
+              <td colspan="2">{{matiere.nom}}</td>
+              <td>{{ue.semestre}}</td>
+              <td>{{matiere.cm}}</td>
+              <td>{{matiere.td}}</td>
+              <td>{{matiere.tp}}</td>
+              <td>{{matiere.Pro}}</td>
+              <td>{{matiere.TPE}}</td>
+              <td></td>
+              <td>{{matiere.ects}}</td>
+              <td>{{matiere.id_Controle?.type_control_S1}}</td>
+              <td>{{matiere.id_Controle?.type_epreuve_S1}}</td>
+              <td>{{matiere.id_Controle?.regle_calcul_S1}}</td>
+              <td>{{matiere.id_Controle?.type_control_S2}}</td>
+              <td>{{matiere.id_Controle?.type_epreuve_S2}}</td>
+              <td>{{matiere.id_Controle?.regle_calcul_S2}}</td>
+              <td>{{matiere.id_Controle?.regle_particuliere}}</td>
+          </tr>
+        </ng-container>
+          </table>
+      </div>
+    </div>
+  </div>
+
+</section>

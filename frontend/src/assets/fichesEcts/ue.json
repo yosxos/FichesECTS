@@ -1,0 +1,20 @@
+[
+    {
+        "id" : 0,
+        "nom" : "Cloud data 1",
+        "semestre" : "Semestre 1",
+        "ects" : 30 
+    },
+    {
+        "id" : 1,
+        "nom" : "Cloud data 2",
+        "semestre" : "Semestre 2",
+        "ects" : 30 
+    },
+    {
+        "id" : 2,
+        "nom" : "Cloud data 3",
+        "semestre" : "Semestre 3",
+        "ects" : 30 
+    }
+]
