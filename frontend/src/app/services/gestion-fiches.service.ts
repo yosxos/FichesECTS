@@ -40,7 +40,6 @@ export class GestionFichesService {
       if (a.annee < b.annee) return 1;
       return 0;
     });
-    console.log('DATAAAA TEST', this.formationService.listeFormations);
     
   }
 
@@ -93,11 +92,7 @@ export class GestionFichesService {
         }
       })
       this.formationObservable$ = of(tmp_formation);
-      console.log("tmp_formation",tmp_formation)
-      console.log("listematiereUE ",this.listUeMatiere);
-      console.log("listematiere ",this.matiereService.listMatiere);
 
-      
     }
   }
 
@@ -137,7 +132,6 @@ export class GestionFichesService {
 
             let tmpControle: ControleI = this.controleService.listControle.find(controle => {tmpMatiere.id_Controle?.id == controle.id;
              })  as ControleI;
-            // console.log("tmpCOntrole",tmpControle);
             
             tmpMatiere.id_Controle = tmpControle;
             tmp_ue.matiere?.push(tmpMatiere);

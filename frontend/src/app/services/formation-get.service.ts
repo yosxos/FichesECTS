@@ -80,13 +80,12 @@ export class FormationGetService {
         code: formation.code
       };
 
-      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const headers = new HttpHeaders().set('Authorization', this.idToken); 
       const options = { headers };
       const response = await this.httpClient
         .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation/edit', this.formationpost, options)
         .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-      console.log(response.insertId);
       return response.insertId; // Return the insertId value from the response body
 
     } catch (error) {
@@ -98,13 +97,12 @@ export class FormationGetService {
   async putFormationApi(formation: FormationI):Promise<number> {
     try {
 
-      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const headers = new HttpHeaders().set('Authorization', this.idToken); 
       const options = { headers };
       const response = await this.httpClient
         .put<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation/edit', formation, options)
         .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-      console.log(response.insertId);
       return response.insertId; // Return the insertId value from the response body
 
     } catch (error) {
@@ -121,16 +119,12 @@ export class FormationGetService {
           id_ue: ue_id,
           id_formation: formation_id
         };
-        // console.log("ue_id",ue_id);
-        // console.log("formation_id", formation_id)
-        // console.log("this.uepost",this.formationUe);
-        
-        const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+
+        const headers = new HttpHeaders().set('Authorization', this.idToken); 
         const options = { headers };
         const response = await this.httpClient
             .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe/edit', this.formationUe,options)
             .toPromise();
-          // console.log(response.insertId);
             return response.insertId; // Return the insertId value from the response body
     
           } catch (error) {
@@ -142,7 +136,7 @@ export class FormationGetService {
   async deleteFormation(id_formation: number): Promise<void> {
 
     try {
-      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const headers = new HttpHeaders().set('Authorization', this.idToken); 
       const body = { id_formation: id_formation };
       const options = { headers,body };
       const response = await this.httpClient
@@ -155,12 +149,12 @@ export class FormationGetService {
       console.error('An error occurred while creating a new formation:', error);
     }
     try {
-      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const headers = new HttpHeaders().set('Authorization', this.idToken); 
       const body = { id: id_formation };
       const options = { headers,body };
       const response = await this.httpClient
         .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation/edit', options)
-        .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+        .toPromise(); 
 
       console.log("response delete",response);
 

@@ -15,7 +15,6 @@ export class MatiereGetService {
   idToken: string = "";
   matierepost!: MatiereI_post;
   constructor(private httpClient: HttpClient, public controleGetService: ControleGetService) {
-    //this.getMatiereApi();
 
     Auth.currentSession().then(data => {
       this.idToken = 'Bearer ' + data.getIdToken().getJwtToken();
@@ -25,7 +24,6 @@ export class MatiereGetService {
       });
   }
 
-  // Récupère la matière par son id
   getMatiereById(id: number): MatiereI | undefined {
     return this.listMatiere.find(matiere => matiere.id === id);
   }
@@ -111,8 +109,6 @@ export class MatiereGetService {
         const response = await this.httpClient
           .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/matiere/edit', this.matierepost, options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
-
-        console.log(response.insertId);
         return response.insertId; // Return the insertId value from the response body
 
       } catch (error) {
@@ -128,8 +124,6 @@ export class MatiereGetService {
         const response = await this.httpClient
           .put<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/matiere/edit', matiere, options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
-
-        console.log(response.insertId);
         return response.insertId; // Return the insertId value from the response body
 
       } catch (error) {
@@ -147,8 +141,6 @@ export class MatiereGetService {
         const response = await this.httpClient
           .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere/edit', options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
-
-        console.log("response delete",response);
 
       } catch (error) {
         console.error('An error occurred while creating a new formation:', error);

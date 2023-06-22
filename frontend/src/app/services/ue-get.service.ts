@@ -68,17 +68,13 @@ export class UeGetService {
         semestre: ue.semestre ,
         ects: ue.ects || 0
       };
-      // console.log("sdjkkkkjsdjksfkjd",ue);
-      // console.log("ue.ects", ue.ects)
-      // console.log("this.uepost",this.uepost);
-      
+   
       const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
       const options = { headers };
       const response = await this.httpClient
           .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ue/edit', this.uepost,options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-          // console.log(response.insertId);
           return response.insertId; // Return the insertId value from the response body
   
         } catch (error) {
@@ -89,17 +85,15 @@ export class UeGetService {
       
       async putUeApi(ue: UeI):Promise<number>  {
         try {
-          // console.log("sdjkkkkjsdjksfkjd",ue);
-          // console.log("ue.ects", ue.ects)
-          // console.log("this.uepost",this.uepost);
+
           
-          const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+          const headers = new HttpHeaders().set('Authorization', this.idToken); 
           const options = { headers };
           const response = await this.httpClient
               .put<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ue/edit', ue,options)
-              .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+              .toPromise(); 
     
-              // console.log(response.insertId);
+
               return response.insertId; // Return the insertId value from the response body
       
             } catch (error) {
@@ -116,9 +110,7 @@ async postMatiere_Ue_ids(ue_id: number,matiere_id:number):Promise<number>  {
       id_ue: ue_id,
       id_matiere: matiere_id
     };
-    // console.log("ue_id",ue_id);
-    // console.log("matiere_id", matiere_id)
-    // console.log("this.uepost",this.matiereUe);
+
     
     const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
     const options = { headers };
