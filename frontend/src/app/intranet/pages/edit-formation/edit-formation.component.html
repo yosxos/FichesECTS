@@ -15,12 +15,12 @@
             <tr class="general">
               <td rowspan="4">Validation</td>
               <td>Niveau</td>
-              <td></td>
+              <td><input [(ngModel)]="formation.niveau" placeholder="Niveau"></td>
               <td colspan="15"></td>
             </tr>
             <tr class="general">
               <td>Parcours</td>
-              <td>Génie Informatique</td>
+              <td><input [(ngModel)]="formation.parcour" placeholder="Parcours"></td>
               <td class="indication" rowspan="3">semestre</td>
               <td class="indication" colspan="5">répartition horaire</td>
               <td></td>
@@ -29,7 +29,7 @@
             <!-- Row C -->
             <tr class="general">
               <td>Année</td>
-              <td></td>
+              <td><input [(ngModel)]="formation.annee" placeholder="2023" (input)="onYearChanged()"><p>/{{this.annee_plus_un}}</p> </td>
               <td class="indication" colspan="5">par étudiant</td>
               <td></td>
               <td class="indication" rowspan="2">ECTS</td>
@@ -60,18 +60,20 @@
               <tr class="general">
                   <td class="indication">{{ue.id}}</td>
                   <td><input type="text" [(ngModel)]="ue.nom" class="form-control" required name="nom" placeholder="Nom"></td>
-                  <td>{{ue.ects}}</td>
+                  <td></td>
                   <td><select [(ngModel)]="ue.semestre" class="form-select" required name="semestre">
                     <option value="" disabled selected>Sélectionnez un semestre</option>
                     <option value="semestre 1">1</option>
                     <option value="semestre 2">2</option>
                     </select>
                   </td>
+                  <td>{{this.sum_cm}}</td>
+                  <td>{{this.sum_td}}</td>
+                  <td>{{this.sum_tp}}</td>
+                  <td>{{this.sum_pro}}</td>
+                  <td>{{this.sum_tpe}}</td>
                   <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ue.ects}}</td>
                   <td colspan="9"></td>
                   <td class="indication" id="videe"><input class="btn btn-dark"  type="button" (click)="focus(ue.id)" value="Ajout Matière" ></td>
                   <td class="indication" id="videe"><input type="button" class="btn btn-primary" (click)="selectUE(ue.id)" value="Modifier UE" ></td>
