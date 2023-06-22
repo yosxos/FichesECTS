@@ -11,11 +11,6 @@ const routes: Routes = [
   { path: 'connexion', component: ConnexionComponent },
   {path: 'inscription',component: InscriptionComponent},
   {path: 'confirmation',component: ConfirmationComponent},
-
-  {
-    path: 'annee',
-    loadChildren: () => import('./pages/annee/annee.module').then(m => m.AnneeModule)
-  },
   { path:'intranet', loadChildren: () => import('./intranet/intranet.module').then(m => m.IntranetModule),canActivate:[AuthgardGuard] },
 
 ];

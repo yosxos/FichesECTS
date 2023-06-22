@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { ResponsableI, UserI } from '../modeles/user-i';
+import { RespI, UserI } from '../modeles/user-i';
 import { Auth, Hub } from 'aws-amplify';
 
 @Injectable({
@@ -13,7 +13,8 @@ export class AuthService {
   nom: string = "";
   prenom: string = "";
   connectedUser: boolean = false;
-  responsable: ResponsableI = <ResponsableI>{ list_formation: [] };
+  admin: boolean = false;
+  resp:RespI = <RespI>{};
 
   constructor(public httpClient: HttpClient, public router: Router) { }
 
@@ -27,7 +28,6 @@ export class AuthService {
   public async signIn(email: string, password: string) {
     const user = await Auth.signIn(email, password);
     try {
-      this.userId.email = user.attributes.email;
       await this.UserInDb(user.attributes.family_name, user.attributes.given_name);
       localStorage.setItem('token', (await Auth.currentSession()).getIdToken().getJwtToken())
       this.router.navigateByUrl('/intranet')
@@ -47,9 +47,6 @@ export class AuthService {
           family_name: family_name,
           given_name: given_name
         },
-
-
-
       });
       this.nom = family_name;
       this.prenom = given_name;
@@ -87,36 +84,66 @@ export class AuthService {
   }
 
   //get userId from database and check if user is admin or responsable
+
   async UserInDb(family_name: string, given_name: string) {
-    await this.httpClient.get<{ id: number, name: string, prenom: string }[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { name: family_name, prenom: given_name } })
-      .subscribe((userData: { id: number, name: string, prenom: string }[]) => {
-        console.log("userData", userData);
-        const id: number = userData[0].id;
-        console.log("id", id);
-        this.httpClient.get('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: id } })
-          .subscribe((adminData: any) => {
-            console.log(adminData)
+    await this.httpClient
+      .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { name: family_name, prenom: given_name } })
+      .subscribe((userData: any) => {
+        if (userData.length === 0) {
+          throw new Error('User not found'); // Throw an error if user is not found
+        }
+        this.userId.userId = userData[0].id;
+        this.userId.name = userData[0].name;
+        this.userId.prenom = userData[0].prenom;
+  
+        this.httpClient
+          .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: this.userId.userId } })
+          .subscribe((adminData: any[]) => {
             if (adminData.length !== 0) {
-              this.userId.status = "admin";
-            } else {
-              this.httpClient.get('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id_user: id } })
-                .subscribe((responsableData: any) => {
-                  console.log('responsable', responsableData)
-                  if (responsableData.length !== 0) {
-                    responsableData.forEach((element: { id_user: number, id_formation: number }) => {
-                      if (element.id_user === id) {
-                        console.log(element.id_formation);
-                        this.responsable.list_formation.push(element.id_formation);
-                      }
+              this.userId.status = 'admin';
+              this.admin = true;
+              
+            }else {            
+              this.httpClient
+              .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id: this.userId.userId} })
+              .subscribe((responsableData: any[]) => {
+                if (responsableData.length !== 0) {
+                  const responsableObj: RespI = {
+                  formations: [],
+                };
+              
+                for (const responsable of responsableData) {
+                  this.httpClient
+                    .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation', { params: { id: responsable.id_formation.toString() } })
+                    .subscribe((formationData: any) => {
+                      responsableObj.formations.push({
+                        id: responsable.id_formation,
+                        parcour: formationData[0].parcour,
+                        annee: formationData[0].annee,
+                        niveau: formationData[0].niveau,
+                        code: formationData[0].code,
+                      });
                     });
-                    this.userId.status = this.responsable;
-                  }
-                });
-            }
+                }
+              
+                this.userId.status = responsableObj;
+                }
+                else
+                {
+                  this.userId.status = 'default';
+                }
+
+              
+             
+              });}
+  
+
           });
       });
-    console.log(this.userId);
+      console.log(this.userId);
   }
+  
+  
 }
 
 

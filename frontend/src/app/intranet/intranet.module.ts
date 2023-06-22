@@ -7,6 +7,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import { FormsModule } from '@angular/forms';
 import { EditFormationComponent } from './pages/edit-formation/edit-formation.component';
+import { AdminComponent } from './pages/admin/admin.component';
 
 
 
@@ -14,7 +15,8 @@ import { EditFormationComponent } from './pages/edit-formation/edit-formation.co
   declarations: [
     AddFormationComponent,
     FormAddEditComponent,
-    EditFormationComponent
+    EditFormationComponent,
+    AdminComponent
   ],
   imports: [
     CommonModule,

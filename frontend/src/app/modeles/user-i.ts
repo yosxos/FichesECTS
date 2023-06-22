@@ -1,8 +1,13 @@
-export interface UserI {
-    email: string;
-    status: ResponsableI | "admin" | "actif" | "inactif" ;
-}
+import { FormationI } from './formation-i';
 
-export interface ResponsableI {
-    list_formation: Array<number>;
+
+
+export interface RespI {
+    formations: FormationI[];
 }
+export interface UserI{
+    userId: number;
+    name: string;
+    prenom: string;
+    status?: {formations:FormationI[]} | "admin" |"default" ;
+} 

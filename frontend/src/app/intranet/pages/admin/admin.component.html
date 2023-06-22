@@ -1,0 +1,56 @@
+<div class="container">
+  <h2>Admin Page</h2>
+
+  <div class="panel">
+    <button (click)="filterUsers('all')">All Users</button>
+    <button (click)="filterUsers('admin')">Admins</button>
+    <button (click)="filterUsers('responsable')">Responsables</button>
+    <button (click)="filterUsers('default')">Default Users</button>
+
+  </div>
+
+  <div class="user-container">
+    <h3>User List</h3>
+    <ul class="user-list">
+      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)" [ngClass]="{ 'clickable-user': user.status !== 'default' && user.status !== 'admin' }">
+        {{ user.name }} {{ user.prenom }}
+      </li>
+    </ul>
+  </div>
+
+  <div *ngIf="selectedUser && selectedUser.status !== 'admin' && selectedUser.status !== 'default'">
+    <h3>Selected Responsable: {{ selectedUser.name }} {{ selectedUser.prenom }}</h3>
+    <ul>
+      <li *ngFor="let formation of selectedUserFormations">
+        {{ formation.parcour }} ({{ formation.niveau }})
+      </li>
+    </ul>
+    <div class="add-formation-container">
+        <h4>Add Formations:</h4>
+        <ul class="formation-list">
+          <li *ngFor="let formation of filtredFormations">
+            <span>
+              {{ formation.parcour }} ({{ formation.niveau }})
+            </span>
+            <button (click)="addFormation(formation)">Add</button>
+        </li>
+        </ul>
+      </div>
+  </div>
+  
+  <div *ngIf="selectedUser && selectedUser.status == 'default'">
+    <h3>Selected User: {{ selectedUser.name }} {{ selectedUser.prenom }}</h3>
+    <div class="add-formation-container">
+        <h4>Add Formations:</h4>
+        <ul class="formation-list">
+            <li *ngFor="let formation of filtredFormations">
+              <span>
+                {{ formation.parcour }} ({{ formation.niveau }})
+              </span>
+              <button (click)="addFormation(formation)">Add</button>
+            </li>
+          </ul>
+      </div>
+    </div>
+
+</div>
