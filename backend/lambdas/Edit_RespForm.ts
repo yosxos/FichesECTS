@@ -17,7 +17,7 @@ export const handler = async (event: any = {}): Promise<any> => {
    switch (method) {
     case 'DELETE':
         // Run a DELETE query
-        const queryDel = `DELETE FROM ${TABLE_NAME} WHERE id_user = ${body.id_user}`;
+        const queryDel = `DELETE FROM ${TABLE_NAME} WHERE id_user = ${body.id_user} AND id_formation = ${body.id_formation}`;
         const [rowsDel] = await connection.execute(queryDel);
         await connection.end();
         return {
