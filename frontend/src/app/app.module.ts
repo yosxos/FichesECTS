@@ -15,6 +15,8 @@ import { SidenavComponent } from './pages/sidenav/sidenav.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
 import { SearchPipe } from './pipe/search.pipe';
+import { InscriptionComponent } from './pages/inscription/inscription.component';
+import { ConfirmationComponent } from './pages/confirmation/confirmation.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { SearchPipe } from './pipe/search.pipe';
     SidenavComponent,
     SublevelMenuComponent,
     SearchPipe,
+    InscriptionComponent,
+    ConfirmationComponent,
   ],
   imports: [
     BrowserModule,

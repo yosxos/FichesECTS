@@ -8,14 +8,28 @@ import { AuthService } from 'src/app/services/auth-service.service';
   styleUrls: ['./connexion.component.scss']
 })
 export class ConnexionComponent {
-
   userId={email: "", password: ""} ;
+  error?: string| null =null;
 
   constructor(public authService:AuthService) { }
 
+  public async check(){
+    try {
+      await this.authService.signIn(this.userId.email, this.userId.password);
+    } catch (error: any)     {
+      if(error.code =='UserNotConfirmedException')
+      {
+        this.error= "Validate your email Id";
+      }
+      if(error.code =='UserNotFoundException')
+      {
+        this.error= error.message;
+      }
+      this.error= error.message;
+      console.log(error);
+   }
 
-  check(mail: string, password: string){
-    this.authService.signIn(mail, password);
   }
-  
+
+
 }

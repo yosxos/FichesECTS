@@ -7,6 +7,8 @@ import { AuthService } from 'src/app/services/auth-service.service';
 import { MatDialog } from '@angular/material/dialog';
 import { FormAddEditComponent } from 'src/app/intranet/pages/form-add-edit/form-add-edit.component';
 import { FormationI } from 'src/app/modeles/formation-i';
+import { UserI } from 'src/app/modeles/user-i';
+import { UserServiceService } from 'src/app/services/user-service.service';
 
 
 
@@ -21,15 +23,27 @@ export class AccueilPrincipalComponent implements OnInit {
 
 
   allformation!: FormationI;
+  user: UserI = <UserI>{};
   searchText = '';
-  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public authService: AuthService, private _dialog: MatDialog) {
+  constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public authService: AuthService, private _dialog: MatDialog,public userService:UserServiceService) {
   }
 
-  ngOnInit(): void {
-    this.gestionService.someMethod()
+  async ngOnInit(): Promise<void> {
+    this.gestionService.someMethod();
+    const userId = localStorage.getItem('userId');
+    console.log(userId);
+    if(userId !== null) {
+      const userId = localStorage.getItem('userId');
+      console.log(userId);
+      if (userId) {
+       await this.userService.getUserById(userId);
+       this.user = this.userService.user;
+      }
+    }
+    else {
+      this.user=this.authService.userId;
+    }
 
-     //this.allformation = this.gestionService.formationObservable$.subscribe();
-    // console.log("observable =",allformation);
 
   }
 
@@ -66,6 +80,15 @@ export class AccueilPrincipalComponent implements OnInit {
   connected() : boolean {
     return this.authService.connected();
   }
+  isEditable(formationId: number): boolean {
+    
+    if(this.user.status === "admin") return true;
+    if (typeof this.user.status === 'object' && 'formations' in this.user.status) {
+      return this.user.status.formations.some(formation => formation.id === formationId);
+    }
+    return false;
+  }
+  
 
 
   supprimerFormation(id: number): void {

@@ -31,7 +31,9 @@ export const handler = async (event: any = {}): Promise<any> => {
     }
      else if(event.queryStringParameters && event.queryStringParameters.prenom && event.queryStringParameters.name) {
       // Run a SELECT query
-      const query = `SELECT * FROM ${TABLE_NAME} WHERE prenom = '${event.queryStringParameters.prenom}' AND name = '${event.queryStringParameters.name}'`;
+
+      const query = `SELECT * FROM ${TABLE_NAME} WHERE prenom = "${event.queryStringParameters.prenom}" AND name = "${event.queryStringParameters.name}"`;
+
       const [rows] = await connection.execute(query);
       await connection.end();
       const response = {

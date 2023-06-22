@@ -30,7 +30,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         };
     case 'PUT':
         // Run a UPDATE query
-        const queryUp = `UPDATE ${TABLE_NAME} SET nom = "${body.nom}",ects = ${body.ects},cm = ${body.cm},td = ${body.td},tp = ${body.tp},Pro = ${body.Pro},TPE = ${body.TPE},departement = "${body.departement}",id_session1 = ${body.id_session1},id_session2 = ${body.id_session2} WHERE id = ${body.id}`;
+        const queryUp = `UPDATE ${TABLE_NAME} SET nom = "${body.nom}",ects = ${body.ects},cm = ${body.cm},td = ${body.td},tp = ${body.tp},Pro = ${body.Pro},TPE = ${body.TPE},departement = "${body.departement}",id_Controle = ${body.id_Controle} WHERE id = ${body.id}`;
         const [rowsUp] = await connection.execute(queryUp);
         await connection.end();
         return {
@@ -43,7 +43,7 @@ export const handler = async (event: any = {}): Promise<any> => {
         };
     case 'POST':
         // Run a INSERT query
-        const queryIns = `INSERT INTO ${TABLE_NAME} (nom,ects,cm,td,tp,Pro,TPE,departement,id_session1,id_session2) VALUES ("${body.nom}",${body.ects},${body.cm},${body.td},${body.tp},${body.Pro},${body.TPE},"${body.departement}",${body.id_session1},${body.id_session2})`;
+        const queryIns = `INSERT INTO ${TABLE_NAME} (nom,ects,cm,td,tp,Pro,TPE,departement,id_Controle) VALUES ("${body.nom}",${body.ects},${body.cm},${body.td},${body.tp},${body.Pro},${body.TPE},"${body.departement}",${body.id_Controle})`;
         const [rowsIns] = await connection.execute(queryIns);
         await connection.end();
         return {

@@ -89,7 +89,7 @@
                             View
                           </a>
                         </td>
-                        <ng-container *ngIf="connected()">
+                        <ng-container *ngIf="isEditable(f.id)">
                           <td>
                             <a [routerLink]="['edit-formation', f.id]" class="btn btn-link btn-sm btn-rounded">
                               Modifier

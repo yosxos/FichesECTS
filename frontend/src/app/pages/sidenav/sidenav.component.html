@@ -108,6 +108,14 @@
                         Connexion
                     </i>
                 </a>
+                <a *ngIf="this.authService.isAdmin()" class="sidenav-nav-link" routerLink="/intranet/admin"
+                routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
+                [ngClass]="setActiveClass('connexion')">
+                <i class="sidenav-link-icon fal fa-cog"></i>
+                <i class="sidenav-link-text" *ngIf="opened()">
+                    Administration
+                </i>
+            </a>
                 <a *ngIf="this.authService.connected()" class="sidenav-nav-link" [ngClass]="setActiveClass('dashboard')" (click)="signOut()"
                     href="/">
                     <i class="sidenav-link-icon fas fa-sign-out-alt"></i>

@@ -1,33 +1,31 @@
 <!-- Section: Design Block -->
 <section class="">
-    <div class="d-flex justify-content-center align-items-center vh-100">
+  <div class="d-flex justify-content-center align-items-center vh-100">
     <div class="col-md-4">
       <div class="card">
         <div class="card-body">
           <h3 class="card-title text-center mb-4">Connexion</h3>
-          <form #f="ngForm" *ngIf="userId" >
-            <!-- Email input -->
+          <form #f="ngForm" *ngIf="userId">
+            <!-- Existing user login form -->
             <div class="form-outline mb-4">
               <input [(ngModel)]="userId.email" name="email" type="email" id="inputEmail" class="form-control" required />
               <label class="form-label" for="inputEmail">Adresse e-mail</label>
             </div>
 
-            <!-- Password input -->
             <div class="form-outline mb-4">
               <input [(ngModel)]="userId.password" name="password" type="password" id="inputPassword" class="form-control" required />
               <label class="form-label" for="inputPassword">Mot de passe</label>
             </div>
 
-            <!-- Remember me checkbox -->
             <div class="form-check mb-4">
               <input type="checkbox" class="form-check-input" id="rememberMe" />
               <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
             </div>
 
-            <!-- Submit button -->
-            <button (click)="check(userId.email, userId.password)" class="btn btn-primary w-100 mb-3">Se connecter</button>
+            <button (click)="check()" class="btn btn-primary w-100 mb-3">Se connecter</button>
+            <p>Not a member?   <a href="#"  routerLink="/inscription">Sign up</a> </p>
+            <p  class="alert alert-danger" *ngIf="error" role="alert" >{{error}}</p>
 
-            <!-- Forgot password link -->
             <div class="text-center">
               <a href="#" class="text-decoration-none">Mot de passe oublié ?</a>
             </div>
@@ -36,5 +34,5 @@
       </div>
     </div>
   </div>
-  </section>
+</section>
 <!-- Section: Design Block -->
