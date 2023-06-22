@@ -1,7 +1,9 @@
 .matiere {
     background-color: blue;
 }
-
+main {
+    max-width: calc(100% - 300px);
+}
 
 
 .general {
