@@ -38,8 +38,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
 
   ngOnInit(): void {
-    // console.log(this.formationService.listeFormations);
-
     this.formation.ue = [];
     this.ue.matiere = [];
   }
@@ -65,14 +63,9 @@ export class AddFormationComponent implements OnInit, OnChanges {
     let res: number = 0;
     const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
     if (slected != undefined) {
-
-
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          // console.log("i : ", i, "ects ", slected.matiere!.at(i - 1)!.ects);
-
           res += slected.matiere!.at(i - 1)!.ects;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_ects
 
@@ -83,7 +76,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
     return res
   }
 
-
   sumCM(id: number, matiere_cm: number): number {
     let res: number = 0;
     const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
@@ -92,10 +84,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.cm);
-
           res += slected.matiere!.at(i - 1)!.cm;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_cm
 
@@ -113,10 +102,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.tp);
-
           res += slected.matiere!.at(i - 1)!.cm;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_tp
 
@@ -131,13 +117,9 @@ export class AddFormationComponent implements OnInit, OnChanges {
     const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
     if (slected != undefined) {
 
-
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.Pro);
-
           res += slected.matiere!.at(i - 1)!.Pro;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_pro
 
@@ -156,10 +138,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.TPE);
-
           res += slected.matiere!.at(i - 1)!.TPE;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_tpe
 
@@ -178,10 +157,7 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          // console.log("i : ", i, "cm ", slected.matiere!.at(i - 1)!.td);
-
           res += slected.matiere!.at(i - 1)!.td;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_TD
 
@@ -200,21 +176,13 @@ export class AddFormationComponent implements OnInit, OnChanges {
     this.showUEForm = !this.showUEForm
   }
 
-  // fermerFormMatiere(){
-  //   this.boolMatiere = false;
-  // }
-
-  // fermerFormUe(){
-  //   this.showUEForm = false;
-  // }
-
   check_id_ue(id: number): boolean {
     return this.formation.ue?.some(ue => ue.id === id)!;
   }
 
   selectByUeId(idd: number) {
     this.showUEForm = false;
-    this.ue = <UeI>{} //TODO peut etre inutile 
+    this.ue = <UeI>{} 
     this.matiere = <MatiereI>{} //TODO peut etre in
     this.boolMatiere = true;
     if (this.check_id_ue(idd)) {
@@ -224,7 +192,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
       alert("Please select")
     }
   }
-  //TODO ajouter une ue apres avoir rentré des matieres sur une UE crée une nouvelle  ue avec un copie  des matieres de crée juste avant dans l'autre ue 
   ajouterUe() {
     this.sum_cm = 0;
     this.sum_td = 0;
@@ -241,9 +208,8 @@ export class AddFormationComponent implements OnInit, OnChanges {
     let id_tmp: number = this.formation.ue?.length || 0;
     this.ue.id = id_tmp + 1
 
-
     this.formation.ue!.push({ ...this.ue });
-    this.ue = <UeI>{};//TODO peut etre inutile
+    this.ue = <UeI>{};
     this.ue.matiere = []
     // console.log(this.formation)
   }
@@ -255,17 +221,15 @@ export class AddFormationComponent implements OnInit, OnChanges {
     this.sum_tp = this.matiere.tp;
     this.sum_pro = this.matiere.Pro;
     this.sum_tpe = this.matiere.TPE;
-    // console.log(this.sum_ects);
-
     this.showUEForm = false;
 
-
+    
     if (this.check_id_ue(this.ue.id)) {
+      console.log("this.ue", this.ue);
 
       let id_tmp: number = this.ue.matiere?.length || 0;
 
       this.matiere.id = id_tmp + 1;
-      // trouve plusieurs ue 
       const id_ue = this.formation.ue?.find(ue => ue.id === this.ue.id)!.id!
       this.sum_ects = this.sumECTS(id_ue, this.matiere.ects);
       this.sum_cm = this.sumCM(id_ue, this.matiere.cm);
@@ -283,7 +247,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
       this.formation.ue?.find(ue => ue.id === this.ue.id)!.matiere!.push({ ...this.matiere })
     } else {
       alert("Selected UE not found!");
-      console.log("Selected UE not found!");
     }
     this.ue = <UeI>{};
     this.ue.matiere = [];
@@ -292,7 +255,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
   }
 
-  // ici j'ai mis departement car j'ai pas encore d'id pour les matiere et les ue donc c'est galere de les delete by id 
   deleteMatiere(departement: string, id_ue: number) {
 
 
@@ -323,9 +285,16 @@ export class AddFormationComponent implements OnInit, OnChanges {
   }
 
   async validerFormation(): Promise<void> {
+    let totalEcts = 0;
 
     if (this.formation.ue?.length != undefined) {
-      // Ne post pas de formation sans UE 
+      for (let i = 0; i < this.formation.ue.length; i++) {
+        totalEcts += this.formation.ue.at(i)?.ects || 0
+
+      }
+      if (totalEcts < 30) {
+        alert("La formation n'a pas assez d'ECTS")
+      } else {
       const insertIdFormation = await this.formationService.postFormationApi(this.formation)
       for (let i = 0; i < this.formation.ue.length; i++) {
 
@@ -365,9 +334,11 @@ export class AddFormationComponent implements OnInit, OnChanges {
         }
       }
     }
-    console.log("this.formation ",this.formation)
+    alert("La formation a bien été ajoutée")
+
   }
-  //TODO faire le post de la formation et refaire pareil que pour matiere et ue pour l'association des ue à la formation créée
+
+  }
 }
 
 

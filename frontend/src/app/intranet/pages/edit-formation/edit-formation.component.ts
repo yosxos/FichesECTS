@@ -17,32 +17,38 @@ import { UeGetService } from 'src/app/services/ue-get.service';
   styleUrls: ['./edit-formation.component.css']
 })
 export class EditFormationComponent implements OnInit, OnChanges {
-  idFiche !: number ;
-  showUEForm : boolean = false;
+  idFiche !: number;
+  showUEForm: boolean = false;
   isActive = false;
-  index:number=0;
+  index: number = 0;
+  annee_plus_un!: number;
   @Input() formation: FormationI = <FormationI>{}
   @Input() ue: UeI = <UeI>{}
   @Input() matiere: MatiereI = <MatiereI>{}
-  boolMatiere: boolean= false;
+  boolMatiere: boolean = false;
   matiereSelected: MatiereI = <MatiereI>{}
   ueSelected: UeI = <UeI>{}
-  
-  constructor(private route: ActivatedRoute,public gestionService: GestionFichesService, public matieresService: MatiereGetService, public ueService: UeGetService, public formationService: FormationGetService) { }
+  // sum_cm!: number;
+  // sum_td!: number;
+  // sum_tp!: number;
+  // sum_pro!: number;
+  // sum_tpe!: number;
+  sum_ects!: number;
+  // nbMatiere!: number;
+
+  constructor(private route: ActivatedRoute, public gestionService: GestionFichesService, public matieresService: MatiereGetService, public ueService: UeGetService, public formationService: FormationGetService) { }
   ngOnInit() {
     this.route.paramMap.subscribe(params => {
       this.idFiche = Number(params.get('id'));
       this.formation = this.gestionService.getUeById(this.idFiche);
-      console.log(this.formation);
     });
   }
 
 
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('dans ngOnChanges');
     if (changes['formation']) {
-      
+
       this.formation = changes['formation'].currentValue;
     }
     if (changes['matiere']) {
@@ -51,10 +57,11 @@ export class EditFormationComponent implements OnInit, OnChanges {
 
   }
 
-  formUe(){
+  formUe() {
     this.showUEForm = !this.showUEForm
   }
-  
+
+
   sumECTS(id: number, matiere_ects: number): number {
     let res: number = 0;
     const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
@@ -63,10 +70,7 @@ export class EditFormationComponent implements OnInit, OnChanges {
 
       if (slected.matiere!.length > 0) {
         for (let i = 0; i < slected.matiere!.length; i++) {
-          console.log("i : ", i, "ects ", slected.matiere!.at(i - 1)!.ects);
-
           res += slected.matiere!.at(i - 1)!.ects;
-          // console.log("sssssssssssssssssss",res);
         }
         res += matiere_ects
 
@@ -76,132 +80,227 @@ export class EditFormationComponent implements OnInit, OnChanges {
     }
     return res
   }
-  
 
-  focus(idd:number){
-    console.log("entreée");
 
+  sumCM(id: number, matiere_cm: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          res += slected.matiere!.at(i - 1)!.cm;
+        }
+        res += matiere_cm
+
+      } else {
+        res = matiere_cm;
+      }
+    }
+    return res
+  }
+
+  sumTp(id: number, matiere_tp: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          res += slected.matiere!.at(i - 1)!.cm;
+        }
+        res += matiere_tp
+
+      } else {
+        res = matiere_tp;
+      }
+    }
+    return res
+  }
+  sumPro(id: number, matiere_pro: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          res += slected.matiere!.at(i - 1)!.Pro;
+        }
+        res += matiere_pro
+
+      } else {
+        res = matiere_pro;
+      }
+    }
+    return res
+  }
+
+  sumTPE(id: number, matiere_tpe: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          res += slected.matiere!.at(i - 1)!.TPE;
+        }
+        res += matiere_tpe
+
+      } else {
+        res = matiere_tpe;
+      }
+    }
+    return res
+  }
+
+  sumTd(id: number, matiere_TD: number): number {
+    let res: number = 0;
+    const slected = this.formation.ue?.find(ue => ue.id === this.ue.id)!
+    if (slected != undefined) {
+
+
+      if (slected.matiere!.length > 0) {
+        for (let i = 0; i < slected.matiere!.length; i++) {
+          res += slected.matiere!.at(i - 1)!.td;
+        }
+        res += matiere_TD
+      } else {
+        res = matiere_TD;
+      }
+    }
+    return res
+  }
+
+  onYearChanged() {
+    this.annee_plus_un = this.formationService.sum(this.formation.annee, Number(1));
+  }
+
+  focus(idd: number) {
     this.boolMatiere = !this.boolMatiere;
-    console.log(idd);
-    const selectedUe = this.formation.ue?.find(ue => ue.id === idd );
-    
-    
+    const selectedUe = this.formation.ue?.find(ue => ue.id === idd);
+
+
     if (selectedUe) {
-      console.log("entreée",selectedUe.id);
       this.ue = selectedUe;
-      console.log(this.ue)
     }
   }
 
-  ajouter(){
-    // console.log('ue dans la fonction ajouter: ', this.ue);
-    this.ue.id = this.formation.ue!.length || 0; 
-    this.formation.ue!.push({...this.ue});
-    // console.log("res final !",this.formation);
+  async ajouter() {
+    this.showUEForm = !this.showUEForm
+
+    this.ue.id = this.formation.ue!.length || 0;
+    this.formation.ue!.push({ ...this.ue });
+    const insertIdUe = await this.ueService.postUeApi(this.ue)
+    this.formationService.postFormation_Ue_ids(insertIdUe, this.formation.id)
+    alert("L'UE a été ajouté")
   }
 
-  ajouterMatiere(){
-    const selectedUe = this.formation.ue?.find(ue => ue.id === this.ue.id );
+  async ajouterMatiere() {
+    this.sum_ects = this.matiere.ects;//8
+    const selectedUe = this.formation.ue?.find(ue => ue.id === this.ue.id);
+    const id_ue = this.formation.ue?.find(ue => ue.id === this.ue.id)!.id!
+    this.formation.ue!.find(ue => ue.id === this.ue.id)!.ects = this.sum_ects;
 
+    this.sum_ects = 0;
     if (selectedUe) {
+      console.log("selectedUe", selectedUe)
       if (!selectedUe.matiere) {
         selectedUe.matiere = []; // initialize the matiere array if it's not defined
       }
-      selectedUe.matiere.push({...this.matiere});
-      console.log(this.matiere.id)
-      // console.log("res final !",this.formation);
-      //this.matiereService.postMatiereApi(this.matiere)
+      selectedUe.matiere.push({ ...this.matiere });
+      console.log("thematiere", this.matiere)
+      alert("La matière a été ajouté")
+      const insertIdMat = await this.matieresService.postMatiereApi2(this.matiere)
+      this.ueService.postMatiere_Ue_ids(this.ue.id, insertIdMat)
+
     } else {
       console.log("Selected UE not found!");
     }
-    // console.log("///////////",selectedUe?.matiere)
-    // selectedUe!.matiere!.push(this.matiere);
-    //console.log("res final !",this.formation);
-
 
   }
 
-  selectMatiere(id_matiere : number, id_ue: number) { 
-    this.ueSelected =  this.formation.ue!.find(ue => ue.id === id_ue)! as UeI
+  selectMatiere(id_matiere: number, id_ue: number) {
+    this.ueSelected = this.formation.ue!.find(ue => ue.id === id_ue)! as UeI
     this.matiereSelected = this.ueSelected.matiere!.find(matiere => matiere.id === id_matiere) as MatiereI;
 
 
-    
   }
 
-  selectUE( id_ue: number) { 
-    this.ueSelected =  this.formation.ue!.find(ue => ue.id === id_ue)! as UeI
+  selectUE(id_ue: number) {
+    this.ueSelected = this.formation.ue!.find(ue => ue.id === id_ue)! as UeI
   }
 
-  // ici j'ai mis departement car j'ai pas encore d'id pour les matiere et les ue donc c'est galere de les delete by id 
-  delete(departement:string, id_ue: number) {
+  deleteMatiere(id_matiere: number, id_ue: number) {
     const selectedUe = this.formation.ue?.find(ue => ue.id === id_ue)
     if (selectedUe) {
-      // console.log(selectedUe,"avant")
-      const matiere = selectedUe.matiere?.find(matiere => matiere.departement === departement);
+
+      const matiere = selectedUe.matiere?.find(matiere => matiere.id === id_matiere);
       selectedUe.matiere = selectedUe.matiere?.filter(item => item !== matiere)
-      // console.log(selectedUe,"apres")
+      this.matieresService.deleteMatiereApi2(id_matiere)
     }
-    
+
   }
-  
-  async validerFormation(): Promise<void>{
-   
-    if (this.formation.ue?.length != undefined) {
-      // Ne post pas de formation sans UE 
-      const insertIdFormation = await this.formationService.putFormationApi(this.formation)
-      for (let i = 0; i < this.formation.ue.length; i++) {
 
-        if (this.formation.ue[i].matiere != undefined) {
-          const insertIdUe = await this.ueService.putUeApi(this.formation.ue[i])
-
-          for (let j = 0; j < this.formation.ue[i].matiere!.length; j++) {
-            // TODO stupide interaction l'object peut etre undefined dans le if alors que pour rentrer dans le if il faut qu'il soit defini 
-            let matiereVide: MatiereI_put = {
-              id: -1,
-              Pro: -1,
-              nom: "-1",
-              td: -1,
-              tp: -1,
-              cm: -1,
-              departement: "-1",
-              ects: -1,
-              // id_Controle: -1,
-              id_Controle: 1,
-              TPE: -1
-            };
-            let matierePut: MatiereI_put = {
-              id: this.formation.ue.at(i)?.matiere!.at(j)!.id  || 0,
-              Pro: this.formation.ue.at(i)?.matiere!.at(j)!.Pro || 0,
-              nom: this.formation.ue.at(i)?.matiere!.at(j)!.nom || "",
-              td: this.formation.ue.at(i)?.matiere!.at(j)!.td || 0,
-              tp: this.formation.ue.at(i)?.matiere!.at(j)!.tp || 0,
-              cm: this.formation.ue.at(i)?.matiere!.at(j)!.cm|| 0,
-              departement: this.formation.ue.at(i)?.matiere!.at(j)!.departement|| "",
-              ects: this.formation.ue.at(i)?.matiere!.at(j)!.ects|| 0,
-              // id_Controle: -1,
-              id_Controle:1,
-              TPE: this.formation.ue.at(i)?.matiere!.at(j)!.TPE|| 0
-            };
-            const insertIdMat = await this.matieresService.putMatiereApi2(matierePut || matiereVide);
-
-            this.ueService.postMatiere_Ue_ids(insertIdUe, insertIdMat)
-          }
-          this.formationService.postFormation_Ue_ids(insertIdUe, insertIdFormation)
-        }
+  deleteUe(id_ue: number) {
+    const ueIndex = this.formation.ue?.findIndex(ue => ue.id === id_ue);
+    if (ueIndex != undefined) {
+      if (this.formation.ue != undefined) {
+        this.formation.ue?.splice(ueIndex, 1);
       }
     }
-    console.log(this.formation)
+    this.ueService.deleteUeApi2(id_ue)
   }
-  
-  async modifierUE(my_ue: UeI) : Promise<void>{
+
+  async validerFormation(): Promise<void> {
+    let totalEcts = 0;
+    if (this.formation.ue?.length != undefined) {
+
+      for (let i = 0; i < this.formation.ue.length; i++) {
+        totalEcts += this.formation.ue.at(i)?.ects || 0
+      }
+      if (totalEcts < 30) {
+        alert("La formation n'a pas assez d'ECTS")
+      } else {
+        const insertIdFormation = await this.formationService.putFormationApi(this.formation)
+        for (let i = 0; i < this.formation.ue.length; i++) {
+          this.formation.ue[i].ects = 0
+          if (this.formation.ue[i].matiere != undefined) {
+            const insertIdUe = await this.ueService.putUeApi(this.formation.ue[i])
+            for (let j = 0; j < this.formation.ue[i].matiere!.length; j++) {
+              this.formation.ue[i].ects += this.formation.ue.at(i)?.matiere!.at(j)!.ects || 0
+              let matierePut: MatiereI_put = {
+                id: this.formation.ue.at(i)?.matiere!.at(j)!.id || 0,
+                Pro: this.formation.ue.at(i)?.matiere!.at(j)!.Pro || 0,
+                nom: this.formation.ue.at(i)?.matiere!.at(j)!.nom || "",
+                td: this.formation.ue.at(i)?.matiere!.at(j)!.td || 0,
+                tp: this.formation.ue.at(i)?.matiere!.at(j)!.tp || 0,
+                cm: this.formation.ue.at(i)?.matiere!.at(j)!.cm || 0,
+                departement: this.formation.ue.at(i)?.matiere!.at(j)!.departement || "",
+                ects: this.formation.ue.at(i)?.matiere!.at(j)!.ects || 0,
+                // id_Controle: -1,
+                id_Controle: 1,
+                TPE: this.formation.ue.at(i)?.matiere!.at(j)!.TPE || 0
+              };
+
+              const insertIdMat = await this.matieresService.putMatiereApi2(matierePut);
+
+            }
+          }
+        }
+        alert("La formation a bien été modifiée")
+      }
+    }
+  }
+
+  async modifierUE(my_ue: UeI): Promise<void> {
     let ue = this.formation.ue?.find(ue => ue.id === my_ue.id)
-    console.log("UUUUUEEEE", ue);
-    
   }
-  
-  async modifierMatiere(matiere: MatiereI) : Promise<void>{
-    console.log(matiere);
+
+  async modifierMatiere(matiere: MatiereI): Promise<void> {
 
     let matierePut: MatiereI_put = {
       id: matiere.id,
@@ -212,11 +311,10 @@ export class EditFormationComponent implements OnInit, OnChanges {
       cm: matiere.cm,
       departement: matiere.departement,
       ects: matiere.ects,
-      // id_Controle: -1,
-      id_Controle:1,
+      id_Controle: 1,
       TPE: matiere.TPE
     };
 
-   await this.matieresService.putMatiereApi2(matierePut)
+    await this.matieresService.putMatiereApi2(matierePut)
   }
 }

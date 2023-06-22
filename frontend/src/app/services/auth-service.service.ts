@@ -63,9 +63,7 @@ export class AuthService {
 public async onConfirmSignUp(userName: string, code: string) {
   try {
     await Auth.confirmSignUp(userName, code);
-    console.log(this.nom, this.prenom);
     const body = { name: this.nom, prenom: this.prenom };
-    console.log(body);
     await this.httpClient
       .post(
         'https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users/edit',
@@ -93,7 +91,6 @@ public async onConfirmSignUp(userName: string, code: string) {
     Auth.signOut()
       .then(() => console.log("Successfully signed out."))
       .catch(err => console.log(err));
-    console.log("test", localStorage.removeItem('token'));
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
     localStorage.removeItem('admin');
