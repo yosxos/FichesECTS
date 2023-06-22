@@ -14,7 +14,6 @@ export class ControleGetService {
   constructor(private httpClient: HttpClient) {
     Auth.currentSession().then(data => {
       this.idToken = 'Bearer ' + data.getIdToken().getJwtToken();
-      console.log(this.idToken)
     })
       .catch((error) => {
         console.log("token not found");

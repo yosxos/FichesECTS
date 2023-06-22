@@ -21,6 +21,7 @@ import { UserServiceService } from 'src/app/services/user-service.service';
 
 export class AccueilPrincipalComponent implements OnInit {
 
+
   allformation!: FormationI;
   user: UserI = <UserI>{};
   searchText = '';
@@ -30,10 +31,8 @@ export class AccueilPrincipalComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     this.gestionService.someMethod();
     const userId = localStorage.getItem('userId');
-    console.log(userId);
     if(userId !== null) {
       const userId = localStorage.getItem('userId');
-      console.log(userId);
       if (userId) {
        await this.userService.getUserById(userId);
        this.user = this.userService.user;
@@ -45,28 +44,6 @@ export class AccueilPrincipalComponent implements OnInit {
 
 
   }
-
-
-  openAddEditFormDialog(element?: any): void { 
-    this._dialog.open(FormAddEditComponent,
-      {
-        width: '600px',
-        data: {
-          title: `Formulaire de ...`,
-          type: 'cet utilisateur',
-          data: []
-        }
-      })
-      .afterClosed()
-      .subscribe(res => {
-        res ? this.deleteUtilisateur() : '';
-      });
-  }
-
-  deleteUtilisateur(){
-    console.log('test modal : Confirmation de la suppression dun utilisateur');
-  }
-
 
   /** TODOO alerte en cas de manque de donnée ! */
   openModal(id : number) {
@@ -87,5 +64,15 @@ export class AccueilPrincipalComponent implements OnInit {
     }
     return false;
   }
-  
+ 
+  supprimerFormation(id: number): void {
+    this.formationService.deleteFormation(id);
+    const index = this.formationService.listeFormations.findIndex(item => item.id === id);
+    if (index !== -1) {
+      this.formationService.listeFormations.splice(index, 1);
+    }
+    console.log(this.formationService.listeFormations);
+  }
+
+
 }

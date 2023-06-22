@@ -10,7 +10,6 @@ import { FooterComponent } from './pages/footer/footer.component';
 import { AccueilPrincipalComponent } from './pages/accueil-principal/accueil-principal.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ModalFormationComponent } from './pages/modal-formation/modal-formation.component';
-import { SublevelMenuComponent } from './pages/sidenav/sublevel-menu.component';
 import { SidenavComponent } from './pages/sidenav/sidenav.component';
 import {MatButtonModule} from '@angular/material/button';
 import {MatDialogModule} from '@angular/material/dialog';
@@ -26,7 +25,6 @@ import { ConfirmationComponent } from './pages/confirmation/confirmation.compone
     AccueilPrincipalComponent,
     ModalFormationComponent,
     SidenavComponent,
-    SublevelMenuComponent,
     SearchPipe,
     InscriptionComponent,
     ConfirmationComponent,
