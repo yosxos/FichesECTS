@@ -99,7 +99,5 @@ export class SidenavComponent implements OnInit {
   signOut(){
     this.authService.signOut();
   }
-  async isadmin(){
-    return await this.authService.isAdmin();
-  }
+
 }

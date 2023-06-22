@@ -15,7 +15,7 @@ export class AdminguardGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Promise<boolean> {
     try {
-      const isAdmin = await this.authService.isadmin();
+      const isAdmin = await this.authService.isAdmin();
       if (isAdmin) {
         return true;
       } else {

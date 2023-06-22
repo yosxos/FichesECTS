@@ -1,4 +1,4 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component } from '@angular/core';
 import { UserI, RespI } from 'src/app/modeles/user-i';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import { FormationGetService } from 'src/app/services/formation-get.service';
@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth-service.service';
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent implements OnDestroy  {
+export class AdminComponent   {
   users: UserI[] = [];
   filteredUsers: UserI[] = [];
   selectedUser: UserI | null = null;
@@ -21,10 +21,15 @@ export class AdminComponent implements OnDestroy  {
   constructor(private userService: UserServiceService, private formationService: FormationGetService) {}
 
   async ngOnInit() {
-    await this.userService.GetUsers();
+    await this.userService.getUsers();
     this.users = this.userService.users;
     this.filteredUsers = this.users; // Initialize filtered users to all users
+    if(this.formationService.listeFormations.length !== 0) {
     this.formations=this.formationService.listeFormations;
+    }else {
+      await this.formationService.getFormations();
+      this.formations=this.formationService.listeFormations;
+    }
 
   }
 
@@ -63,6 +68,8 @@ export class AdminComponent implements OnDestroy  {
       } catch (error) {
         console.error('Failed to add formations:', error);
       }
+      await this.userService.getUsers();
+      this.users = this.userService.users;
     }
   }
   async removeFormation(formation: FormationI) {
@@ -75,17 +82,11 @@ export class AdminComponent implements OnDestroy  {
       } catch (error) {
         console.error('Failed to remove formations:', error);
       }
+      await this.userService.getUsers();
+      this.users = this.userService.users;
     }
   }
   
-  ngOnDestroy() {
-    this.users = [];
-    this.filteredUsers = [];
-    this.selectedUser = null;
-    this.selectedUserFormations = [];
-    this.formations = [];
-    this.filtredFormations = [];
-  }
 }
 
 

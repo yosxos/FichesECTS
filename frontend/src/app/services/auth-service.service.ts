@@ -24,18 +24,8 @@ export class AuthService {
     return !!localStorage.getItem('token');
   }
 
-  public async isAdmin() {
-    const userId = localStorage.getItem('userId');
-    await this.httpClient
-      .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: userId! } })
-      .subscribe((adminData: any) => {
-        if (adminData.length !== 0) {
-          this.admin = true;
-        } else {
-          this.admin = false;
-        }
-      });
-    return this.admin;
+  isAdmin() {
+    return !!localStorage.getItem('admin');
   }
 
 
@@ -70,19 +60,30 @@ export class AuthService {
     ;
 
   }
-  public async onConfirmSignUp(userName: string, code: string) {
-    try {
-      await Auth.confirmSignUp(userName, code);
-      await this.httpClient
-        .post<{ name: string; prenom: string }>(
-          'https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users/edit',
-          { name: this.nom, prenom: this.prenom }
-        );
-      this.router.navigateByUrl('/connexion');
-    } catch (error) {
-      console.log(error);
-    }
+public async onConfirmSignUp(userName: string, code: string) {
+  try {
+    await Auth.confirmSignUp(userName, code);
+    console.log(this.nom, this.prenom);
+    const body = { name: this.nom, prenom: this.prenom };
+    console.log(body);
+    await this.httpClient
+      .post(
+        'https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users/edit',
+        body // Send the 'body' directly as the request body
+      )
+      .subscribe(
+        () => {
+          this.router.navigateByUrl('/connexion');
+        },
+        (error: any) => {
+          console.log(error);
+        }
+      );
+  } catch (error) {
+    console.log(error);
   }
+}
+
 
 
 
@@ -95,6 +96,7 @@ export class AuthService {
     console.log("test", localStorage.removeItem('token'));
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    localStorage.removeItem('admin');
     
     this.router.navigateByUrl('/')
   }
@@ -120,6 +122,7 @@ export class AuthService {
             if (adminData.length !== 0) {
               this.userId.status = 'admin';
               this.admin = true;
+              localStorage.setItem('admin', 'true');
 
             } else {
               this.httpClient

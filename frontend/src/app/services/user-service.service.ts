@@ -73,7 +73,7 @@ export class UserServiceService {
       });
     ;
   }
-  async GetUsers() {
+  async getUsers() {
     this.users = [];
     await this.httpClient
       .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users')
