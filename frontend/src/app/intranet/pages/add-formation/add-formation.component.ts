@@ -259,8 +259,9 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
     this.showUEForm = false;
 
-
+    
     if (this.check_id_ue(this.ue.id)) {
+      console.log("this.ue", this.ue);
 
       let id_tmp: number = this.ue.matiere?.length || 0;
 
@@ -323,8 +324,16 @@ export class AddFormationComponent implements OnInit, OnChanges {
   }
 
   async validerFormation(): Promise<void> {
+    let totalEcts = 0;
 
     if (this.formation.ue?.length != undefined) {
+      for (let i = 0; i < this.formation.ue.length; i++) {
+        totalEcts += this.formation.ue.at(i)?.ects || 0
+
+      }
+      if (totalEcts < 30) {
+        alert("La formation n'a pas assez d'ECTS")
+      } else {
       // Ne post pas de formation sans UE 
       const insertIdFormation = await this.formationService.postFormationApi(this.formation)
       for (let i = 0; i < this.formation.ue.length; i++) {
@@ -365,7 +374,11 @@ export class AddFormationComponent implements OnInit, OnChanges {
         }
       }
     }
+    alert("La formation a bien été ajoutée")
+
+  }
     console.log("this.formation ",this.formation)
+
   }
   //TODO faire le post de la formation et refaire pareil que pour matiere et ue pour l'association des ue à la formation créée
 }

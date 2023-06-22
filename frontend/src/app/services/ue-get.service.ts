@@ -65,8 +65,8 @@ export class UeGetService {
     try {
       this.uepost = {
         nom: ue.nom,
-        semestre: ue.semestre,
-        ects: ue.ects
+        semestre: ue.semestre ,
+        ects: ue.ects || 0
       };
       // console.log("sdjkkkkjsdjksfkjd",ue);
       // console.log("ue.ects", ue.ects)
@@ -134,4 +134,19 @@ async postMatiere_Ue_ids(ue_id: number,matiere_id:number):Promise<number>  {
       }
     }
   
+    async deleteUeApi2(id_ue: number): Promise<void> {
+      try {
+        const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+        const body = { id_ue: id_ue };
+        const options = { headers,body };
+        const response = await this.httpClient
+          .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe/edit', options)
+          .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+
+        console.log("response delete",response);
+
+      } catch (error) {
+        console.error('An error occurred while creating a new formation:', error);
+      }
+    }
 }

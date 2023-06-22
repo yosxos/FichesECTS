@@ -138,21 +138,21 @@ export class MatiereGetService {
       }
     }
 
-    // async deleteMatiereApi2(id_matiere: number):Promise<void> {
-    //   try {
-    //     const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
-    //     const options = { headers };
-    //     const response = await this.httpClient
-    //       .delete<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/matiere/edit', id_matiere, options)
-    //       .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-    //     console.log(response.insertId);
-    //     return response.insertId; // Return the insertId value from the response body
+    async deleteMatiereApi2(id_matiere: number):Promise<void> {
+      try {
+        const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+        const body = { id_matiere: id_matiere };
+        const options = { headers,body };
+        const response = await this.httpClient
+          .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere/edit', options)
+          .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-    //   } catch (error) {
-    //     console.error('An error occurred while creating a new formation:', error);
-    //     return -1;
-    //   }
-    // }
+        console.log("response delete",response);
+
+      } catch (error) {
+        console.error('An error occurred while creating a new formation:', error);
+      }
+    }
 }
 

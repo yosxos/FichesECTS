@@ -54,29 +54,31 @@
               <td class="indication">regle de calcul</td>
               <td class="indication">regle particuliere</td>
               <td id="videe"><button (click)="formUe()" class="btn btn-dark">Ajouter UE</button></td>
+
             </tr>
             <!-- Row 5 -->
             <ng-container *ngFor="let ue of formation.ue">
               <tr class="general">
                   <td class="indication">{{ue.id}}</td>
-                  <td><input type="text" [(ngModel)]="ue.nom" class="form-control" required name="nom" placeholder="Nom"></td>
-                  <td></td>
+                  <td colspan="2"><input type="text" [(ngModel)]="ue.nom" class="form-control" required name="nom" placeholder="Nom"></td>
+                  
                   <td><select [(ngModel)]="ue.semestre" class="form-select" required name="semestre">
-                    <option value="" disabled selected>Sélectionnez un semestre</option>
                     <option value="semestre 1">1</option>
                     <option value="semestre 2">2</option>
                     </select>
                   </td>
-                  <td>{{this.sum_cm}}</td>
+                  <!--<td>{{this.sum_cm}}</td>
                   <td>{{this.sum_td}}</td>
                   <td>{{this.sum_tp}}</td>
                   <td>{{this.sum_pro}}</td>
-                  <td>{{this.sum_tpe}}</td>
+                  <td>{{this.sum_tpe}}</td>-->
+                  <td></td><td></td><td></td><td></td><td></td>
                   <td></td>
                   <td>{{ue.ects}}</td>
-                  <td colspan="9"></td>
+                  <td colspan="7"></td>
                   <td class="indication" id="videe"><input class="btn btn-dark"  type="button" (click)="focus(ue.id)" value="Ajout Matière" ></td>
-                  <td class="indication" id="videe"><input type="button" class="btn btn-primary" (click)="selectUE(ue.id)" value="Modifier UE" ></td>
+                  <!-- <td class="indication" id="videe"><input type="button" class="btn btn-primary" (click)="selectUE(ue.id)" value="Modifier UE" ></td> -->
+                  <td id="videe"><input type="button" class="btn btn-danger" (click)="deleteUe(ue.id)" value="Supprimer l'UE" ></td>
 
               </tr>
                   <!-- Row 6 -->
@@ -109,8 +111,8 @@
                     <option value="projet">Projet</option>
                     <!-- Ajoutez d'autres options ici -->
                   </select></td>
-                  <td id="videe"><input type="button" class="btn btn-danger" (click)="delete(matiere.departement, ue.id)" value="Supprimer" ></td>
-                  <td class="vide" id="videe"><input type="button" class="btn btn-primary" (click)="selectMatiere(matiere.id, ue.id)" value="Modifier" ></td>
+                  <td id="videe"><input type="button" class="btn btn-danger" (click)="deleteMatiere(matiere.id, ue.id)" value="Supprimer" ></td>
+                  <!-- <td class="vide" id="videe"><input type="button" class="btn btn-primary" (click)="selectMatiere(matiere.id, ue.id)" value="Modifier" ></td> -->
 
   
                </tr>
@@ -162,7 +164,7 @@
     </div>
   </section>
 
-  <section>
+ <!--   <section>
     <div modal subtitle class="modal__container">
       <ng-container>
         <section class="py-5">
@@ -171,7 +173,6 @@
               <div class="col-lg-12">
                 <h2>Modifier une Ue</h2>
                 <form #f="ngForm" >
-                  <!-- Champs de formation -->
                   <div class="mb-3">
                     <label for="annee" class="form-label">Nom</label>
                     <input type="text" [(ngModel)]="this.ueSelected.nom" class="form-control" required name="nom" placeholder="Nom">
@@ -183,7 +184,7 @@
                   </div>
   
   
-                  <button type="submit" (click)="modifierUE(this.ueSelected)" class="btn btn-dark mt-3 ms-2">Ajouter</button>
+                 <button type="submit" (click)="modifierUE(this.ueSelected)" class="btn btn-dark mt-3 ms-2">Ajouter</button> 
                   
                 </form>
               </div>
@@ -193,8 +194,8 @@
       </ng-container>
     </div>
   </section>
-  
-  <section>
+  -->
+ <section>
     <div modal subtitle class="modal__container">
       <ng-container>
         <section class="py-5">
@@ -203,7 +204,8 @@
               <div class="col-lg-12" *ngIf="this.boolMatiere">
                 <h2>Ajouter une Matiere</h2>
                 <form #f="ngForm" >
-                  <!-- Champs de formation -->
+
+                  
                   
                   <div class="mb-3">
                     <label for="Nom" class="form-label">Nom</label>
@@ -235,7 +237,14 @@
                   </div>
                   <div class="mb-3">
                     <label for="departement" class="form-label">Département</label>
-                    <input type="text" [(ngModel)]="this.matiere.departement" class="form-control" required name="departement" placeholder="Département" >
+                    <select [(ngModel)]="matiere.departement" class="form-select" required name="departement">
+                      <option value="maths">Mathématique</option>
+                      <option value="info">Informatique</option>
+                      <option value="hd">HD</option>
+                      <option value="ieg">IEG</option>
+                      <option value="autre">Autre</option>                      
+                      <option value="projet">Projet</option>
+                    </select>
                   </div>
                   
   
@@ -248,7 +257,7 @@
       </ng-container>
     </div>
   </section>
-
+  <!--
   <section>
     <div modal subtitle class="modal__container">
       <ng-container>
@@ -258,7 +267,6 @@
               <div class="col-lg-12" >
                 <h2>Modifier une Matiere</h2>
                 <form #f="ngForm" >
-                  <!-- Champs de formation -->
                   
                   <div class="mb-3">
                     <label for="Nom" class="form-label">Nom</label>
@@ -284,28 +292,22 @@
                     <label for="Pro" class="form-label">Pro</label>
                     <input type="number" [(ngModel)]="this.matiereSelected.Pro" class="form-control" required name="Pro" placeholder="Pro">
                   </div>
-                  <!-- <div class="mb-3">
-                    <label for="departement" class="form-label">Département</label>
-                    <input type="text" [(ngModel)]="this.matiereSelected.departement"  class="form-control" required name="departement"
-                      placeholder="Département" >
-                  </div> -->
+
                   <div class="mb-3">
                     <label for="departement" class="form-label">Département</label>
                     <select [(ngModel)]="matiereSelected.departement" class="form-select" required name="departement">
-                      <option value="" disabled selected>Sélectionnez un département</option>
                       <option value="maths">Mathématique</option>
                       <option value="info">Informatique</option>
                       <option value="hd">HD</option>
                       <option value="ieg">IEG</option>
                       <option value="autre">Autre</option>                      
                       <option value="projet">Projet</option>
-                      <!-- Ajoutez d'autres options ici -->
                     </select>
                   </div>
 
                   
   
-                  <!-- <button type="submit" (click)="modifierMatiere(this.matiereSelected)" class="btn btn-primary mt-3 ms-2">Ajouter</button> -->
+                  <button type="submit" (click)="modifierMatiere(this.matiereSelected)" class="btn btn-primary mt-3 ms-2">Ajouter</button>
                 </form>
               </div>
             </div>
@@ -313,4 +315,4 @@
         </section>
       </ng-container>
     </div>
-  </section>
+  </section> -->

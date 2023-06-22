@@ -19,6 +19,7 @@ import { FormationI } from 'src/app/modeles/formation-i';
 
 export class AccueilPrincipalComponent implements OnInit {
 
+
   allformation!: FormationI;
   searchText = '';
   constructor(public formationService: FormationGetService, private modalService: NgbModal, public gestionService: GestionFichesService, public authService: AuthService, private _dialog: MatDialog) {
@@ -30,7 +31,6 @@ export class AccueilPrincipalComponent implements OnInit {
      //this.allformation = this.gestionService.formationObservable$.subscribe();
     // console.log("observable =",allformation);
 
-    
   }
 
 
@@ -66,4 +66,16 @@ export class AccueilPrincipalComponent implements OnInit {
   connected() : boolean {
     return this.authService.connected();
   }
+
+
+  supprimerFormation(id: number): void {
+    this.formationService.deleteFormation(id);
+    const index = this.formationService.listeFormations.findIndex(item => item.id === id);
+    if (index !== -1) {
+      this.formationService.listeFormations.splice(index, 1);
+    }
+    console.log(this.formationService.listeFormations);
+  }
+
+
 }

@@ -30,6 +30,18 @@ export class GestionFichesService {
     await this.controleService.getControleApi();
     await this.getFormationUeApi();
     await this.getUeMatiereApi(); 
+    await this.trierDataParAnnee();
+  }
+
+  async trierDataParAnnee(): Promise<void> {
+    await this.formationService.listeFormations.sort((a, b) => {
+      // Utilisation de l'opérateur de soustraction pour trier par ordre décroissant
+      if (a.annee > b.annee) return -1;
+      if (a.annee < b.annee) return 1;
+      return 0;
+    });
+    console.log('DATAAAA TEST', this.formationService.listeFormations);
+    
   }
 
    /* Récupère les données de la table formation_ue */

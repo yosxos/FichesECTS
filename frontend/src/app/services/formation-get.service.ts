@@ -139,4 +139,34 @@ export class FormationGetService {
           }
         }
 
+  async deleteFormation(id_formation: number): Promise<void> {
+
+    try {
+      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const body = { id_formation: id_formation };
+      const options = { headers,body };
+      const response = await this.httpClient
+        .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe/edit', options)
+        .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+
+      console.log("response delete",response);
+
+    } catch (error) {
+      console.error('An error occurred while creating a new formation:', error);
+    }
+    try {
+      const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+      const body = { id: id_formation };
+      const options = { headers,body };
+      const response = await this.httpClient
+        .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation/edit', options)
+        .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
+
+      console.log("response delete",response);
+
+    } catch (error) {
+      console.error('An error occurred while creating a new formation:', error);
+    }
+  }
+
 }
