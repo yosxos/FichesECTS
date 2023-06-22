@@ -69,6 +69,21 @@ export class AdminComponent {
         );
     };
   }
+  async removeFormation(formation:FormationI) {
+    if (this.selectedUser) {
+      await (await this.userService.deleteFormationsToResponsable(this.selectedUser!.userId,formation))
+        .subscribe(
+          response => {
+            // Handle success response
+            console.log('Formations removed successfully');
+          },
+          error => {
+            // Handle error response
+            console.error('Failed to remove formations:', error);
+          }
+        );
+    };
+  }
 }
 
 

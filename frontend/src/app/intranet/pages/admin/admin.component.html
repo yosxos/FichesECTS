@@ -12,7 +12,7 @@
   <div class="user-container">
     <h3>User List</h3>
     <ul class="user-list">
-      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)" [ngClass]="{ 'clickable-user': user.status !== 'default' && user.status !== 'admin' }">
+      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)" [ngClass]="{ 'clickable-user': user.status !== 'admin' }">
         {{ user.name }} {{ user.prenom }}
       </li>
     </ul>
@@ -23,6 +23,8 @@
     <ul>
       <li *ngFor="let formation of selectedUserFormations">
         {{ formation.parcour }} ({{ formation.niveau }})
+        <button (click)="removeFormation(formation)">Remove Formation</button>
+
       </li>
     </ul>
     <div class="add-formation-container">

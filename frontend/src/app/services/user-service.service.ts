@@ -96,4 +96,22 @@ async addFormationsToResponsable(id: number, formation: FormationI) {
 
   return this.httpClient.post(url, body, { headers });
 }
+async deleteFormationsToResponsable(id: number, formation: FormationI) {
+  const url = 'https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation/edit';
+  const id_formation = formation.id;
+  const body = {
+    id_user: id,
+    id_formation: id_formation,
+  };
+  const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
+  if (this.users.find(user => user.userId === id)?.status !== 'admin') {
+    const user = this.users.find(user => user.userId === id)!;
+    if (typeof user.status === 'object' && 'formations' in user.status) {
+      user.status.formations = user.status.formations.filter((formation) => formation.id !== id_formation);
+    }
+  }
+  return this.httpClient.delete(url, { headers, params: body });
+
+}
+
 }
