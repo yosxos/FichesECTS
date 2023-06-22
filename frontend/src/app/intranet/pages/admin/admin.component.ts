@@ -62,7 +62,6 @@ export class AdminComponent   {
     if (this.selectedUser) {
       try {
         await (await this.userService.addFormationsToResponsable(this.selectedUser.userId, formation)).toPromise();
-        console.log('Formations added successfully');
         this.selectedUserFormations.push(formation);
         this.filtredFormations = this.filtredFormations.filter(f => f.id !== formation.id);
       } catch (error) {
@@ -76,7 +75,6 @@ export class AdminComponent   {
     if (this.selectedUser) {
       try {
         await (await this.userService.deleteFormationsToResponsable(this.selectedUser.userId, formation)).toPromise();
-        console.log('Formations removed successfully');
         this.selectedUserFormations = this.selectedUserFormations.filter(f => f.id !== formation.id);
         this.filtredFormations.push(formation);
       } catch (error) {
