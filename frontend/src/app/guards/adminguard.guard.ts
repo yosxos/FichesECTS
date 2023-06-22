@@ -10,16 +10,22 @@ export class AdminguardGuard implements CanActivate {
     constructor(private authService:AuthService, private router:Router){
 
   }
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    if(this.authService.userId.status == "admin"){
-      return true;
-    }else {
-      this.router.navigateByUrl("/intranet")
-      return false
+    state: RouterStateSnapshot
+  ): Promise<boolean> {
+    try {
+      const isAdmin = await this.authService.isadmin();
+      if (isAdmin) {
+        return true;
+      } else {
+        this.router.navigateByUrl('/intranet');
+        return false;
+      }
+    } catch (error) {
+      console.log(error);
+      return false;
     }
   }
-  // sign out with email password from aws amplify
-  
 }
+

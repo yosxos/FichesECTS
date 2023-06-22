@@ -108,7 +108,7 @@
                         Connexion
                     </i>
                 </a>
-                <a *ngIf="this.authService.admin" class="sidenav-nav-link" routerLink="/intranet/admin"
+                <a *ngIf="isadmin()" class="sidenav-nav-link" routerLink="/intranet/admin"
                 routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
                 [ngClass]="setActiveClass('connexion')">
                 <i class="sidenav-link-icon fal fa-cog"></i>

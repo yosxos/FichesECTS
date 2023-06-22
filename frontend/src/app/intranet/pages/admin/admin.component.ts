@@ -1,21 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { UserI, RespI } from 'src/app/modeles/user-i';
 import { UserServiceService } from 'src/app/services/user-service.service';
 import { FormationGetService } from 'src/app/services/formation-get.service';
 import { FormationI } from 'src/app/modeles/formation-i';
+import { AuthService } from 'src/app/services/auth-service.service';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
-export class AdminComponent {
+export class AdminComponent implements OnDestroy  {
   users: UserI[] = [];
   filteredUsers: UserI[] = [];
   selectedUser: UserI | null = null;
   selectedUserFormations: RespI['formations'] = [];
   formations: FormationI[] = [];
   filtredFormations: FormationI[] = [];
+  
   constructor(private userService: UserServiceService, private formationService: FormationGetService) {}
 
   async ngOnInit() {
@@ -24,10 +26,6 @@ export class AdminComponent {
     this.filteredUsers = this.users; // Initialize filtered users to all users
     this.formations=this.formationService.listeFormations;
 
-    if (this.selectedUser && this.selectedUser.status instanceof Object) {
-      const userFormationsIds = this.selectedUser.status.formations.map(formation => formation.id);
-      this.formations = this.formations.filter(formation => !userFormationsIds.includes(formation.id));
-    }
   }
 
   filterUsers(category: string) {
@@ -48,41 +46,45 @@ export class AdminComponent {
     this.selectedUser = user;
     if (user.status instanceof Object) {
       this.selectedUserFormations = user.status.formations;
-      this.filtredFormations = this.formations.filter(formation => !this.selectedUserFormations.includes(formation));
+      // filter the formation that the user already have
+      this.filtredFormations = this.formations.filter(formation => !this.selectedUserFormations.some(f => f.id === formation.id));
     } else {
       this.selectedUserFormations = [];
       this.filtredFormations = this.formations;
     }
   }
-  async addFormation(formation:FormationI) {
+  async addFormation(formation: FormationI) {
     if (this.selectedUser) {
-      await (await this.userService.addFormationsToResponsable(this.selectedUser!.userId,formation))
-        .subscribe(
-          response => {
-            // Handle success response
-            console.log('Formations added successfully');
-          },
-          error => {
-            // Handle error response
-            console.error('Failed to add formations:', error);
-          }
-        );
-    };
+      try {
+        await (await this.userService.addFormationsToResponsable(this.selectedUser.userId, formation)).toPromise();
+        console.log('Formations added successfully');
+        this.selectedUserFormations.push(formation);
+        this.filtredFormations = this.filtredFormations.filter(f => f.id !== formation.id);
+      } catch (error) {
+        console.error('Failed to add formations:', error);
+      }
+    }
   }
-  async removeFormation(formation:FormationI) {
+  async removeFormation(formation: FormationI) {
     if (this.selectedUser) {
-      await (await this.userService.deleteFormationsToResponsable(this.selectedUser!.userId,formation))
-        .subscribe(
-          response => {
-            // Handle success response
-            console.log('Formations removed successfully');
-          },
-          error => {
-            // Handle error response
-            console.error('Failed to remove formations:', error);
-          }
-        );
-    };
+      try {
+        await (await this.userService.deleteFormationsToResponsable(this.selectedUser.userId, formation)).toPromise();
+        console.log('Formations removed successfully');
+        this.selectedUserFormations = this.selectedUserFormations.filter(f => f.id !== formation.id);
+        this.filtredFormations.push(formation);
+      } catch (error) {
+        console.error('Failed to remove formations:', error);
+      }
+    }
+  }
+  
+  ngOnDestroy() {
+    this.users = [];
+    this.filteredUsers = [];
+    this.selectedUser = null;
+    this.selectedUserFormations = [];
+    this.formations = [];
+    this.filtredFormations = [];
   }
 }
 

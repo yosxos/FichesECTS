@@ -11,6 +11,7 @@ import { FormationI } from '../modeles/formation-i';
 })
 export class UserServiceService {
   users: UserI[] = [];
+  user: UserI = <UserI>{};
   idToken: string = "";
   constructor(private httpClient: HttpClient) {
     Auth.currentSession().then(data => {
@@ -20,8 +21,60 @@ export class UserServiceService {
         console.log("token not found");
       });
   }
+  async getUserById(id:string) {
+    await this.httpClient
+      .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users', { params: { id: id } })
+      .subscribe((userData: any) => {
+        if (userData.length === 0) {
+          throw new Error('User not found'); // Throw an error if user is not found
+        }
+        this.user.userId = userData[0].id;
+        this.user.name = userData[0].name;
+        this.user.prenom = userData[0].prenom;
 
+        this.httpClient
+          .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: this.user.userId } })
+          .subscribe((adminData: any[]) => {
+            if (adminData.length !== 0) {
+              this.user.status = 'admin';
+
+            } else {
+              this.httpClient
+                .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id: this.user.userId } })
+                .subscribe((responsableData: any[]) => {
+                  if (responsableData.length !== 0) {
+                    const responsableObj: RespI = {
+                      formations: [],
+                    };
+
+                    for (const responsable of responsableData) {
+                      this.httpClient
+                        .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation', { params: { id: responsable.id_formation.toString() } })
+                        .subscribe((formationData: any) => {
+                          responsableObj.formations.push({
+                            id: responsable.id_formation,
+                            parcour: formationData[0].parcour,
+                            annee: formationData[0].annee,
+                            niveau: formationData[0].niveau,
+                            code: formationData[0].code,
+                          });
+                        });
+                    }
+
+                    this.user.status = responsableObj;
+                  }
+                  else {
+                    this.user.status = 'default';
+                  }
+
+                });
+            }
+          });
+      });
+    ;
+  }
   async GetUsers() {
+    this.users = [];
     await this.httpClient
       .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/users')
       .subscribe((userData: any[]) => {
@@ -83,17 +136,6 @@ async addFormationsToResponsable(id: number, formation: FormationI) {
     id_formation: id_formation,
   };
   const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
-  if (this.users.find(user => user.userId === id)?.status !== 'admin') {
-    const user = this.users.find(user => user.userId === id)!;
-    if (typeof user.status === 'object' && 'formations' in user.status) {
-      user.status.formations.push(formation);
-    } else {
-      user.status = { formations: [formation] };
-    }
-  }
-  
-      
-
   return this.httpClient.post(url, body, { headers });
 }
 async deleteFormationsToResponsable(id: number, formation: FormationI) {
@@ -104,14 +146,7 @@ async deleteFormationsToResponsable(id: number, formation: FormationI) {
     id_formation: id_formation,
   };
   const headers = new HttpHeaders().set('Authorization', this.idToken); // Replace 'my-token' with your actual token value
-  if (this.users.find(user => user.userId === id)?.status !== 'admin') {
-    const user = this.users.find(user => user.userId === id)!;
-    if (typeof user.status === 'object' && 'formations' in user.status) {
-      user.status.formations = user.status.formations.filter((formation) => formation.id !== id_formation);
-    }
-  }
-  return this.httpClient.delete(url, { headers, params: body });
-
+  return this.httpClient.request('delete', url, { headers, body });
 }
 
 }

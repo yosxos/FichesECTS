@@ -14,16 +14,30 @@ export class AuthService {
   prenom: string = "";
   connectedUser: boolean = false;
   admin: boolean = false;
-  resp:RespI = <RespI>{};
+  resp: RespI = <RespI>{};
 
   constructor(public httpClient: HttpClient, public router: Router) { }
 
 
   connected() {
-
     //Auth.currentSession().then(data => this.connectedUser = data.isValid())
     return !!localStorage.getItem('token');
   }
+
+  public async isAdmin() {
+    const userId = localStorage.getItem('userId');
+    await this.httpClient
+      .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: userId! } })
+      .subscribe((adminData: any) => {
+        if (adminData.length !== 0) {
+          this.admin = true;
+        } else {
+          this.admin = false;
+        }
+      });
+    return this.admin;
+  }
+
 
   public async signIn(email: string, password: string) {
     const user = await Auth.signIn(email, password);
@@ -69,7 +83,7 @@ export class AuthService {
       console.log(error);
     }
   }
-  
+
 
 
 
@@ -79,7 +93,9 @@ export class AuthService {
       .then(() => console.log("Successfully signed out."))
       .catch(err => console.log(err));
     console.log("test", localStorage.removeItem('token'));
-
+    localStorage.removeItem('token');
+    localStorage.removeItem('userId');
+    
     this.router.navigateByUrl('/')
   }
 
@@ -92,58 +108,54 @@ export class AuthService {
         if (userData.length === 0) {
           throw new Error('User not found'); // Throw an error if user is not found
         }
+        localStorage.setItem('userId', userData[0].id.toString());
         this.userId.userId = userData[0].id;
         this.userId.name = userData[0].name;
         this.userId.prenom = userData[0].prenom;
-  
+        
+
         this.httpClient
           .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/admin', { params: { id: this.userId.userId } })
           .subscribe((adminData: any[]) => {
             if (adminData.length !== 0) {
               this.userId.status = 'admin';
               this.admin = true;
-              
-            }else {            
+
+            } else {
               this.httpClient
-              .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id: this.userId.userId} })
-              .subscribe((responsableData: any[]) => {
-                if (responsableData.length !== 0) {
-                  const responsableObj: RespI = {
-                  formations: [],
-                };
-              
-                for (const responsable of responsableData) {
-                  this.httpClient
-                    .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation', { params: { id: responsable.id_formation.toString() } })
-                    .subscribe((formationData: any) => {
-                      responsableObj.formations.push({
-                        id: responsable.id_formation,
-                        parcour: formationData[0].parcour,
-                        annee: formationData[0].annee,
-                        niveau: formationData[0].niveau,
-                        code: formationData[0].code,
-                      });
-                    });
-                }
-              
-                this.userId.status = responsableObj;
-                }
-                else
-                {
-                  this.userId.status = 'default';
-                }
+                .get<any[]>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/responsableFormation', { params: { id: this.userId.userId } })
+                .subscribe((responsableData: any[]) => {
+                  if (responsableData.length !== 0) {
+                    const responsableObj: RespI = {
+                      formations: [],
+                    };
 
-              
-             
-              });}
-  
+                    for (const responsable of responsableData) {
+                      this.httpClient
+                        .get<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation', { params: { id: responsable.id_formation.toString() } })
+                        .subscribe((formationData: any) => {
+                          responsableObj.formations.push({
+                            id: responsable.id_formation,
+                            parcour: formationData[0].parcour,
+                            annee: formationData[0].annee,
+                            niveau: formationData[0].niveau,
+                            code: formationData[0].code,
+                          });
+                        });
+                    }
 
+                    this.userId.status = responsableObj;
+                  }
+                  else {
+                    this.userId.status = 'default';
+                  }
+
+                });
+            }
           });
       });
-      console.log(this.userId);
   }
-  
-  
+
 }
 
 

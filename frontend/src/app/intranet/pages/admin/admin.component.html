@@ -1,58 +1,185 @@
+<main>
 <div class="container">
   <h2>Admin Page</h2>
 
   <div class="panel">
-    <button (click)="filterUsers('all')">All Users</button>
-    <button (click)="filterUsers('admin')">Admins</button>
-    <button (click)="filterUsers('responsable')">Responsables</button>
-    <button (click)="filterUsers('default')">Default Users</button>
+    <button class="btn btn-primary ms-3"(click)="filterUsers('all')">All Users</button>
+    <button class="btn btn-primary ms-3"(click)="filterUsers('admin')">Admins</button>
+    <button class="btn btn-primary ms-3"(click)="filterUsers('responsable')">Responsables</button>
+    <button class="btn btn-primary ms-3"(click)="filterUsers('default')">Default Users</button>
 
   </div>
 
   <div class="user-container">
-    <h3>User List</h3>
+    <h3>Users List</h3>
     <ul class="user-list">
-      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)" [ngClass]="{ 'clickable-user': user.status !== 'admin' }">
+      <li *ngFor="let user of filteredUsers" (click)="selectUser(user)"
+        [ngClass]="{ 'clickable-user': user.status !== 'admin' }">
         {{ user.name }} {{ user.prenom }}
       </li>
     </ul>
   </div>
 
   <div *ngIf="selectedUser && selectedUser.status !== 'admin' && selectedUser.status !== 'default'">
-    <h3>Selected Responsable: {{ selectedUser.name }} {{ selectedUser.prenom }}</h3>
-    <ul>
-      <li *ngFor="let formation of selectedUserFormations">
-        {{ formation.parcour }} ({{ formation.niveau }})
-        <button (click)="removeFormation(formation)">Remove Formation</button>
+    <h1>Selected Responsable</h1>
+    <h2> {{ selectedUser.name }} {{ selectedUser.prenom }}</h2>
+    <section class="bg-light">
+      <div class="container">
+        <div class="row py-2">
+          <div class="col-lg-12">
+              <table class="table align-middle mb-0 bg-white"  >
+                  <thead class="bg-light">
+                    <tr>
+                      <th>Id</th>
+                      <th>Parcours</th>
+                      <th>Année</th>
+                      <th>Niveau</th>
+                      <th>Code</th>
+                      <th>Supprimer</th>
+                    </tr>
+                  </thead>
+                  <tbody >
+                      <tr *ngFor="let f of selectedUserFormations">
+                          <!-- ID -->
+                          <td>
+                            <div class="d-flex align-items-center">
+                              <div class="ms-3">
+                                <p class="fw-bold mb-1">{{f.id}}</p>
+                                <!--<p class="text-muted mb-0">john.doe@gmail.com</p>-->
+                              </div>
+                            </div>
+                          </td>
+                          <!-- Parcours -->
+                          <td>
+                            <p class="fw-normal mb-1">{{f.parcour}}</p>
+                            <!--<p class="text-muted mb-0">IT department</p>-->
+                          </td>
+                          <!-- Année -->
+                          <td>{{f.annee}}</td>
+                          <!-- Niveau -->
+                          <td>{{f.niveau}}</td>
+                          <!-- Code -->
+                          <td>{{f.code}}</td>
+                            <td>
+                              <button class="btn btn-link btn-sm btn-rounded" (click)="removeFormation(f)">Remove Formation</button>                        </td>
+                          
+                        </tr>
+                  </tbody>
+                </table>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="add-formation-container">
+      <h2>Add Formations:</h2>
+      <!-- Section table de formation ! -->
+      <section class="bg-light">
+        <div class="container">
+          <div class="row py-2">
+            <div class="col-lg-12">
+              <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Id</th>
+                    <th>Parcours</th>
+                    <th>Année</th>
+                    <th>Niveau</th>
+                    <th>Code</th>
+                    <th>Ajouter</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let f of filtredFormations">
+                    <!-- ID -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="ms-3">
+                          <p class="fw-bold mb-1">{{f.id}}</p>
+                          <!--<p class="text-muted mb-0">john.doe@gmail.com</p>-->
+                        </div>
+                      </div>
+                    </td>
+                    <!-- Parcours -->
+                    <td>
+                      <p class="fw-normal mb-1">{{f.parcour}}</p>
+                      <!--<p class="text-muted mb-0">IT department</p>-->
+                    </td>
+                    <!-- Année -->
+                    <td>{{f.annee}}</td>
+                    <!-- Niveau -->
+                    <td>{{f.niveau}}</td>
+                    <!-- Code -->
+                    <td>{{f.code}}</td>
+                    <td>
+                      <button class="btn btn-link btn-sm btn-rounded" (click)="addFormation(f)">Add</button>
+                    </td>
 
-      </li>
-    </ul>
-    <div class="add-formation-container">
-        <h4>Add Formations:</h4>
-        <ul class="formation-list">
-          <li *ngFor="let formation of filtredFormations">
-            <span>
-              {{ formation.parcour }} ({{ formation.niveau }})
-            </span>
-            <button (click)="addFormation(formation)">Add</button>
-        </li>
-        </ul>
-      </div>
-  </div>
-  
-  <div *ngIf="selectedUser && selectedUser.status == 'default'">
-    <h3>Selected User: {{ selectedUser.name }} {{ selectedUser.prenom }}</h3>
-    <div class="add-formation-container">
-        <h4>Add Formations:</h4>
-        <ul class="formation-list">
-            <li *ngFor="let formation of filtredFormations">
-              <span>
-                {{ formation.parcour }} ({{ formation.niveau }})
-              </span>
-              <button (click)="addFormation(formation)">Add</button>
-            </li>
-          </ul>
-      </div>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
     </div>
+  </div>
+
+  <div *ngIf="selectedUser && selectedUser.status == 'default'">
+    <h1>Selected User</h1>
+    <h2> {{ selectedUser.name }} {{ selectedUser.prenom }}</h2>
+    <div class="add-formation-container">
+      <h2>Add Formations:</h2>
+      <!-- Section table de formation ! -->
+      <section class="bg-light">
+        <div class="container">
+          <div class="row py-2">
+            <div class="col-lg-12">
+              <table class="table align-middle mb-0 bg-white">
+                <thead class="bg-light">
+                  <tr>
+                    <th>Id</th>
+                    <th>Parcours</th>
+                    <th>Année</th>
+                    <th>Niveau</th>
+                    <th>Code</th>
+                    <th>Ajouter</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let f of filtredFormations">
+                    <!-- ID -->
+                    <td>
+                      <div class="d-flex align-items-center">
+                        <div class="ms-3">
+                          <p class="fw-bold mb-1">{{f.id}}</p>
+                          <!--<p class="text-muted mb-0">john.doe@gmail.com</p>-->
+                        </div>
+                      </div>
+                    </td>
+                    <!-- Parcours -->
+                    <td>
+                      <p class="fw-normal mb-1">{{f.parcour}}</p>
+                      <!--<p class="text-muted mb-0">IT department</p>-->
+                    </td>
+                    <!-- Année -->
+                    <td>{{f.annee}}</td>
+                    <!-- Niveau -->
+                    <td>{{f.niveau}}</td>
+                    <!-- Code -->
+                    <td>{{f.code}}</td>
+                    <td>
+                      <button class="btn btn-link btn-sm btn-rounded" (click)="addFormation(f)">Add</button>
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 
 </div>
+</main>
