@@ -250,8 +250,11 @@ export class EditFormationComponent implements OnInit, OnChanges {
     let totalEcts = 0;
     if (this.formation.ue?.length != undefined) {
       for (let i = 0; i < this.formation.ue.length; i++) {
-        totalEcts += this.formation.ue.at(i)!.ects || 0
+        for(let j = 0; j < this.formation.ue[i].matiere!.length; j++){
+          totalEcts += this.formation.ue.at(i)?.matiere!.at(j)!.ects || 0
+        }
       }
+      console.log(totalEcts)
       if (totalEcts < 30) {
         alert("La formation n'a pas assez d'ECTS")
       } else {
