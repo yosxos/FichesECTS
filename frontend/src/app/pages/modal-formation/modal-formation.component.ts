@@ -37,7 +37,6 @@ export class ModalFormationComponent implements OnInit, OnDestroy {
   }
 
   generatePDFDescription(): void {
-    console.log('entreé');
 
     const element: Element | null = document.getElementById("htmlData");
     if (element) {

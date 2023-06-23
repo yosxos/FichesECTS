@@ -117,7 +117,6 @@ async postMatiere_Ue_ids(ue_id: number,matiere_id:number):Promise<number>  {
     const response = await this.httpClient
         .post<any>('https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/ueMatiere/edit', this.matiereUe,options)
         .toPromise();
-        console.log(response.insertId);
         return response.insertId; // Return the insertId value from the response body
 
       } catch (error) {
@@ -134,8 +133,6 @@ async postMatiere_Ue_ids(ue_id: number,matiere_id:number):Promise<number>  {
         const response = await this.httpClient
           .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe/edit', options)
           .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
-
-        console.log("response delete",response);
 
       } catch (error) {
         console.error('An error occurred while creating a new formation:', error);

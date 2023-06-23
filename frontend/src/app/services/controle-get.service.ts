@@ -32,7 +32,7 @@ export class ControleGetService {
    */
    idInList(id: string | number): boolean {
     let tmp: boolean = false; 
-    this.listControle.forEach( element => id == element.id ? tmp = true : console.log("not in array controle", element))
+    this.listControle.forEach( element => id == element.id ? tmp = true : null)
     return tmp;
   }
 

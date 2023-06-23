@@ -69,11 +69,11 @@
                 <td>{{ue.nom}}</td>
                 <td></td>
                 <td>{{ue.semestre}}</td>
-                <td>{{this.sum_cm}}</td>
-                <td>{{this.sum_td}}</td>
-                <td>{{this.sum_tp}}</td>
-                <td>{{this.sum_pro}}</td>
-                <td>{{this.sum_tpe}}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
                 <td></td>
                 <td>{{ue.ects}}</td>
                 <td colspan="8"></td>
@@ -193,11 +193,6 @@
                   <input type="number" [(ngModel)]="this.matiere.Pro" class="form-control" name="Pro" placeholder="Pro"
                     required>
                 </div>
-                <!-- <div class="mb-3">
-                  <label for="departement" class="form-label">Département</label>
-                  <input type="text" [(ngModel)]="this.matiere.departement" class="form-control" name="departement"
-                    placeholder="Département" required>
-                </div> -->
                 <div class="mb-3">
                   <label for="departement" class="form-label">Département</label>
                   <select [(ngModel)]="matiere.departement" class="form-select" required name="departement">

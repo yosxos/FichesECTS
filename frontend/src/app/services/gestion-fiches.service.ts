@@ -146,7 +146,7 @@ export class GestionFichesService {
    */
   idInListFormationUe(id_formation: number): boolean {
     let tmp: boolean = false; 
-    this.listFormationUe.forEach( element => id_formation == element.id_formation ? tmp = true : console.log("not in array formationUe", element, "\nid_formation",id_formation))
+    this.listFormationUe.forEach( element => id_formation == element.id_formation ? tmp = true : null)
     return tmp;
   }
 

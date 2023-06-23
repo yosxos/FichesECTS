@@ -28,13 +28,7 @@ export class EditFormationComponent implements OnInit, OnChanges {
   boolMatiere: boolean = false;
   matiereSelected: MatiereI = <MatiereI>{}
   ueSelected: UeI = <UeI>{}
-  // sum_cm!: number;
-  // sum_td!: number;
-  // sum_tp!: number;
-  // sum_pro!: number;
-  // sum_tpe!: number;
   sum_ects!: number;
-  // nbMatiere!: number;
 
   constructor(private route: ActivatedRoute, public gestionService: GestionFichesService, public matieresService: MatiereGetService, public ueService: UeGetService, public formationService: FormationGetService) { }
   ngOnInit() {
@@ -191,10 +185,10 @@ export class EditFormationComponent implements OnInit, OnChanges {
 
   async ajouter() {
     this.showUEForm = !this.showUEForm
-
     this.ue.id = this.formation.ue!.length || 0;
+    const insertIdUe = await this.ueService.postUeApi(this.ue);
+    this.ue.id = insertIdUe;
     this.formation.ue!.push({ ...this.ue });
-    const insertIdUe = await this.ueService.postUeApi(this.ue)
     this.formationService.postFormation_Ue_ids(insertIdUe, this.formation.id)
     alert("L'UE a été ajouté")
   }
@@ -207,13 +201,10 @@ export class EditFormationComponent implements OnInit, OnChanges {
 
     this.sum_ects = 0;
     if (selectedUe) {
-      console.log("selectedUe", selectedUe)
       if (!selectedUe.matiere) {
         selectedUe.matiere = []; // initialize the matiere array if it's not defined
       }
       selectedUe.matiere.push({ ...this.matiere });
-      console.log("thematiere", this.matiere)
-      alert("La matière a été ajouté")
       const insertIdMat = await this.matieresService.postMatiereApi2(this.matiere)
       this.ueService.postMatiere_Ue_ids(this.ue.id, insertIdMat)
 
@@ -258,9 +249,8 @@ export class EditFormationComponent implements OnInit, OnChanges {
   async validerFormation(): Promise<void> {
     let totalEcts = 0;
     if (this.formation.ue?.length != undefined) {
-
       for (let i = 0; i < this.formation.ue.length; i++) {
-        totalEcts += this.formation.ue.at(i)?.ects || 0
+        totalEcts += this.formation.ue.at(i)!.ects || 0
       }
       if (totalEcts < 30) {
         alert("La formation n'a pas assez d'ECTS")
@@ -269,9 +259,9 @@ export class EditFormationComponent implements OnInit, OnChanges {
         for (let i = 0; i < this.formation.ue.length; i++) {
           this.formation.ue[i].ects = 0
           if (this.formation.ue[i].matiere != undefined) {
-            const insertIdUe = await this.ueService.putUeApi(this.formation.ue[i])
             for (let j = 0; j < this.formation.ue[i].matiere!.length; j++) {
               this.formation.ue[i].ects += this.formation.ue.at(i)?.matiere!.at(j)!.ects || 0
+
               let matierePut: MatiereI_put = {
                 id: this.formation.ue.at(i)?.matiere!.at(j)!.id || 0,
                 Pro: this.formation.ue.at(i)?.matiere!.at(j)!.Pro || 0,
@@ -281,10 +271,10 @@ export class EditFormationComponent implements OnInit, OnChanges {
                 cm: this.formation.ue.at(i)?.matiere!.at(j)!.cm || 0,
                 departement: this.formation.ue.at(i)?.matiere!.at(j)!.departement || "",
                 ects: this.formation.ue.at(i)?.matiere!.at(j)!.ects || 0,
-                // id_Controle: -1,
                 id_Controle: 1,
                 TPE: this.formation.ue.at(i)?.matiere!.at(j)!.TPE || 0
               };
+              const insertIdUe = await this.ueService.putUeApi(this.formation.ue[i])
 
               const insertIdMat = await this.matieresService.putMatiereApi2(matierePut);
 

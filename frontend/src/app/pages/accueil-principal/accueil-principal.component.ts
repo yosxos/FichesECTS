@@ -71,7 +71,6 @@ export class AccueilPrincipalComponent implements OnInit {
     if (index !== -1) {
       this.formationService.listeFormations.splice(index, 1);
     }
-    console.log(this.formationService.listeFormations);
   }
 
 

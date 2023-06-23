@@ -83,7 +83,6 @@ export class SidenavComponent implements OnInit {
   }
   
   getActiveClass(data: INavbarData): string {
-    console.log(this.router.url.includes(data.routeLink) ? 'active' : '');
     return this.router.url.includes(data.routeLink) ? 'active' : '';
   }
 

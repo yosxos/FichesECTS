@@ -21,20 +21,15 @@ export class FormAddEditComponent implements OnInit {
     }
 
   ngOnInit(): void {
-    console.log("dans le modal: " ,this.dataSource);
   }
 
   onToggle(close: boolean){
-    console.log('votre choix : ', close);
     this.isActive = false;
     this.matDialogRef.close(this.dataSource as FormationI);
   }
 
   ajouter(){
-    console.log('ajout d\'une UE');
-    console.log('ue : ', this.ue);
-    console.log('dataSource : ', this.formation.ue?.push(this.ue));
-    
+
   }
 
 

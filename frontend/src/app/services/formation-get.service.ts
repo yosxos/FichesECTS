@@ -64,7 +64,7 @@ export class FormationGetService {
    */
    idInList(id: string | number): boolean {
     let tmp: boolean = false; 
-    this.listeFormations.forEach( element => id == element.id ? tmp = true : console.log("not in array formation", element))
+    this.listeFormations.forEach( element => id == element.id ? tmp = true : null)
     return tmp;
   }
   sum(num1: number, num2: number): number {
@@ -143,8 +143,6 @@ export class FormationGetService {
         .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formationUe/edit', options)
         .toPromise(); // Use toPromise() instead of subscribe() to convert the observable to a promise
 
-      console.log("response delete",response);
-
     } catch (error) {
       console.error('An error occurred while creating a new formation:', error);
     }
@@ -155,8 +153,6 @@ export class FormationGetService {
       const response = await this.httpClient
         .request('delete','https://ttj3a1as81.execute-api.eu-west-3.amazonaws.com/prod/formation/edit', options)
         .toPromise(); 
-
-      console.log("response delete",response);
 
     } catch (error) {
       console.error('An error occurred while creating a new formation:', error);

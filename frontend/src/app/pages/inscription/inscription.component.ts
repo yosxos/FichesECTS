@@ -17,7 +17,6 @@ export class InscriptionComponent {
     this.success=null;
     const user =this.authService.signUp(this.newUser.email, this.newUser.password, this.newUser.family_name, this.newUser.given_name);
     this.success="Check your email for confirmation code";
-    console.log(user);
   }
   catch (error: any)     {
     if(error.code =='UsernameExistsException')

@@ -211,7 +211,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
     this.formation.ue!.push({ ...this.ue });
     this.ue = <UeI>{};
     this.ue.matiere = []
-    // console.log(this.formation)
   }
 
   ajouterMatiere() {
@@ -225,7 +224,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
     
     if (this.check_id_ue(this.ue.id)) {
-      console.log("this.ue", this.ue);
 
       let id_tmp: number = this.ue.matiere?.length || 0;
 
@@ -241,7 +239,6 @@ export class AddFormationComponent implements OnInit, OnChanges {
 
 
       this.formation.ue!.find(ue => ue.id === this.ue.id)!.ects = this.sum_ects;
-      // this.formation.ue!.find(ue => ue.id === this.ue.id)!. = this.sum_cm;
 
       this.sum_ects = 0;
       this.formation.ue?.find(ue => ue.id === this.ue.id)!.matiere!.push({ ...this.matiere })
