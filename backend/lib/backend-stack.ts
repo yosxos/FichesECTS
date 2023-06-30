@@ -133,7 +133,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_16_X,
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -153,7 +153,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -218,7 +218,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -249,7 +249,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -296,7 +296,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -327,7 +327,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -373,7 +373,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -405,7 +405,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -452,7 +452,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_16_X,
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -484,7 +484,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -526,7 +526,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -557,7 +557,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -598,7 +598,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -630,7 +630,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -673,7 +673,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -705,7 +705,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -743,7 +743,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -775,7 +775,7 @@ const password = secret.secretValueFromJson('password').unsafeUnwrap().toString(
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk','mysql2/promise'],
+        externalModules: ['aws-sdk'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
