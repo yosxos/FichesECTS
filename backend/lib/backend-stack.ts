@@ -41,12 +41,6 @@ const vpc = new ec2.Vpc(this, 'VPC', {
 });
 
 dbSecurityGroup.addIngressRule(ec2.Peer.anyIpv4(), ec2.Port.tcp(3306), 'Allow inbound traffic to the database from anywhere');
-//creating a new secret manager for the database
-const secret = sm.Secret.fromSecretNameV2(
-  this, "MySecret", "BackendStackMyDatabaseSecre-xFHZifa8cihF"
-)
-// Retrieve the password from the secret
-const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
 
 
 
@@ -106,8 +100,12 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       },
 
     });
-    //add a username attribute to the user pool
-
+//creating a new secret manager for the database
+const secret = sm.Secret.fromSecretNameV2(
+  this, "MySecret", instance.secret?.secretName!
+)
+// Retrieve the password from the secret
+const password = secret.secretValueFromJson('password').unsafeUnwrap().toString();
 
     
     //User pool client for the api
@@ -135,7 +133,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_16_X,
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -155,7 +153,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -220,7 +218,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -251,7 +249,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -298,7 +296,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -329,7 +327,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -375,7 +373,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -407,7 +405,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -454,7 +452,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       handler: 'handler',
       runtime: lambda.Runtime.NODEJS_16_X,
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -486,7 +484,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -528,7 +526,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -559,7 +557,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -600,7 +598,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -632,7 +630,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -675,7 +673,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -707,7 +705,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -745,7 +743,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
@@ -777,7 +775,7 @@ const password = "I--bJ.hQrIAp-4E5GcuSTbodStOkL5";
       runtime: lambda.Runtime.NODEJS_16_X,
       handler: 'handler',
       bundling: {
-        externalModules: ['aws-sdk'],
+        externalModules: ['aws-sdk','mysql2/promise'],
       },
       environment: {
         DB_NAME: 'FicheECTS',
